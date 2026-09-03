@@ -1,0 +1,105 @@
+# The Monday run — Phase 4 / test stage T1.
+#
+# Generates the week's images and opens an approval Issue. PUBLISHES NOTHING.
+# There is no auto-approve and no timer: if Umer never comments, nothing happens.
+#
+# Kill switch: create a file named engine/HALT (any contents) and the run stops
+# before spending anything. Delete it to resume.
+
+name: Weekly content run
+
+on:
+  schedule:
+    # 06:00 UTC Monday = 08:00 Amsterdam in summer, 07:00 in winter.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "How many images"
+        required: true
+        default: "2"
+      size:
+        description: "Master resolution"
+        required: true
+        default: "2K"
+        type: choice
+        options: ["1K", "2K", "4K"]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: weekly-run
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Kill switch
+        run: |
+          if [ -f engine/HALT ]; then
+            echo "::warning::engine/HALT present — the engine is stopped."
+            echo "HALTED=1" >> "$GITHUB_ENV"
+          fi
+
+      - uses: actions/setup-python@v6
+        if: env.HALTED != '1'
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        if: env.HALTED != '1'
+        run: pip install --quiet requests pillow pyyaml
+
+      - name: Validate arguments (no API call)
+        if: env.HALTED != '1'
+        run: python engine/generate.py --scene "smoke test" --out /dev/null --dry-run
+
+      - name: Generate the week
+        if: env.HALTED != '1'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python engine/run_week.py \
+            --count    "${{ inputs.count || '2' }}" \
+            --size     "${{ inputs.size || '2K' }}" \
+            --repo     "${{ github.repository }}" \
+            --sha      "${{ github.sha }}" \
+            --run-url  "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --out-issue issue_body.md
+
+      - name: Commit the bundle
+        if: env.HALTED != '1'
+        run: |
+          git config user.name  "ironroot-engine"
+          git config user.email "noreply@ironrootstore.com"
+          # -f because generated media is gitignored; the small platform JPEGs
+          # and captions.md are committed on purpose so the approval Issue can
+          # link to them and the record survives.
+          git add -f content/weekly engine/scene_history.json
+          git commit -m "Weekly bundle $(date +%Y-%m-%d) [skip ci]" || {
+            echo "nothing to commit"; exit 0; }
+          git push
+
+      - name: Open the approval issue
+        if: env.HALTED != '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "Approve: week of $(date +%Y-%m-%d)" \
+            --body-file issue_body.md \
+            --label approval
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: weekly-masters
+          path: content/weekly/
+          retention-days: 30
+          if-no-files-found: ignore

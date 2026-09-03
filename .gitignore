@@ -12,6 +12,13 @@ content/weekly/**/*.mov
 # Keep every captions.md and QC block
 !content/weekly/**/captions.md
 
+# Keep the small per-platform exports (~200 KB each). These are what the approval
+# Issue links to, and they are the durable record of what the week actually was.
+# The multi-MB master PNGs stay out — they live in the run artifact for 30 days.
+!content/weekly/**/*__4x5.jpg
+!content/weekly/**/*__2x3.jpg
+!content/weekly/**/*__9x16.jpg
+
 # --- Secrets: never commit. GitHub Actions secrets only. --------------------
 .env
 *.key

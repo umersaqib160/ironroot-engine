@@ -1,0 +1,62 @@
+# Approval capture.
+#
+# Phase 4 stops here: it records the decision and labels the Issue. Publishing is
+# Phase 5 and is deliberately not wired yet — the T1 stage exists to prove the
+# loop works before anything can reach a public account.
+#
+# Only the repository owner's comments count. A comment from anyone else is
+# ignored, so a stray reply can never approve a week's content.
+
+name: Approval
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  record:
+    if: |
+      github.event.issue.state == 'open' &&
+      startsWith(github.event.issue.title, 'Approve:') &&
+      github.event.comment.user.login == github.event.repository.owner.login
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read the decision
+        id: read
+        env:
+          BODY: ${{ github.event.comment.body }}
+        run: |
+          text=$(printf '%s' "$BODY" | tr '[:upper:]' '[:lower:]' | head -c 500)
+          if printf '%s' "$text" | grep -qE '^[[:space:]]*approve'; then
+            echo "decision=approved" >> "$GITHUB_OUTPUT"
+          elif printf '%s' "$text" | grep -qE '^[[:space:]]*redo'; then
+            echo "decision=redo" >> "$GITHUB_OUTPUT"
+          else
+            echo "decision=none" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Approved
+        if: steps.read.outputs.decision == 'approved'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue edit "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" --add-label approved
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "Approved and recorded. Publishing is not connected yet (Phase 5), so nothing has been posted."
+
+      - name: Rework requested
+        if: steps.read.outputs.decision == 'redo'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue edit "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" --add-label redo
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "Rework noted. Re-run **Weekly content run** once the change is made."
