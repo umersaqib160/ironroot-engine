@@ -64,6 +64,9 @@ jobs:
         if: env.HALTED != '1'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Optional. Without it the run still produces images and the Issue;
+          # captions are left as a skeleton rather than failing the week.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           python engine/run_week.py \
             --count    "${{ inputs.count || '2' }}" \
