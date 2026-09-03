@@ -102,7 +102,7 @@ jobs:
         run: |
           git config user.name  "ironroot-engine"
           git config user.email "noreply@ironrootstore.com"
-          git add -f content/weekly
+          git add content/weekly
           git commit -m "Redo image ${{ steps.read.outputs.index }}, week ${{ steps.read.outputs.week }} [skip ci]" || true
           git push || true
           gh label create redo --color D93F0B --force || true

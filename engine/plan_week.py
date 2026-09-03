@@ -13,13 +13,16 @@ History lives in engine/scene_history.json — small, versioned, and readable, s
 the record of what ran survives even though the generated media does not.
 """
 from __future__ import annotations
-import json, random, sys
+import json, os, random, sys
 from pathlib import Path
 import yaml
 
 HERE = Path(__file__).parent
 LIBRARY = HERE / "scenes.yaml"
-HISTORY = HERE / "scene_history.json"
+# Overridable so tests never touch the tracked file. Local test runs rewriting
+# scene_history.json is what caused the 3 Sep merge conflict: the workflow and a
+# local machine were both editing the same file, guaranteeing a clash every week.
+HISTORY = Path(os.environ.get("IRONROOT_SCENE_HISTORY", HERE / "scene_history.json"))
 COOLDOWN_WEEKS = 3
 
 

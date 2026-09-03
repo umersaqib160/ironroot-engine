@@ -18,6 +18,7 @@ content/weekly/**/*.mov
 !content/weekly/**/*__4x5.jpg
 !content/weekly/**/*__2x3.jpg
 !content/weekly/**/*__9x16.jpg
+!content/weekly/**/bundle.json
 
 # --- Secrets: never commit. GitHub Actions secrets only. --------------------
 .env
