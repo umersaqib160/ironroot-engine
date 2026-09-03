@@ -79,6 +79,36 @@ can't do that one.
 
 ---
 
+## 5b. Benefit claims — what may and may not be said
+
+Verified against the live product page and the 27 real reviews, 3 Sep 2026.
+
+| Claim | Status | Basis |
+|---|---|---|
+| PFAS / PFOA free | **Say it** | product description, the core positioning |
+| Tri-ply stainless, even heat | **Say it** | product description + reviews |
+| Oven safe to 500F | **Say it** | product SEO description |
+| **Dishwasher safe** | **Say it** | product SEO description; bundle description |
+| **Easy to clean** | **Say it** | real reviews (Magnus B, Jeroen K) |
+| Works on all cooktops incl. induction | **Say it** | product title tag + review (Jeroen K) |
+| Handle stays cool | Say it, carefully | one review (Thomas R) — attribute, do not generalise |
+| **NON-STICK** | **NEVER** | see below |
+
+### Never claim non-stick
+
+Bare stainless is not non-stick. The product page does not claim it, and the
+brand's entire position is *no chemical coatings* — so a non-stick claim
+contradicts the thing being sold. The target audience is stainless-literate and
+will say so in the comments, and any customer who skips the preheat will ask for
+a refund.
+
+The honest version is stronger: **technique.** Preheat the empty pan, then the
+fat, then the food, and eggs release cleanly with no coating involved. That is
+already how the July education post framed it, and a real review supports the
+outcome — Lotte M: *"finally fry perfectly without sticking."*
+
+Show eggs releasing. Never call the pan non-stick.
+
 ## 6. What the brand is not
 
 Not a lifestyle influencer brand, not a bargain brand, not a gadget brand. One product, one promise:

@@ -125,6 +125,57 @@ scenes:
     subject: pan_only
     text: the pan rests on a counter in a shaft of window light, nothing else in frame
 
+  # ---------------- Benefit demonstrations (Umer, 3 Sep 2026) --------------
+  # These carry a specific selling message, so each one also carries the claim
+  # it supports and — where it matters — what the caption must NOT say.
+  # Verified against the live product page and the real reviews before adding.
+
+  - id: bd_dishwasher
+    pillar: 2
+    subject: person
+    text: a chef is putting the pan into the dishwasher at home
+    claim: dishwasher safe
+    claim_source: >
+      Product SEO description: "oven-safe to 500F, dishwasher safe".
+      Bundle description: "oven and dishwasher friendly". SUBSTANTIATED.
+
+  - id: bd_easy_clean
+    pillar: 2
+    subject: person
+    text: a chef is rinsing the pan clean under the tap after cooking
+    claim: easy to clean
+    claim_source: >
+      Real verified reviews: Magnus B "schoonmaken is een fluitje van een cent";
+      Jeroen K "De pan is makkelijk schoon te maken". SUBSTANTIATED.
+    note: >
+      Umer originally proposed "cleaning the pan with a metal sponge". Changed
+      deliberately. A metal scourer on a satin finish scratches it, which fights
+      the buy-it-for-life message and invites "it dulled my pan" complaints.
+      The reviews say easy, not abrasive. If the intent is specifically to show
+      the pan survives scrubbing, that is a DURABILITY message and belongs in a
+      pillar-1 education post, not a lifestyle still.
+
+  - id: bd_eggs_release
+    pillar: 2
+    subject: person
+    text: a chef is frying eggs in the pan
+    claim: food releases cleanly with the right technique
+    claim_source: >
+      Real verified review, Lotte M: "Ik kan nu eindelijk gerechten perfect
+      braden zonder aanbranden" (finally fry perfectly without sticking).
+      The July education post already frames this as technique: preheat empty,
+      then the fat, then the food.
+    caption_never: >
+      NEVER say the pan is "non-stick" or "no-stick". Bare stainless is not
+      non-stick and the product page never claims it. The whole positioning is
+      "no chemical coatings" — a non-stick claim contradicts it, the
+      stainless-literate audience will call it out, and it guarantees refund
+      requests from customers whose eggs stick because they did not preheat.
+    caption_must: >
+      Frame it as TECHNIQUE, which is a stronger message anyway: preheat the
+      empty pan, then the fat, then the food, and eggs release cleanly with no
+      coating involved.
+
 # Props to avoid — learned from real generations, not theory.
 avoid:
   - books, magazines, packaging or signage with visible text (the model fakes
