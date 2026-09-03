@@ -3,8 +3,9 @@
     {
       "week": "2026-08-31",
       "scene_ids": [
-        "p2_mother_dinner",
-        "p4_drying_rack"
+        "p4_meal_prep",
+        "p2_pan_one_pan_dinner",
+        "bd_durability_scrub"
       ]
     }
   ]
