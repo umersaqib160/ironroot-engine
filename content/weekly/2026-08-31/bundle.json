@@ -3,33 +3,33 @@
   "posts": [
     {
       "index": 1,
-      "id": "p4_meal_prep",
-      "pillar": 4,
+      "id": "p2_couple_cooking",
+      "pillar": 2,
       "subject": "person",
-      "text": "someone is doing Sunday meal prep with the pan among the ingredients",
-      "mood": "warm and lived-in, golden light across the counter",
-      "mood_tone": "warm",
-      "master": "p4_meal_prep__master.png"
+      "text": "two people are cooking dinner together and one is holding the pan",
+      "mood": "sunlit and lively, a busy family kitchen",
+      "mood_tone": "light",
+      "master": "p2_couple_cooking__master.png"
     },
     {
       "index": 2,
-      "id": "p2_pan_one_pan_dinner",
-      "pillar": 2,
+      "id": "p4_counter_still",
+      "pillar": 4,
       "subject": "pan_only",
-      "text": "a whole one-pan dinner finished in the pan on the hob, no people in frame",
-      "mood": "full of daylight, fresh and clean",
+      "text": "the pan rests empty on a worn wooden counter with fresh ingredients beside it",
+      "mood": "bright and airy, morning sun coming through the window",
       "mood_tone": "light",
-      "master": "p2_pan_one_pan_dinner__master.png"
+      "master": "p4_counter_still__master.png"
     },
     {
       "index": 3,
-      "id": "bd_durability_scrub",
-      "pillar": 1,
+      "id": "p2_couple_cooking",
+      "pillar": 2,
       "subject": "person",
-      "text": "a chef is scrubbing the inside of the pan hard with a metal scouring pad at the sink",
-      "mood": "dim light but cozy",
-      "mood_tone": "evening",
-      "master": "bd_durability_scrub__master.png"
+      "text": "two people are cooking dinner together and one is holding the pan",
+      "mood": "sunlit and lively, a busy family kitchen",
+      "mood_tone": "light",
+      "master": "p2_couple_cooking__master.png"
     }
   ]
 }
