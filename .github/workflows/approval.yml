@@ -44,8 +44,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          gh label create approved --color 0E8A16 --force || true
           gh issue edit "${{ github.event.issue.number }}" \
-            --repo "${{ github.repository }}" --add-label approved
+            --repo "${{ github.repository }}" --add-label approved || true
           gh issue comment "${{ github.event.issue.number }}" \
             --repo "${{ github.repository }}" \
             --body "Approved and recorded. Publishing is not connected yet (Phase 5), so nothing has been posted."
@@ -55,8 +56,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          gh label create redo --color D93F0B --force || true
           gh issue edit "${{ github.event.issue.number }}" \
-            --repo "${{ github.repository }}" --add-label redo
+            --repo "${{ github.repository }}" --add-label redo || true
           gh issue comment "${{ github.event.issue.number }}" \
             --repo "${{ github.repository }}" \
             --body "Rework noted. Re-run **Weekly content run** once the change is made."

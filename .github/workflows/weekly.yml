@@ -89,6 +89,20 @@ jobs:
             echo "nothing to commit"; exit 0; }
           git push
 
+      # Labels must exist before they can be applied. Creating them here rather
+      # than by hand keeps the repo self-setting-up: a fresh clone works.
+      - name: Ensure labels exist
+        if: env.HALTED != '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create approval --color FBCA04 \
+            --description "Awaiting Umer's decision" --force
+          gh label create approved --color 0E8A16 \
+            --description "Approved by Umer" --force
+          gh label create redo      --color D93F0B \
+            --description "Rework requested" --force
+
       - name: Open the approval issue
         if: env.HALTED != '1'
         env:
