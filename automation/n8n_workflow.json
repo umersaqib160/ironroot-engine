@@ -1,0 +1,323 @@
+{
+  "name": "IronRoot — Telegram Content Autopilot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message"],
+        "additionalFields": {}
+      },
+      "id": "telegram-trigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "ironroot-telegram-hook",
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "IronRoot Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.message.photo ? 'photo' : $json.message.text }}",
+              "operation": "equal",
+              "value2": "photo"
+            }
+          ]
+        }
+      },
+      "id": "check-type",
+      "name": "Photo or Text?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/getFile",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "file_id",
+              "value": "={{ $json.message.photo[$json.message.photo.length - 1].file_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-file-path",
+      "name": "Get Telegram File Path",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [680, 200]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/file/bot{{ $env.TELEGRAM_BOT_TOKEN }}/{{ $json.result.file_path }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "download-image",
+      "name": "Download Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": []
+        },
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 1024,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"image\",\n          \"source\": {\n            \"type\": \"base64\",\n            \"media_type\": \"image/jpeg\",\n            \"data\": \"{{ $binary.data.data }}\"\n          }\n        },\n        {\n          \"type\": \"text\",\n          \"text\": \"You are a social media content creator for IronRoot, a premium PFAS-free stainless steel frying pan brand selling in the USA at $79. The pan is tri-ply stainless steel, oven-safe to 260°C, works on all hobs including induction, and comes with a 30-day satisfaction guarantee and free shipping.\\n\\nBrand voice: Direct, health-conscious, confident. Lead with the PFAS-free angle or lifetime durability. Speak to US home cooks aged 28-50.\\n\\nBased on this product image, generate:\\n\\n1. INSTAGRAM CAPTION (max 150 chars + 10 hashtags on a new line. Hook in the first 5 words.)\\n2. FACEBOOK POST (2-3 sentences, more conversational, end with a link placeholder [LINK])\\n3. TIKTOK SCRIPT (30-second spoken script. Format: HOOK (5 words max) | BODY (explain the problem + solution) | CTA (go to link in bio))\\n4. AD COPY (one punchy line under 10 words, suitable for a Meta ad headline)\\n\\nFormat your response EXACTLY like this:\\n---INSTAGRAM---\\n[caption here]\\n[hashtags here]\\n---FACEBOOK---\\n[post here]\\n---TIKTOK---\\n[script here]\\n---AD COPY---\\n[headline here]\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "claude-generate",
+      "name": "Generate Content (Claude)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.content[0].text;\nconst ig = raw.match(/---INSTAGRAM---\\n([\\s\\S]*?)---FACEBOOK---/)?.[1]?.trim() || '';\nconst fb = raw.match(/---FACEBOOK---\\n([\\s\\S]*?)---TIKTOK---/)?.[1]?.trim() || '';\nconst tt = raw.match(/---TIKTOK---\\n([\\s\\S]*?)---AD COPY---/)?.[1]?.trim() || '';\nconst ad = raw.match(/---AD COPY---\\n([\\s\\S]*?)$/)?.[1]?.trim() || '';\n\nreturn [{\n  json: {\n    instagram: ig,\n    facebook: fb,\n    tiktok: tt,\n    ad_copy: ad,\n    timestamp: new Date().toISOString(),\n    chat_id: $('Telegram Trigger').item.json.message.chat.id\n  }\n}];"
+      },
+      "id": "parse-content",
+      "name": "Parse Claude Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 200]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "=🎨 *Content Ready for Approval*\n\n📸 *INSTAGRAM:*\n{{ $json.instagram }}\n\n📘 *FACEBOOK:*\n{{ $json.facebook }}\n\n🎵 *TIKTOK SCRIPT:*\n{{ $json.tiktok }}\n\n📣 *AD COPY:*\n{{ $json.ad_copy }}\n\n---\nReply *✅* to schedule & post\nReply *✏️ [feedback]* to revise\nReply *❌* to discard",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "send-for-approval",
+      "name": "Send Draft to Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1560, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "IronRoot Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.message.text?.substring(0,1) }}",
+              "operation": "equal",
+              "value2": "✅"
+            }
+          ]
+        }
+      },
+      "id": "check-approval",
+      "name": "Approved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 420],
+      "notes": "Routes ✅ to posting, ✏️ to regeneration, ❌ to discard"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v19.0/{{ $env.INSTAGRAM_BUSINESS_ACCOUNT_ID }}/media",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "image_url",
+              "value": "={{ $env.LAST_IMAGE_URL }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $env.LAST_INSTAGRAM_CAPTION }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $env.META_PAGE_ACCESS_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ig-create-container",
+      "name": "Instagram: Create Container",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [680, 380]
+    },
+    {
+      "parameters": {
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "id": "wait-ig",
+      "name": "Wait 30s (IG processing)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [900, 380]
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v19.0/{{ $env.INSTAGRAM_BUSINESS_ACCOUNT_ID }}/media_publish",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $env.META_PAGE_ACCESS_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ig-publish",
+      "name": "Instagram: Publish",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 380]
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v19.0/{{ $env.META_PAGE_ID }}/feed",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $env.LAST_FACEBOOK_CAPTION }}"
+            },
+            {
+              "name": "link",
+              "value": "https://www.ironrootstore.com/products/frying-pan"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $env.META_PAGE_ACCESS_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fb-post",
+      "name": "Facebook: Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 480]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "✅ *Posted!*\n\n📸 Instagram: published\n📘 Facebook: published\n🎵 TikTok script saved to your folder — ready to record!\n\nSend another photo to create more content.",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "confirm-post",
+      "name": "Confirm via Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1340, 380],
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "IronRoot Telegram Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [[{"node": "Photo or Text?", "type": "main", "index": 0}]]
+    },
+    "Photo or Text?": {
+      "main": [
+        [{"node": "Get Telegram File Path", "type": "main", "index": 0}],
+        [{"node": "Approved?", "type": "main", "index": 0}]
+      ]
+    },
+    "Get Telegram File Path": {
+      "main": [[{"node": "Download Image", "type": "main", "index": 0}]]
+    },
+    "Download Image": {
+      "main": [[{"node": "Generate Content (Claude)", "type": "main", "index": 0}]]
+    },
+    "Generate Content (Claude)": {
+      "main": [[{"node": "Parse Claude Response", "type": "main", "index": 0}]]
+    },
+    "Parse Claude Response": {
+      "main": [[{"node": "Send Draft to Telegram", "type": "main", "index": 0}]]
+    },
+    "Approved?": {
+      "main": [
+        [
+          {"node": "Instagram: Create Container", "type": "main", "index": 0},
+          {"node": "Facebook: Post", "type": "main", "index": 0}
+        ]
+      ]
+    },
+    "Instagram: Create Container": {
+      "main": [[{"node": "Wait 30s (IG processing)", "type": "main", "index": 0}]]
+    },
+    "Wait 30s (IG processing)": {
+      "main": [[{"node": "Instagram: Publish", "type": "main", "index": 0}]]
+    },
+    "Instagram: Publish": {
+      "main": [[{"node": "Confirm via Telegram", "type": "main", "index": 0}]]
+    },
+    "Facebook: Post": {
+      "main": [[{"node": "Confirm via Telegram", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "_note": "IMPORTANT: Replace all YOUR_*_CREDENTIAL_ID placeholders with actual n8n credential IDs after import. Set environment variables: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, META_PAGE_ACCESS_TOKEN, META_PAGE_ID, INSTAGRAM_BUSINESS_ACCOUNT_ID. The LAST_IMAGE_URL, LAST_INSTAGRAM_CAPTION, LAST_FACEBOOK_CAPTION vars need to be stored from the generation step — use n8n's static data or a simple Google Sheet to persist them between the generation and approval webhook calls."
+}

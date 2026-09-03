@@ -1,0 +1,30 @@
+# --- Generated weekly media is NOT versioned -------------------------------
+# Rationale: ~15 MB/week would reach ~800 MB/year. The media's archive home is
+# the GitHub approval Issue (attachments are permanent and viewable there) and
+# the platforms themselves. What the engine actually needs for week-to-week
+# variety is the CONCEPTS, which live in captions.md — and those ARE versioned.
+content/weekly/**/*.png
+content/weekly/**/*.jpg
+content/weekly/**/*.jpeg
+content/weekly/**/*.mp4
+content/weekly/**/*.mov
+
+# Keep every captions.md and QC block
+!content/weekly/**/captions.md
+
+# --- Secrets: never commit. GitHub Actions secrets only. --------------------
+.env
+*.key
+*_token*
+credentials*.json
+
+# --- Scratch ---------------------------------------------------------------
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+.DS_Store
+Thumbs.db
+tmp/
+out/
