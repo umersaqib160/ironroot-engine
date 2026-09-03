@@ -86,24 +86,56 @@ def captions_stub(week: str, picks: list[dict],
 
 def issue_body(week: str, picks: list[dict], files: dict, repo: str, sha: str,
                run_url: str) -> str:
-    b = [f"Week of **{week}** — {len(picks)} images, nothing published.", "",
-         "Reply **`approve`** to accept, or **`redo 1 — darker`** to send one back.",
-         "", "---", ""]
+    """
+    The approval screen. Umer sees this on a phone, so the instruction for HOW to
+    respond goes first — the last run notified him and he had no visible way to
+    act on it. A notification that does not say what to do is a dead end.
+    """
+    b = [f"## How to respond",
+         "",
+         "**Reply to this issue with one word: `approve`**",
+         "",
+         "Two ways, both from your phone:",
+         "",
+         "- **GitHub app** — open this issue, scroll to the bottom, type in the "
+         "comment box, tap send.",
+         "- **Email** — just hit reply on the GitHub notification email and send "
+         "`approve`. GitHub posts your reply as a comment.",
+         "",
+         "To send something back instead, reply `redo 1 - too dark` (the number is "
+         "the image).",
+         "",
+         "Nothing is published either way until publishing is connected, and "
+         "nothing is ever published without this reply.",
+         "",
+         "---",
+         "",
+         f"### Week of {week} — {len(picks)} images",
+         ""]
     for i, s in enumerate(picks, 1):
-        b += [f"### {i}. `{s['id']}` — pillar {s['pillar']}, {s['subject']}", "",
+        b += [f"**{i}. {s['id']}** — pillar {s['pillar']}, {s['subject']}, "
+              f"{s.get('mood_tone', '?')} tone", "",
               f"*{s['text']}* — {s['mood']}", ""]
         if s.get("claim"):
-            b += [f"**Claim:** {s['claim']}", ""]
+            b += [f"Claim: **{s['claim']}**", ""]
+        links = []
         for name in ("4x5", "2x3", "9x16"):
             p = files[s["id"]].get(name)
             if p:
                 rel = p.relative_to(ROOT).as_posix()
-                b.append(f"[{name}](https://github.com/{repo}/blob/{sha}/{rel}) ")
-        b += ["", "---", ""]
-    b += ["**Check before approving** — handle count, splayed fork, rim with no "
-          "lip, depth, satin finish, no mangled text on background props.", "",
-          f"[Full-resolution masters (artifact)]({run_url})", "",
-          "_Generated automatically. Nothing publishes without an explicit approval._"]
+                links.append(f"[{name}](https://github.com/{repo}/blob/{sha}/{rel})")
+        b += ["View: " + " · ".join(links), "", "---", ""]
+    b += ["### Before you approve",
+          "",
+          "- one handle, splayed fork at the joint",
+          "- rim is a plain edge — no lip",
+          "- not too deep",
+          "- satin finish, no copper tint",
+          "- no mangled text on background props, no second pan, no copper cookware",
+          "",
+          f"[Full-resolution masters]({run_url}) (artifact, 30 days)",
+          "",
+          "_Nothing publishes without your reply. There is no timer._"]
     return "\n".join(b)
 
 

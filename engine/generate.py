@@ -44,8 +44,10 @@ TEMPLATE = ("Use the image from the frying pan and create an image for {platform
 # DESCRIBE the pan — only to correct a failure we have actually seen.
 #
 #   "not too deep"  -> 5 generations produced a deep wok-shaped body (3 Sep)
-#   "no lip ring"   -> rolled lip on the rim, confirmed at full res (3 Sep)
-CONSTRAINT = "Make sure the pan is not too deep and has no lip ring."
+#   "no rim lip"    -> rolled lip on the rim, confirmed at full res (3 Sep).
+#                      Was "no lip ring"; Umer reworded it — "rim lip" is the
+#                      term the model is likelier to have learned.
+CONSTRAINT = "Make sure the pan is not too deep and has no rim lip."
 
 
 def build_prompt(platform: str, scene: str, mood: str, palette: str = "",

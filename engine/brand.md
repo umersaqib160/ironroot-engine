@@ -44,12 +44,22 @@ in words. See `prompts/image_scene.md`.
 
 **The scene** is the only thing the prompt describes:
 
-- **Mood:** cozy but dark. Warm, lived-in, a real home rather than a showroom.
-- **Palette:** brown, black, cream. Warm amber from the cooking itself.
-- **Light:** directional and soft — window light, a lamp, the hob. Deep shadows are wanted.
-- **Framing:** the pan is the hero, in use or at rest. Real kitchens, real wear, real food.
-- **Avoid:** flat bright studio light, cold blue-white kitchens, clutter that competes with the pan,
-  anything that reads as stock photography.
+**Revised 3 Sep 2026.** The original direction was "cozy but dark, deep shadows
+wanted". In practice every image came out gloomy — cozy was doing all the work
+with nothing bright to sit against, so the pan looked like it lived in a cave and
+the food lost its colour. The mood list is now roughly 85% light or warm, and a
+week can never be all-dark.
+
+- **Mood:** cozy and full of life. Warm, lived-in, a real home rather than a
+  showroom — but bright enough to feel like somewhere you would want to cook.
+- **Palette:** warm woods, cream, soft neutrals, with real colour in the food.
+- **Light:** mostly daylight — a sunlit morning, warm afternoon light across the
+  counter. Evening lamplight is the occasional accent, never the default.
+- **Framing:** the pan is the hero, in use or at rest. Real kitchens, real wear,
+  real food.
+- **Avoid:** gloom and heavy shadow, flat bright studio light, cold blue-white
+  kitchens, clutter that competes with the pan, anything that reads as stock
+  photography.
 
 ---
 

@@ -28,12 +28,30 @@
 # normal generated scene carrying its message in the caption. The rule was never
 # "education cannot be generated"; it is "claims and quotes are not drawn".
 
+# Moods. REBALANCED 3 Sep 2026 after Umer's note that the output had drifted
+# gloomy: every mood in the first list was a dark one, so every image was dark.
+# Cozy was doing the work, but with nothing bright to sit against it read as
+# grim rather than warm.
+#
+# tone: light | warm | evening — the picker guarantees a mix, so a week can
+# never come out all-dark again. Keep roughly two-thirds light or warm.
 moods:
-  - dim light but cozy
-  - dark and cozy, late evening
-  - early morning, low winter light
-  - warm and lived-in, one lamp on
-  - quiet and dim, rain outside
+  - text: bright and airy, morning sun coming through the window
+    tone: light
+  - text: full of daylight, fresh and clean
+    tone: light
+  - text: sunlit and lively, a busy family kitchen
+    tone: light
+  - text: warm afternoon light, relaxed and unhurried
+    tone: warm
+  - text: warm and lived-in, golden light across the counter
+    tone: warm
+  - text: warm and inviting, soft daylight and good colour
+    tone: warm
+  - text: cozy evening with warm lamplight
+    tone: evening
+  - text: dim light but cozy
+    tone: evening
 
 scenes:
   # ---------------- Pillar 2 — product in action, with a person -------------
@@ -206,6 +224,13 @@ scenes:
       the pan as scratched, gouged or dulled, REJECT — the image would argue
       against the product instead of for it.
 
+# Look and feel — Umer, 3 Sep 2026
+#
+# Cozy and inviting, NOT gloomy. Warm and full of life: real colour in the food,
+# daylight where it fits, a kitchen someone actually lives in. Deep moody shadow
+# was the July direction and it has been retired — it made the pan look like it
+# lived in a cave, and it flattened the food.
+#
 # Props to avoid — learned from real generations, not theory.
 avoid:
   - books, magazines, packaging or signage with visible text (the model fakes

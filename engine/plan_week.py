@@ -60,8 +60,16 @@ def pick(n: int = 2, seed: int | None = None) -> list[dict]:
               f"cooldown; relaxing it.", file=sys.stderr)
         pool = lib["scenes"]
 
+    # Moods carry a tone. Never let a week come out all-dark: at most one
+    # evening mood per week, the rest light or warm. This is the fix for the
+    # output having drifted gloomy — the old list was entirely dark moods, so
+    # random choice could only ever produce dark images.
+    bright = [m for m in moods if m["tone"] in ("light", "warm")]
+    evening = [m for m in moods if m["tone"] == "evening"]
+
     chosen: list[dict] = []
     want = ["person", "pan_only"]
+    evening_used = 0
     for i in range(n):
         subject = want[i % len(want)]
         cands = [s for s in pool if s["subject"] == subject and s not in chosen] or \
@@ -69,7 +77,15 @@ def pick(n: int = 2, seed: int | None = None) -> list[dict]:
         oldest = min(seen.get(s["id"], -1) for s in cands)
         cands = [s for s in cands if seen.get(s["id"], -1) == oldest]
         s = dict(rng.choice(cands))
-        s["mood"] = rng.choice(moods)
+
+        # ~1 image in 8 is an evening one: enough that the set does not look
+        # monotonous, rare enough that the feed never reads as gloomy again.
+        allow_evening = evening and evening_used == 0 and n > 1 and rng.random() < 0.13
+        mood = rng.choice(evening if allow_evening else bright)
+        if mood["tone"] == "evening":
+            evening_used += 1
+        s["mood"] = mood["text"]
+        s["mood_tone"] = mood["tone"]
         chosen.append(s)
     return chosen
 
@@ -94,7 +110,7 @@ if __name__ == "__main__":
     for s in picks:
         print(f"{s['id']:24s} pillar {s['pillar']}  {s['subject']:9s}")
         print(f"  scene: {s['text']}")
-        print(f"  mood : {s['mood']}")
+        print(f"  mood : {s['mood']}  [{s.get('mood_tone','?')}]")
     if a.record and a.week:
         record(a.week, picks)
         print(f"\nrecorded against week {a.week}")

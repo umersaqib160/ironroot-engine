@@ -1,11 +1,1 @@
-{
-  "weeks": [
-    {
-      "week": "2026-08-31",
-      "scene_ids": [
-        "bd_durability_scrub",
-        "p2_pan_oven"
-      ]
-    }
-  ]
-}
+{"weeks": []}
