@@ -1,0 +1,90 @@
+# Manual generation test — Phase 2.
+#
+# This exists because neither Umer's machine nor the Claude container can reach
+# generativelanguage.googleapis.com. GitHub Actions is the only environment with
+# network access to the image API, so it is where generation gets tested, not
+# just where it will eventually run.
+#
+# Run it from the Actions tab -> "Generate test image" -> Run workflow.
+# It publishes nothing. Output is a downloadable artifact only.
+
+name: Generate test image
+
+on:
+  workflow_dispatch:
+    inputs:
+      scene:
+        description: "What is happening (no words about the pan itself)"
+        required: true
+        default: "the pan is being used by a chef at home"
+      setting:
+        description: "Setting"
+        required: true
+        default: "a cozy but dark home kitchen"
+      palette:
+        description: "Palette"
+        required: true
+        default: "brown, black and cream"
+      platform:
+        description: "Platform"
+        required: true
+        default: "Instagram"
+      size:
+        description: "Master resolution"
+        required: true
+        default: "2K"
+        type: choice
+        options: ["1K", "2K", "4K"]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --quiet requests pillow
+
+      - name: Generate master (9:16)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python engine/generate.py \
+            --platform "${{ inputs.platform }}" \
+            --scene    "${{ inputs.scene }}" \
+            --setting  "${{ inputs.setting }}" \
+            --palette  "${{ inputs.palette }}" \
+            --size     "${{ inputs.size }}" \
+            --out      out/master.png
+
+      - name: Reframe to 9:16, 2:3 and 4:5
+        run: python engine/reframe.py out/master.png out test
+
+      - name: Summary
+        run: |
+          {
+            echo "### Generated"
+            echo ""
+            echo "**Scene:** ${{ inputs.scene }}"
+            echo "**Setting:** ${{ inputs.setting }} — ${{ inputs.palette }}"
+            echo ""
+            echo '| file | size |'
+            echo '|---|---|'
+            for f in out/*; do
+              echo "| $(basename "$f") | $(du -h "$f" | cut -f1) |"
+            done
+            echo ""
+            echo "Download the **generated-images** artifact below, then QC at full"
+            echo "resolution per automation/QC_process.md before trusting anything."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: generated-images
+          path: out/
+          retention-days: 30
