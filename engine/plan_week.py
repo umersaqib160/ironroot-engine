@@ -74,6 +74,12 @@ def pick(n: int = 2, seed: int | None = None) -> list[dict]:
         subject = want[i % len(want)]
         cands = [s for s in pool if s["subject"] == subject and s not in chosen] or \
                 [s for s in pool if s not in chosen]
+        # Prefer a pillar we have not used yet this week, so three posts are not
+        # three product shots. Falls back rather than failing if none is left.
+        used_pillars = {c["pillar"] for c in chosen}
+        fresh = [s for s in cands if s["pillar"] not in used_pillars]
+        if fresh:
+            cands = fresh
         oldest = min(seen.get(s["id"], -1) for s in cands)
         cands = [s for s in cands if seen.get(s["id"], -1) == oldest]
         s = dict(rng.choice(cands))
@@ -100,7 +106,7 @@ def record(week: str, scenes: list[dict]) -> None:
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()
-    ap.add_argument("--count", type=int, default=2)
+    ap.add_argument("--count", type=int, default=3)
     ap.add_argument("--week", default="")
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--record", action="store_true")

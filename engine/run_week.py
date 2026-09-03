@@ -141,7 +141,7 @@ def issue_body(week: str, picks: list[dict], files: dict, repo: str, sha: str,
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--count", type=int, default=2)
+    ap.add_argument("--count", type=int, default=3)
     ap.add_argument("--week", default="")
     ap.add_argument("--size", default="2K")
     ap.add_argument("--repo", default="")
@@ -190,6 +190,18 @@ def main() -> int:
 
     (outdir / "captions.md").write_text(
         captions_stub(week, picks, written), encoding="utf-8")
+
+    # Machine-readable record of exactly what produced each image. A redo needs
+    # to reproduce the same scene and mood and change only what Umer asked for —
+    # re-picking would give him a different shot, which is not what "redo" means.
+    (outdir / "bundle.json").write_text(json.dumps({
+        "week": week,
+        "posts": [{"index": i, "id": s["id"], "pillar": s["pillar"],
+                   "subject": s["subject"], "text": s["text"], "mood": s["mood"],
+                   "mood_tone": s.get("mood_tone"),
+                   "master": f"{s['id']}__master.png"}
+                  for i, s in enumerate(picks, 1)],
+    }, indent=2) + "\n", encoding="utf-8")
     pw.record(week, picks)
 
     Path(a.out_issue).write_text(

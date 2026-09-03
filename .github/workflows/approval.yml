@@ -14,7 +14,7 @@ on:
     types: [created]
 
 permissions:
-  contents: read
+  contents: write
   issues: write
 
 jobs:
@@ -25,19 +25,35 @@ jobs:
       github.event.comment.user.login == github.event.repository.owner.login
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+
       - name: Read the decision
         id: read
         env:
           BODY: ${{ github.event.comment.body }}
+          TITLE: ${{ github.event.issue.title }}
         run: |
-          text=$(printf '%s' "$BODY" | tr '[:upper:]' '[:lower:]' | head -c 500)
-          if printf '%s' "$text" | grep -qE '^[[:space:]]*approve'; then
-            echo "decision=approved" >> "$GITHUB_OUTPUT"
-          elif printf '%s' "$text" | grep -qE '^[[:space:]]*redo'; then
-            echo "decision=redo" >> "$GITHUB_OUTPUT"
-          else
-            echo "decision=none" >> "$GITHUB_OUTPUT"
-          fi
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import os, re
+          body = os.environ["BODY"]
+          title = os.environ["TITLE"]
+          week = (re.search(r"(\d{4}-\d{2}-\d{2})", title) or [None, ""])[1] \
+                 if re.search(r"(\d{4}-\d{2}-\d{2})", title) else ""
+          m = re.match(r"^\s*redo\s+(\d+)\s*[-\u2013\u2014:,]?\s*(.*)$",
+                       body, re.I | re.S)
+          if re.match(r"^\s*approve", body, re.I):
+              print("decision=approved")
+          elif m and m.group(2).strip():
+              note = " ".join(m.group(2).split())[:300]
+              print("decision=redo")
+              print(f"index={m.group(1)}")
+              print(f"note={note}")
+          elif m:
+              print("decision=redo_no_note")
+          else:
+              print("decision=none")
+          print(f"week={week}")
+          PY
 
       - name: Approved
         if: steps.read.outputs.decision == 'approved'
@@ -51,14 +67,55 @@ jobs:
             --repo "${{ github.repository }}" \
             --body "Approved and recorded. Publishing is not connected yet (Phase 5), so nothing has been posted."
 
-      - name: Rework requested
+      - name: Ask which image
+        if: steps.read.outputs.decision == 'redo_no_note'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "Which image, and what should change? Reply like \`redo 2 - use salmon instead of potatoes\`."
+
+      - uses: actions/setup-python@v6
+        if: steps.read.outputs.decision == 'redo'
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        if: steps.read.outputs.decision == 'redo'
+        run: pip install --quiet requests pillow pyyaml
+
+      - name: Regenerate that image
+        if: steps.read.outputs.decision == 'redo'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python engine/redo_one.py \
+            --week  "${{ steps.read.outputs.week }}" \
+            --index "${{ steps.read.outputs.index }}" \
+            --note  "${{ steps.read.outputs.note }}"
+
+      - name: Commit and report back
         if: steps.read.outputs.decision == 'redo'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git config user.name  "ironroot-engine"
+          git config user.email "noreply@ironrootstore.com"
+          git add -f content/weekly
+          git commit -m "Redo image ${{ steps.read.outputs.index }}, week ${{ steps.read.outputs.week }} [skip ci]" || true
+          git push || true
           gh label create redo --color D93F0B --force || true
           gh issue edit "${{ github.event.issue.number }}" \
             --repo "${{ github.repository }}" --add-label redo || true
           gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" --body-file redo_comment.md
+
+      - name: Say the redo failed
+        if: failure() && steps.read.outputs.decision == 'redo'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" \
             --repo "${{ github.repository }}" \
-            --body "Rework noted. Re-run **Weekly content run** once the change is made."
+            --body "The redo failed. [See the run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}). Nothing was changed."
