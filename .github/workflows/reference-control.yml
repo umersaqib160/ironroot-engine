@@ -1,0 +1,65 @@
+# THE DECISIVE TEST.
+#
+# Five generations across two models have produced a pan that is not Umer's —
+# two handles, wok-shaped bodies, no splayed fork. Every one of them had the
+# reference photo attached. Before concluding "the model cannot hold the
+# product", rule out the simpler and much more likely explanation:
+#
+#   the reference photo may never have been reaching the model at all.
+#
+# The scenes have been excellent and the pans have been generic stock cookware.
+# That is exactly what a text-only generation looks like. If the request is
+# malformed in a way the API tolerates, it would silently ignore the image and
+# render from the words alone — and every result so far is consistent with that.
+#
+# WITH sends the reference; WITHOUT sends the identical prompt and no image.
+# If the two are equally generic, the reference has been doing nothing and this
+# is a plumbing bug, not a model limitation.
+
+name: Reference control test
+
+on:
+  workflow_dispatch:
+    inputs:
+      scene:
+        description: "Scene (identical in both arms)"
+        required: true
+        default: "the pan is being used by a chef at home"
+
+jobs:
+  arm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: WITH-reference
+            flag: ""
+          - id: WITHOUT-reference
+            flag: "--no-reference"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet requests pillow
+
+      - name: Generate ${{ matrix.id }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python engine/generate.py \
+            --platform "Instagram" \
+            --scene    "${{ inputs.scene }}" \
+            --size     "2K" \
+            ${{ matrix.flag }} \
+            --out      "out/${{ matrix.id }}.png"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: control-${{ matrix.id }}
+          path: out/
+          retention-days: 30
+          if-no-files-found: ignore

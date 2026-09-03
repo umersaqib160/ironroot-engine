@@ -56,29 +56,31 @@ def build_prompt(platform: str, scene: str, mood: str, palette: str,
 # So we try both known shapes and report which one worked, rather than guessing
 # again. Whichever succeeds becomes the only one we keep.
 
-def _req_interactions(prompt: str, ref_b64: str, ratio: str | None, size: str):
+def _req_interactions(prompt: str, ref_b64: str | None, ratio: str | None, size: str):
     fmt = {"type": "image", "image_size": size}
     if ratio:
         fmt["aspect_ratio"] = ratio
     return (f"{BASE}/interactions", {
         "model": MODEL,
-        "input": [
-            {"type": "text", "text": prompt},
-            {"type": "image", "mime_type": "image/jpeg", "data": ref_b64},
-        ],
+        "input": (
+            [{"type": "text", "text": prompt}] +
+            ([{"type": "image", "mime_type": "image/jpeg", "data": ref_b64}]
+             if ref_b64 else [])
+        ),
         "response_format": fmt,
     })
 
 
-def _req_generate_content(prompt: str, ref_b64: str, ratio: str | None, size: str):
+def _req_generate_content(prompt: str, ref_b64: str | None, ratio: str | None, size: str):
     image_cfg = {"imageSize": size}
     if ratio:
         image_cfg["aspectRatio"] = ratio
     return (f"{BASE}/models/{MODEL}:generateContent", {
-        "contents": [{"role": "user", "parts": [
-            {"text": prompt},
-            {"inline_data": {"mime_type": "image/jpeg", "data": ref_b64}},
-        ]}],
+        "contents": [{"role": "user", "parts": (
+            [{"text": prompt}] +
+            ([{"inline_data": {"mime_type": "image/jpeg", "data": ref_b64}}]
+             if ref_b64 else [])
+        )}],
         "generationConfig": {
             "responseModalities": ["IMAGE"],
             "imageConfig": image_cfg,
@@ -125,10 +127,17 @@ def generate(prompt: str, out_path: Path, image_size: str = "2K",
     if not api_key:
         sys.exit("GEMINI_API_KEY is not set (repo secret, Settings > Secrets "
                  "and variables > Actions).")
-    if not reference.exists():
+    if reference is not None and not reference.exists():
         sys.exit(f"Reference photo missing: {reference}")
 
-    ref_b64 = base64.b64encode(reference.read_bytes()).decode()
+    if reference is None:
+        ref_b64 = None
+        print("REFERENCE: *** NONE — control run, text prompt only ***", flush=True)
+    else:
+        raw = reference.read_bytes()
+        ref_b64 = base64.b64encode(raw).decode()
+        print(f"REFERENCE: {reference}  {len(raw)/1024:.0f} KB -> "
+              f"{len(ref_b64)/1024:.0f} KB base64", flush=True)
     headers = {"x-goog-api-key": api_key, "Content-Type": "application/json"}
     errors = []
 
@@ -136,6 +145,12 @@ def generate(prompt: str, out_path: Path, image_size: str = "2K",
                            ("interactions", _req_interactions)):
         url, payload = builder(prompt, ref_b64, ratio, image_size)
         print(f"\n--- trying {label}: POST {url}", flush=True)
+        try:
+            parts = payload["contents"][0]["parts"] if "contents" in payload else payload["input"]
+            print(f"    payload parts: {len(parts)} -> "
+                  f"{[sorted(p.keys()) for p in parts]}", flush=True)
+        except Exception:
+            pass
         try:
             r = requests.post(url, json=payload, headers=headers, timeout=240)
         except Exception as e:
@@ -183,6 +198,10 @@ if __name__ == "__main__":
                          "competes with the reference photo.")
     ap.add_argument("--out", required=True)
     ap.add_argument("--size", default="2K", choices=["512px", "1K", "2K", "4K"])
+    ap.add_argument("--no-reference", action="store_true",
+                    help="CONTROL RUN: send the text prompt with NO reference "
+                         "photo. If output quality is unchanged, the reference "
+                         "was never influencing the result.")
     ap.add_argument("--dry-run", action="store_true",
                     help="Build and print the prompt, then exit. No API call, "
                          "no cost. Catches CLI/workflow mismatches.")
@@ -203,5 +222,6 @@ if __name__ == "__main__":
     if a.dry_run:
         print("DRY RUN — arguments accepted, no API call made.")
         raise SystemExit(0)
-    p = generate(prompt, Path(a.out), image_size=a.size, ratio=a.ratio or None)
+    p = generate(prompt, Path(a.out), image_size=a.size, ratio=a.ratio or None,
+                 reference=None if a.no_reference else REFERENCE)
     print(f"WROTE: {p}  ({p.stat().st_size/1024:.0f} KB)")
