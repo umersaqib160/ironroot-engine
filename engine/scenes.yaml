@@ -1,0 +1,134 @@
+# Scene library — the ONLY part of the prompt that varies.
+#
+# The prompt has a fixed skeleton and one variable slot:
+#
+#   FIXED   "Use the image from the frying pan and create an image for {platform} where"
+#   VARY    <scene>
+#   VARY    "The setting of the home is <mood>."
+#   FIXED   "Make sure the pan is not too deep and has no lip ring."
+#   FIXED   the reference photograph
+#
+# Nothing above the scene list may be edited casually. That skeleton took five
+# failed generations to find; the scene text is where all variety lives.
+#
+# subject: person   -> a human in frame. Lifestyle context only, never speaking
+#                      as a customer, platform AI label ON at posting.
+#          pan_only -> no people. No AI label needed for a human likeness, but
+#                      the label still applies to any AI-edited asset.
+#
+# pillar:  2 = product in action (30% of posts)
+#          4 = lifestyle / brand  (15% of posts)
+# Pillars 1 (education) and 3 (social proof) are NOT here — they are built in
+# code from real photographs, which has zero drift risk. Never generate them.
+
+moods:
+  - dim light but cozy
+  - dark and cozy, late evening
+  - early morning, low winter light
+  - warm and lived-in, one lamp on
+  - quiet and dim, rain outside
+
+scenes:
+  # ---------------- Pillar 2 — product in action, with a person -------------
+  - id: p2_chef_stirring
+    pillar: 2
+    subject: person
+    text: a chef is using the pan at home
+  - id: p2_mother_dinner
+    pillar: 2
+    subject: person
+    text: a young mother is using the pan at home
+  - id: p2_couple_cooking
+    pillar: 2
+    subject: person
+    text: two people are cooking dinner together and one is holding the pan
+  - id: p2_searing_steak
+    pillar: 2
+    subject: person
+    text: someone is searing a steak in the pan and steam is rising
+  - id: p2_breakfast_eggs
+    pillar: 2
+    subject: person
+    text: someone is cooking eggs in the pan for breakfast
+  - id: p2_plating_up
+    pillar: 2
+    subject: person
+    text: someone is tipping the finished food from the pan onto a plate
+
+  # ---------------- Pillar 2 — product in action, pan only ------------------
+  - id: p2_pan_on_hob
+    pillar: 2
+    subject: pan_only
+    text: the pan sits on the hob with vegetables cooking in it and no people in frame
+  - id: p2_pan_steam
+    pillar: 2
+    subject: pan_only
+    text: the pan is on the hob with steam rising from the food and no people in frame
+  - id: p2_pan_oven
+    pillar: 2
+    subject: pan_only
+    text: the pan is going into the oven with food in it and no people in frame
+  - id: p2_pan_close
+    pillar: 2
+    subject: pan_only
+    text: a close view of food cooking in the pan on the hob, no people in frame
+  - id: p2_pan_one_pan_dinner
+    pillar: 2
+    subject: pan_only
+    text: a whole one-pan dinner finished in the pan on the hob, no people in frame
+  - id: p2_pan_resting
+    pillar: 2
+    subject: pan_only
+    text: the pan rests on the hob after cooking with the food still in it, no people in frame
+
+  # ---------------- Pillar 4 — lifestyle, with a person ---------------------
+  - id: p4_washing_up
+    pillar: 4
+    subject: person
+    text: someone is drying the pan with a cloth after washing it
+  - id: p4_hanging_it
+    pillar: 4
+    subject: person
+    text: someone is hanging the pan on a rail in the kitchen
+  - id: p4_meal_prep
+    pillar: 4
+    subject: person
+    text: someone is doing Sunday meal prep with the pan among the ingredients
+  - id: p4_carrying_to_table
+    pillar: 4
+    subject: person
+    text: someone is carrying the pan to the table with dinner in it
+
+  # ---------------- Pillar 4 — lifestyle, pan only --------------------------
+  - id: p4_hanging_wall
+    pillar: 4
+    subject: pan_only
+    text: the pan hangs on a hook on the kitchen wall next to wooden utensils
+  - id: p4_counter_still
+    pillar: 4
+    subject: pan_only
+    text: the pan rests empty on a worn wooden counter with fresh ingredients beside it
+  - id: p4_flat_lay
+    pillar: 4
+    subject: pan_only
+    text: the pan lies on a dark kitchen surface as the hero of a simple flat lay
+  - id: p4_drying_rack
+    pillar: 4
+    subject: pan_only
+    text: the pan sits clean on a drying rack beside the sink
+  - id: p4_open_shelf
+    pillar: 4
+    subject: pan_only
+    text: the pan sits on an open kitchen shelf among plain crockery
+  - id: p4_window_light
+    pillar: 4
+    subject: pan_only
+    text: the pan rests on a counter in a shaft of window light, nothing else in frame
+
+# Props to avoid — learned from real generations, not theory.
+avoid:
+  - books, magazines, packaging or signage with visible text (the model fakes
+    lettering and mangled text is an instant AI tell — seen 3 Sep)
+  - other frying pans in shot (brand confusion, and a second pan invites a
+    second handle)
+  - copper cookware (reads as a different product category)
