@@ -20,7 +20,7 @@ import base64, json, os, sys, time
 from pathlib import Path
 import requests
 
-ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/interactions"
+BASE = "https://generativelanguage.googleapis.com/v1beta"
 MODEL = os.environ.get("IRONROOT_IMAGE_MODEL", "gemini-3-pro-image")
 REFERENCE = Path("content/images/reference/PRIMARY_pan_studio_2048.jpg")
 
@@ -40,56 +40,93 @@ def build_prompt(platform: str, scene: str, setting: str, palette: str, light: s
     )
 
 
-def generate(prompt: str, out_path: Path, image_size: str = "2K",
-             reference: Path = REFERENCE, retries: int = 2) -> Path:
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
-        sys.exit("GEMINI_API_KEY is not set. In GitHub Actions this comes from "
-                 "Settings > Secrets and variables > Actions.")
-    if not reference.exists():
-        sys.exit(f"Reference photo missing: {reference}")
+# --- Two request shapes -----------------------------------------------------
+# The first run failed and the endpoint shape was taken from a docs summary that
+# could not be verified from here (no network to the API from either machine).
+# So we try both known shapes and report which one worked, rather than guessing
+# again. Whichever succeeds becomes the only one we keep.
 
-    payload = {
+def _req_interactions(prompt: str, ref_b64: str, ratio: str, size: str):
+    return (f"{BASE}/interactions", {
         "model": MODEL,
         "input": [
             {"type": "text", "text": prompt},
-            {"type": "image",
-             "mime_type": "image/jpeg",
-             "data": base64.b64encode(reference.read_bytes()).decode()},
+            {"type": "image", "mime_type": "image/jpeg", "data": ref_b64},
         ],
-        "response_format": {"type": "image", "aspect_ratio": "9:16",
-                            "image_size": image_size},
-    }
+        "response_format": {"type": "image", "aspect_ratio": ratio,
+                            "image_size": size},
+    })
 
-    last = None
-    for attempt in range(1, retries + 2):
-        r = requests.post(ENDPOINT, json=payload, timeout=180,
-                          headers={"x-goog-api-key": api_key,
-                                   "Content-Type": "application/json"})
+
+def _req_generate_content(prompt: str, ref_b64: str, ratio: str, size: str):
+    return (f"{BASE}/models/{MODEL}:generateContent", {
+        "contents": [{"role": "user", "parts": [
+            {"text": prompt},
+            {"inline_data": {"mime_type": "image/jpeg", "data": ref_b64}},
+        ]}],
+        "generationConfig": {
+            "responseModalities": ["IMAGE"],
+            "imageConfig": {"aspectRatio": ratio, "imageSize": size},
+        },
+    })
+
+
+def _extract_image(body: dict) -> str | None:
+    """Pull base64 image data out of either response shape."""
+    img = body.get("output_image") or {}
+    if isinstance(img, dict) and img.get("data"):
+        return img["data"]
+    for cand in body.get("candidates") or []:
+        for part in (cand.get("content") or {}).get("parts") or []:
+            blob = part.get("inlineData") or part.get("inline_data") or {}
+            if blob.get("data"):
+                return blob["data"]
+    return None
+
+
+def generate(prompt: str, out_path: Path, image_size: str = "2K",
+             ratio: str = "9:16", reference: Path = REFERENCE) -> Path:
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        sys.exit("GEMINI_API_KEY is not set (repo secret, Settings > Secrets "
+                 "and variables > Actions).")
+    if not reference.exists():
+        sys.exit(f"Reference photo missing: {reference}")
+
+    ref_b64 = base64.b64encode(reference.read_bytes()).decode()
+    headers = {"x-goog-api-key": api_key, "Content-Type": "application/json"}
+    errors = []
+
+    for label, builder in (("generateContent", _req_generate_content),
+                           ("interactions", _req_interactions)):
+        url, payload = builder(prompt, ref_b64, ratio, image_size)
+        print(f"\n--- trying {label}: POST {url}", flush=True)
+        try:
+            r = requests.post(url, json=payload, headers=headers, timeout=240)
+        except Exception as e:
+            errors.append(f"{label}: request failed: {e}")
+            print(f"    request failed: {e}", flush=True)
+            continue
+
+        print(f"    HTTP {r.status_code}", flush=True)
         if r.status_code == 200:
-            body = r.json()
-            data = (body.get("output_image") or {}).get("data")
-            if not data:
-                # Shape changed or the model refused — show enough to diagnose
-                # from the Actions log without dumping base64 into it.
-                print("Unexpected response shape. Top-level keys:",
-                      list(body.keys()), file=sys.stderr)
-                print(json.dumps(body, indent=2)[:1500], file=sys.stderr)
-                sys.exit("No image in response.")
-            out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_bytes(base64.b64decode(data))
-            return out_path
+            data = _extract_image(r.json())
+            if data:
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                out_path.write_bytes(base64.b64decode(data))
+                print(f"    OK via {label}", flush=True)
+                return out_path
+            print("    200 but no image in the response. Body preview:", flush=True)
+            print(json.dumps(r.json(), indent=2)[:1500], flush=True)
+            errors.append(f"{label}: 200 without image data")
+            continue
 
-        last = f"HTTP {r.status_code}: {r.text[:600]}"
-        # 429/5xx are worth retrying; 4xx client errors are not.
-        if r.status_code not in (429, 500, 502, 503, 504):
-            break
-        wait = 5 * attempt
-        print(f"  attempt {attempt} failed ({r.status_code}), retrying in {wait}s",
-              file=sys.stderr)
-        time.sleep(wait)
+        # Show the real error — this is what the first run hid.
+        body = r.text[:900]
+        print(f"    error body: {body}", flush=True)
+        errors.append(f"{label}: HTTP {r.status_code} {body[:250]}")
 
-    sys.exit(f"Generation failed. {last}")
+    sys.exit("Both request shapes failed:\n  " + "\n  ".join(errors))
 
 
 if __name__ == "__main__":
@@ -103,9 +140,10 @@ if __name__ == "__main__":
     ap.add_argument("--light", default="Warm directional light, deep shadows.")
     ap.add_argument("--out", required=True)
     ap.add_argument("--size", default="2K", choices=["512px", "1K", "2K", "4K"])
+    ap.add_argument("--ratio", default="9:16")
     a = ap.parse_args()
 
     prompt = build_prompt(a.platform, a.scene, a.setting, a.palette, a.light)
     print("PROMPT:", prompt, flush=True)
-    p = generate(prompt, Path(a.out), image_size=a.size)
+    p = generate(prompt, Path(a.out), image_size=a.size, ratio=a.ratio)
     print(f"WROTE: {p}  ({p.stat().st_size/1024:.0f} KB)")

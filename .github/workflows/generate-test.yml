@@ -41,14 +41,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Install dependencies
         run: pip install --quiet requests pillow
+
+      - name: Probe the API key and available models
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python engine/probe.py
 
       - name: Generate master (9:16)
         env:
@@ -66,6 +71,7 @@ jobs:
         run: python engine/reframe.py out/master.png out test
 
       - name: Summary
+        if: always()
         run: |
           {
             echo "### Generated"
@@ -84,7 +90,9 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: generated-images
           path: out/
           retention-days: 30
+          if-no-files-found: ignore
