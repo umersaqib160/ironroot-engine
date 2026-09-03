@@ -1,0 +1,85 @@
+# Isolate what broke the 3 Sep run.
+#
+# That run changed three things at once against Umer's tested prompt: a lighting
+# sentence, a framing sentence, and a forced 9:16 aspect ratio. The output was a
+# square composition padded to 44% empty bands, with two handles and a rim lip.
+# Changing three variables at once tells you nothing about which one did it.
+#
+# This runs the variants side by side. ~$0.30 total.
+
+name: Prompt A/B test
+
+on:
+  workflow_dispatch:
+    inputs:
+      scene:
+        description: "Scene (identical across all variants)"
+        required: true
+        default: "the pan is being used by a chef at home"
+
+jobs:
+  variant:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: A-baseline
+            ratio: ""
+            extra: ""
+          - id: B-forced-ratio
+            ratio: "9:16"
+            extra: ""
+          - id: C-framing-sentence
+            ratio: ""
+            extra: "Compose it vertically with the pan in the central band of the frame, leaving clear space above and below, so the image can be cropped to narrower shapes without cutting the pan."
+          - id: D-both
+            ratio: "9:16"
+            extra: "Compose it vertically with the pan in the central band of the frame, leaving clear space above and below, so the image can be cropped to narrower shapes without cutting the pan."
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet requests pillow numpy
+
+      - name: Generate ${{ matrix.id }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python engine/generate.py \
+            --platform "instagram" \
+            --scene    "${{ inputs.scene }}" \
+            --ratio    "${{ matrix.ratio }}" \
+            --extra    "${{ matrix.extra }}" \
+            --size     "2K" \
+            --out      "out/${{ matrix.id }}.png"
+
+      - name: Measure padding
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          from PIL import Image
+          import numpy as np, os
+          f = "out/${{ matrix.id }}.png"
+          im = Image.open(f).convert("RGB"); a = np.asarray(im).astype(int)
+          sd = a.reshape(a.shape[0], -1).std(axis=1)
+          rows = [i for i, v in enumerate(sd) if v > 18]
+          w, h = im.size
+          if rows:
+              pad = rows[0] + (h - rows[-1])
+              print(f"### ${{ matrix.id }}")
+              print()
+              print(f"- generated: **{w}x{h}** (ratio {w/h:.3f})")
+              print(f"- real content: {rows[-1]-rows[0]}px tall, ratio **{w/(rows[-1]-rows[0]):.3f}**")
+              print(f"- flat padding: **{pad/h*100:.0f}%** of the frame")
+              print()
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: variant-${{ matrix.id }}
+          path: out/
+          retention-days: 30
+          if-no-files-found: ignore
