@@ -184,6 +184,12 @@ def generate(prompt: str, out_path: Path, image_size: str = "2K",
             served = body.get("modelVersion") or body.get("model") or "(not reported)"
             print(f"    requested model : {MODEL}", flush=True)
             print(f"    served by       : {served}", flush=True)
+            # A silent substitution would invalidate every conclusion drawn from
+            # the output, so say so rather than letting it pass unnoticed.
+            base = MODEL.removesuffix("-preview")
+            if served != "(not reported)" and MODEL not in served and base not in served:
+                print(f"    *** WARNING: asked for {MODEL} but {served} answered. "
+                      f"Results are NOT from the requested model. ***", flush=True)
             data = _extract_image(body)
             if data:
                 out_path.parent.mkdir(parents=True, exist_ok=True)

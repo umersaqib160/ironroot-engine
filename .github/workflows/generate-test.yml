@@ -30,9 +30,9 @@ on:
         required: true
         default: "Instagram"
       model:
-        description: "Image model ID (blank = default gemini-3-pro-image)"
-        required: false
-        default: ""
+        description: "Image model ID"
+        required: true
+        default: "gemini-3-pro-image-preview"
       size:
         description: "Master resolution"
         required: true

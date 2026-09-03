@@ -99,7 +99,7 @@ Repo total ≈ 190 MB. Comfortably inside GitHub's limits; no file near the 100 
 
 | Was | Becomes | Notes |
 |---|---|---|
-| Gemini web app via Chrome | Gemini API (`gemini-3-pro-image`) | Reference photo attached as image input; same prompts |
+| Gemini web app via Chrome | Gemini API (`gemini-3-pro-image-preview`) | Reference photo attached as image input; same prompts |
 | Veo via Chrome "Create video" | Veo via API | Seed image + motion prompt, same as now |
 | `.tmp` download race in Downloads folder | direct API response bytes | **This whole class of bug disappears** |
 | Watermark alpha-unblend + inpaint | *deleted* | API output carries no visible sparkle mark |
