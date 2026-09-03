@@ -39,7 +39,13 @@ REFERENCE = Path("content/images/reference/PRIMARY_pan_studio_2048.jpg")
 TEMPLATE = ("Use the image from the frying pan and create an image for {platform} "
             "where {scene}. The setting of the home is {mood}.")
 
-CONSTRAINT = "Make sure the pan is not too deep."
+# Corrective constraints. Each one exists because a specific drift was observed
+# in a real generation and this wording fixed it. Never add a line here to
+# DESCRIBE the pan — only to correct a failure we have actually seen.
+#
+#   "not too deep"  -> 5 generations produced a deep wok-shaped body (3 Sep)
+#   "no lip ring"   -> rolled lip on the rim, confirmed at full res (3 Sep)
+CONSTRAINT = "Make sure the pan is not too deep and has no lip ring."
 
 
 def build_prompt(platform: str, scene: str, mood: str, palette: str = "",

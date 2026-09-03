@@ -26,15 +26,28 @@ used by a chef at home. The setting of the home is cozy but dark, with brown, bl
 
 ---
 
-## The depth constraint (added 3 Sep 2026, verified)
+## Corrective constraints (3 Sep 2026)
 
 Every prompt ends with:
 
-> Make sure the pan is not too deep.
+> Make sure the pan is not too deep and has no lip ring.
 
-Five generations across two models produced a deep, wok-shaped body. This one line
-fixed it, in a result Umer verified and I checked at full resolution: one handle,
-shallow flared body, plain straight-cut rim, no lip.
+Each clause was added because a specific drift was seen in a real generation, and
+each was verified at full resolution afterwards:
+
+| Clause | Corrects | Evidence |
+|---|---|---|
+| `not too deep` | deep wok-shaped body | 5 generations across 2 models |
+| `no lip ring` | rolled lip on the rim | confirmed at 100% on the 3 Sep run |
+
+**Never add a clause here to describe the pan — only to correct a failure that has
+actually been observed at full resolution.** The list stays short on purpose:
+every extra sentence competes with the photograph.
+
+### Still open
+- **Two dome rivets.** Generations show one, or none. Watch it; do not add a
+  clause until it is confirmed as drift rather than camera angle.
+- **The splayed Y-fork** at the handle joint is usually not rendered.
 
 **So the rule is not "never mention the pan".** It is:
 
