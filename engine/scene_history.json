@@ -1,1 +1,11 @@
-{"weeks": []}
+{
+  "weeks": [
+    {
+      "week": "2026-08-31",
+      "scene_ids": [
+        "p2_mother_dinner",
+        "p4_drying_rack"
+      ]
+    }
+  ]
+}
