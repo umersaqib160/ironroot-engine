@@ -183,6 +183,9 @@ if __name__ == "__main__":
                          "competes with the reference photo.")
     ap.add_argument("--out", required=True)
     ap.add_argument("--size", default="2K", choices=["512px", "1K", "2K", "4K"])
+    ap.add_argument("--dry-run", action="store_true",
+                    help="Build and print the prompt, then exit. No API call, "
+                         "no cost. Catches CLI/workflow mismatches.")
     ap.add_argument("--model", default="",
                     help="Override the image model ID. Empty uses "
                          "IRONROOT_IMAGE_MODEL or the built-in default.")
@@ -197,5 +200,8 @@ if __name__ == "__main__":
     print(f"MODEL REQUESTED: {MODEL}")
     prompt = build_prompt(a.platform, a.scene, a.mood, a.palette, a.extra)
     print("PROMPT:", prompt, flush=True)
+    if a.dry_run:
+        print("DRY RUN — arguments accepted, no API call made.")
+        raise SystemExit(0)
     p = generate(prompt, Path(a.out), image_size=a.size, ratio=a.ratio or None)
     print(f"WROTE: {p}  ({p.stat().st_size/1024:.0f} KB)")

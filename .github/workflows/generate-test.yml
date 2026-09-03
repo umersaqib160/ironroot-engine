@@ -17,14 +17,14 @@ on:
         description: "What is happening (no words about the pan itself)"
         required: true
         default: "the pan is being used by a chef at home"
-      setting:
-        description: "Setting"
+      mood:
+        description: "Mood of the home"
         required: true
-        default: "a cozy but dark home kitchen"
+        default: "cozy but dark"
       palette:
         description: "Palette"
         required: true
-        default: "brown, black and cream"
+        default: "brown, black, cream"
       platform:
         description: "Platform"
         required: true
@@ -59,6 +59,19 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python engine/probe.py
 
+      # Two seconds, no API cost. The 3 Sep run burned a whole job because the
+      # workflow still passed --setting after the flag was renamed to --mood.
+      - name: Validate arguments (no API call)
+        run: |
+          python engine/generate.py \
+            --platform "${{ inputs.platform }}" \
+            --scene    "${{ inputs.scene }}" \
+            --mood     "${{ inputs.mood }}" \
+            --palette  "${{ inputs.palette }}" \
+            --model    "${{ inputs.model }}" \
+            --out      /dev/null \
+            --dry-run
+
       - name: Generate master (9:16)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -66,7 +79,7 @@ jobs:
           python engine/generate.py \
             --platform "${{ inputs.platform }}" \
             --scene    "${{ inputs.scene }}" \
-            --setting  "${{ inputs.setting }}" \
+            --mood     "${{ inputs.mood }}" \
             --palette  "${{ inputs.palette }}" \
             --size     "${{ inputs.size }}" \
             --model    "${{ inputs.model }}" \
