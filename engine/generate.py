@@ -21,7 +21,7 @@ from pathlib import Path
 import requests
 
 BASE = "https://generativelanguage.googleapis.com/v1beta"
-MODEL = os.environ.get("IRONROOT_IMAGE_MODEL", "gemini-3-pro-image")
+MODEL = os.environ.get("IRONROOT_IMAGE_MODEL", "gemini-3-pro-image-preview")
 REFERENCE = Path("content/images/reference/PRIMARY_pan_studio_2048.jpg")
 
 # Umer's tested wording, reproduced EXACTLY when the defaults are used. Nothing
@@ -87,15 +87,35 @@ def _req_generate_content(prompt: str, ref_b64: str, ratio: str | None, size: st
 
 
 def _extract_image(body: dict) -> str | None:
-    """Pull base64 image data out of either response shape."""
+    """
+    Pull base64 image data out of the response.
+
+    The newer Gemini image models return the image natively inside the standard
+    SDK structure — candidates[0].content.parts[], as an inline_data blob — not
+    as a URL and not as a dedicated top-level image field. REST JSON camel-cases
+    it to inlineData, the SDK and the docs use inline_data, so accept both.
+
+    A model that declines or explains itself returns TEXT parts instead. Surface
+    that rather than reporting a bare "no image", because the text says why.
+    """
     img = body.get("output_image") or {}
     if isinstance(img, dict) and img.get("data"):
         return img["data"]
+
+    texts = []
     for cand in body.get("candidates") or []:
         for part in (cand.get("content") or {}).get("parts") or []:
             blob = part.get("inlineData") or part.get("inline_data") or {}
             if blob.get("data"):
                 return blob["data"]
+            if part.get("text"):
+                texts.append(part["text"])
+        if cand.get("finishReason") not in (None, "STOP"):
+            print(f"    finishReason: {cand['finishReason']}", file=sys.stderr)
+
+    if texts:
+        print("    model returned TEXT instead of an image:", file=sys.stderr)
+        print("    " + " ".join(texts)[:600], file=sys.stderr)
     return None
 
 
