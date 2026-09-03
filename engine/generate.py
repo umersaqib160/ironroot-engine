@@ -125,14 +125,20 @@ def generate(prompt: str, out_path: Path, image_size: str = "2K",
 
         print(f"    HTTP {r.status_code}", flush=True)
         if r.status_code == 200:
-            data = _extract_image(r.json())
+            body = r.json()
+            # The API may silently serve a different build than the ID we asked
+            # for. Log what actually answered — never assume.
+            served = body.get("modelVersion") or body.get("model") or "(not reported)"
+            print(f"    requested model : {MODEL}", flush=True)
+            print(f"    served by       : {served}", flush=True)
+            data = _extract_image(body)
             if data:
                 out_path.parent.mkdir(parents=True, exist_ok=True)
                 out_path.write_bytes(base64.b64decode(data))
                 print(f"    OK via {label}", flush=True)
                 return out_path
             print("    200 but no image in the response. Body preview:", flush=True)
-            print(json.dumps(r.json(), indent=2)[:1500], flush=True)
+            print(json.dumps(body, indent=2)[:1500], flush=True)
             errors.append(f"{label}: 200 without image data")
             continue
 
@@ -157,11 +163,18 @@ if __name__ == "__main__":
                          "competes with the reference photo.")
     ap.add_argument("--out", required=True)
     ap.add_argument("--size", default="2K", choices=["512px", "1K", "2K", "4K"])
+    ap.add_argument("--model", default="",
+                    help="Override the image model ID. Empty uses "
+                         "IRONROOT_IMAGE_MODEL or the built-in default.")
     ap.add_argument("--ratio", default="",
                     help="Empty (default) sends no aspect ratio at all — forcing "
                          "one made the model pad instead of compose.")
     a = ap.parse_args()
 
+    if a.model:
+        MODEL = a.model  # noqa: F841 - rebinding the module global below
+        globals()["MODEL"] = a.model
+    print(f"MODEL REQUESTED: {MODEL}")
     prompt = build_prompt(a.platform, a.scene, a.mood, a.palette, a.extra)
     print("PROMPT:", prompt, flush=True)
     p = generate(prompt, Path(a.out), image_size=a.size, ratio=a.ratio or None)
