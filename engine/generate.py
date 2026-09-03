@@ -16,7 +16,7 @@ Masters are generated at 9:16 because it is the tallest target — reframe.py cu
 every generation is another chance to draw the pan wrong.
 """
 from __future__ import annotations
-import base64, json, os, sys, time
+import base64, hashlib, json, os, sys, time
 from pathlib import Path
 import requests
 
@@ -24,30 +24,34 @@ BASE = "https://generativelanguage.googleapis.com/v1beta"
 MODEL = os.environ.get("IRONROOT_IMAGE_MODEL", "gemini-3-pro-image-preview")
 REFERENCE = Path("content/images/reference/PRIMARY_pan_studio_2048.jpg")
 
-# Umer's tested wording, reproduced EXACTLY when the defaults are used. Nothing
-# is appended by default.
+# Umer's verified wording (3 Sep 2026), reproduced exactly when defaults are used.
 #
-# The 3 Sep run proved why. Two sentences were added to this template — a
-# lighting note and a framing instruction ("leaving clear space above and below,
-# so the image can be cropped") — and aspect_ratio was forced to 9:16. The model
-# returned a SQUARE composition padded with flat bands to 44% of the frame, and
-# a pan with two handles and a rim lip. Asking for clear space produced literal
-# empty space, and the extra instruction load pulled the model off the reference.
+# CONSTRAINT is the one sentence about the pan that is allowed, and it earned its
+# place: five generations produced a deep wok-shaped body, and this line fixed it.
 #
-# This is the same failure as July in a new costume: words competing with the
-# photograph. Extras are now opt-in via --extra and never silently on.
+# The rule is therefore NOT "never mention the pan". It is:
+#   - never DESCRIBE the pan — the photograph is the specification
+#   - a short CORRECTIVE CONSTRAINT against a known, repeated drift is allowed
+# A flat ban on adjectives would have forbidden the very sentence that worked.
+# Anything added here must be a correction to an observed failure, never a
+# description of what the pan looks like.
 
-TEMPLATE = ("Use this frying pan in the image and then create an image for "
-            "{platform} where {scene}. The setting of the home is {mood}, "
-            "with {palette} shades.")
+TEMPLATE = ("Use the image from the frying pan and create an image for {platform} "
+            "where {scene}. The setting of the home is {mood}.")
+
+CONSTRAINT = "Make sure the pan is not too deep."
 
 
-def build_prompt(platform: str, scene: str, mood: str, palette: str,
+def build_prompt(platform: str, scene: str, mood: str, palette: str = "",
                  extra: str = "") -> str:
-    """Umer's template verbatim. `extra` is for experiments only — never a default."""
-    prompt = TEMPLATE.format(platform=platform, scene=scene, mood=mood,
-                             palette=palette)
-    return f"{prompt} {extra}".strip() if extra else prompt
+    """Umer's template verbatim, plus the depth constraint. Extras are opt-in."""
+    parts = [TEMPLATE.format(platform=platform, scene=scene, mood=mood)]
+    if palette:
+        parts.append(f"The shades are {palette}.")
+    parts.append(CONSTRAINT)
+    if extra:
+        parts.append(extra)
+    return " ".join(parts)
 
 
 # --- Two request shapes -----------------------------------------------------
@@ -135,9 +139,14 @@ def generate(prompt: str, out_path: Path, image_size: str = "2K",
         print("REFERENCE: *** NONE — control run, text prompt only ***", flush=True)
     else:
         raw = reference.read_bytes()
+        if len(raw) < 10_000:
+            sys.exit(f"Reference {reference} is only {len(raw)} bytes — refusing "
+                     "to generate. A truncated or missing reference is how the "
+                     "pan drifts.")
         ref_b64 = base64.b64encode(raw).decode()
-        print(f"REFERENCE: {reference}  {len(raw)/1024:.0f} KB -> "
-              f"{len(ref_b64)/1024:.0f} KB base64", flush=True)
+        print(f"REFERENCE ATTACHED: {reference}", flush=True)
+        print(f"  {len(raw):,} bytes  sha256 {hashlib.sha256(raw).hexdigest()[:16]}"
+              f"  -> {len(ref_b64):,} chars base64", flush=True)
     headers = {"x-goog-api-key": api_key, "Content-Type": "application/json"}
     errors = []
 
@@ -145,12 +154,21 @@ def generate(prompt: str, out_path: Path, image_size: str = "2K",
                            ("interactions", _req_interactions)):
         url, payload = builder(prompt, ref_b64, ratio, image_size)
         print(f"\n--- trying {label}: POST {url}", flush=True)
-        try:
-            parts = payload["contents"][0]["parts"] if "contents" in payload else payload["input"]
-            print(f"    payload parts: {len(parts)} -> "
-                  f"{[sorted(p.keys()) for p in parts]}", flush=True)
-        except Exception:
-            pass
+        parts = (payload["contents"][0]["parts"] if "contents" in payload
+                 else payload["input"])
+        img_parts = [p for p in parts
+                     if "inline_data" in p or "inlineData" in p
+                     or p.get("type") == "image"]
+        print(f"    payload parts: {len(parts)} -> "
+              f"{[sorted(p.keys()) for p in parts]}", flush=True)
+        if ref_b64 and not img_parts:
+            sys.exit("ABORT: the reference was loaded but is NOT in the request "
+                     "payload. Generating without it is what produces a generic "
+                     "pan — refusing to spend the call.")
+        if ref_b64:
+            sent = img_parts[0].get("inline_data") or img_parts[0].get("inlineData") or img_parts[0]
+            print(f"    image part confirmed: {len(sent.get('data','')):,} chars"
+                  f" ({sent.get('mime_type') or sent.get('mimeType')})", flush=True)
         try:
             r = requests.post(url, json=payload, headers=headers, timeout=240)
         except Exception as e:
@@ -191,8 +209,9 @@ if __name__ == "__main__":
     ap.add_argument("--platform", default="Instagram")
     ap.add_argument("--scene", required=True,
                     help="what is happening, e.g. 'the pan is being used by a chef at home'")
-    ap.add_argument("--mood", default="cozy but dark")
-    ap.add_argument("--palette", default="brown, black, cream")
+    ap.add_argument("--mood", default="dim light but cozy")
+    ap.add_argument("--palette", default="",
+                    help="Optional. Umer's verified prompt carries mood only.")
     ap.add_argument("--extra", default="",
                     help="EXPERIMENTS ONLY. Appended verbatim. Every word here "
                          "competes with the reference photo.")

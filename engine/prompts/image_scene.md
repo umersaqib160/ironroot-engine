@@ -26,6 +26,24 @@ used by a chef at home. The setting of the home is cozy but dark, with brown, bl
 
 ---
 
+## The depth constraint (added 3 Sep 2026, verified)
+
+Every prompt ends with:
+
+> Make sure the pan is not too deep.
+
+Five generations across two models produced a deep, wok-shaped body. This one line
+fixed it, in a result Umer verified and I checked at full resolution: one handle,
+shallow flared body, plain straight-cut rim, no lip.
+
+**So the rule is not "never mention the pan".** It is:
+
+- never **describe** the pan — the photograph is the specification
+- a short **corrective constraint** against a known, repeated drift is allowed
+
+A flat ban on adjectives would have forbidden the very sentence that worked.
+Anything added here must correct an observed failure, never describe the object.
+
 ## The one rule
 
 **The prompt contains ZERO description of the pan.** Not its shape, not its handle, not its finish,

@@ -16,15 +16,15 @@ on:
       scene:
         description: "What is happening (no words about the pan itself)"
         required: true
-        default: "the pan is being used by a chef at home"
+        default: "a young mother is using the pan at home"
       mood:
         description: "Mood of the home"
         required: true
-        default: "cozy but dark"
+        default: "dim light but cozy"
       palette:
-        description: "Palette"
-        required: true
-        default: "brown, black, cream"
+        description: "Palette (optional — leave blank for the verified prompt)"
+        required: false
+        default: ""
       platform:
         description: "Platform"
         required: true
