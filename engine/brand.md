@@ -92,6 +92,7 @@ Verified against the live product page and the 27 real reviews, 3 Sep 2026.
 | **Easy to clean** | **Say it** | real reviews (Magnus B, Jeroen K) |
 | Works on all cooktops incl. induction | **Say it** | product title tag + review (Jeroen K) |
 | Handle stays cool | Say it, carefully | one review (Thomas R) — attribute, do not generalise |
+| **No coating to ruin — scrub it** | **Say it** | follows from "free of chemical coatings"; the durability angle |
 | **NON-STICK** | **NEVER** | see below |
 
 ### Never claim non-stick
@@ -107,7 +108,20 @@ fat, then the food, and eggs release cleanly with no coating involved. That is
 already how the July education post framed it, and a real review supports the
 outcome — Lotte M: *"finally fry perfectly without sticking."*
 
-Show eggs releasing. Never call the pan non-stick.
+Show eggs releasing. Never call the pan non-stick. The image does the work — a
+chef frying eggs in bare steel signals it to anyone who knows how, and the people
+who know are the ones worth convincing.
+
+### The durability angle is the sharper version of "easy to clean"
+
+Two different messages, two different scenes, do not mix them:
+
+- **`bd_easy_clean`** — rinses clean under the tap. Everyday convenience.
+- **`bd_durability_scrub`** — scoured hard with a metal pad. This one leads with
+  the contrast: do that to a non-stick pan and it is finished. Bare stainless has
+  nothing to scratch off, so a burnt-on mess is a scrub rather than a
+  replacement. It is the buy-it-for-life argument made physical, and it turns the
+  absence of a coating from a health claim into a practical one.
 
 ## 6. What the brand is not
 

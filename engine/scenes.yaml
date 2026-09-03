@@ -16,10 +16,17 @@
 #          pan_only -> no people. No AI label needed for a human likeness, but
 #                      the label still applies to any AI-edited asset.
 #
-# pillar:  2 = product in action (30% of posts)
+# pillar:  1 = education (40% of posts) — DEMONSTRATIONS only, see below
+#          2 = product in action (30% of posts)
 #          4 = lifestyle / brand  (15% of posts)
-# Pillars 1 (education) and 3 (social proof) are NOT here — they are built in
-# code from real photographs, which has zero drift risk. Never generate them.
+#
+# What must never be generated, and is therefore absent from this file:
+#   - claim cards, cost maths, text overlays  -> built in code (zero drift risk)
+#   - social proof / review cards (pillar 3)  -> real reviews on real photographs
+#   - any physics demonstration               -> real footage or not at all
+# An education DEMONSTRATION — someone doing a thing that proves a point — is a
+# normal generated scene carrying its message in the caption. The rule was never
+# "education cannot be generated"; it is "claims and quotes are not drawn".
 
 moods:
   - dim light but cozy
@@ -175,6 +182,29 @@ scenes:
       Frame it as TECHNIQUE, which is a stronger message anyway: preheat the
       empty pan, then the fat, then the food, and eggs release cleanly with no
       coating involved.
+
+  - id: bd_durability_scrub
+    pillar: 1
+    subject: person
+    text: a chef is scrubbing the inside of the pan hard with a metal scouring pad at the sink
+    claim: there is no coating to ruin, so it can be scrubbed
+    claim_source: >
+      Product description: "free of chemical coatings", "premium tri-ply
+      stainless steel". The absence of a coating is the product's core fact, so
+      the durability that follows from it is substantiated by construction.
+    caption_must: >
+      Lead with the CONTRAST, which is where the force is: do this to a non-stick
+      pan and you have destroyed it. Bare stainless has nothing to scratch off,
+      so a stuck-on mess is a scrub, not a replacement. This is the
+      buy-it-for-life argument made concrete.
+    caption_never: >
+      Do not present this as routine daily cleaning — for that use bd_easy_clean.
+      This scene exists to show what the pan SURVIVES, not how it is normally
+      washed.
+    qc_watch: >
+      Check the finish still reads as clean satin stainless. If the model renders
+      the pan as scratched, gouged or dulled, REJECT — the image would argue
+      against the product instead of for it.
 
 # Props to avoid — learned from real generations, not theory.
 avoid:
