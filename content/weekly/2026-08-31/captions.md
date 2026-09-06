@@ -1,9 +1,9 @@
 # IronRoot — week of 2026-08-31
 
-## Post 1 — `p2_mother_dinner` (pillar 2, person)
+## Post 1 — `p2_couple_cooking` (pillar 2, person)
 
-**Scene:** a young mother is using the pan at home
-**Mood:** dim light but cozy
+**Scene:** two people are cooking dinner together and one is holding the pan
+**Mood:** sunlit and lively, a busy family kitchen
 
 **INSTAGRAM**
 _to write_
@@ -19,10 +19,29 @@ _to write_
 
 ---
 
-## Post 2 — `p4_drying_rack` (pillar 4, pan_only)
+## Post 2 — `p4_counter_still` (pillar 4, pan_only)
 
-**Scene:** the pan sits clean on a drying rack beside the sink
-**Mood:** quiet and dim, rain outside
+**Scene:** the pan rests empty on a worn wooden counter with fresh ingredients beside it
+**Mood:** bright and airy, morning sun coming through the window
+
+**INSTAGRAM**
+_to write_
+
+**FACEBOOK**
+_to write_
+
+**PINTEREST**
+_to write_
+
+**TIKTOK**
+_to write_
+
+---
+
+## Post 3 — `p2_couple_cooking` (pillar 2, person)
+
+**Scene:** two people are cooking dinner together and one is holding the pan
+**Mood:** sunlit and lively, a busy family kitchen
 
 **INSTAGRAM**
 _to write_
