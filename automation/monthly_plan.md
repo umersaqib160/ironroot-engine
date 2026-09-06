@@ -126,12 +126,14 @@ The 27 verified reviews visible in the product metafield are Dutch. The strategy
 targets US home cooks. That is a problem specific to review cards, because their
 entire value is being *verbatim* and *real*:
 
-**Umer's decision, 6 Sep 2026: translate to English always.** Implemented in
-`engine/reviews.yaml` — original Dutch and English kept side by side, and every
-card carries **"Translated from Dutch"**. The label keeps the quote honest at no
-cost to the message; a translated review presented as the customer's own English
-is a small misrepresentation, and the whole value of a review card is that it is
-real.
+**Umer's decision, 6 Sep 2026: translate to English, and no "translated from
+Dutch" note on the card.** It confuses a US reader about where the store is and
+adds nothing useful. Translating real reviews accurately is ordinary practice.
+
+The safeguard is `engine/reviews.yaml`, where the Dutch original sits beside every
+translation, so any card can be checked back to the customer's actual words. Two
+rules do not relax: the translation carries the same meaning and never a better
+one, and the review is re-checked in the store admin before use.
 
 One translation was nearly a claim in disguise. Lotte M's *"zonder aanbranden"*
 means **without burning**, not "without sticking". Rendering it the loose way

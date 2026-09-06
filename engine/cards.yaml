@@ -43,13 +43,15 @@ education_cards:
     source: Product description and the live price
 
 # Social proof cards are built from engine/reviews.yaml. Rules:
-#   - verbatim English translation, never paraphrased to sound better
+#   - accurate English translation, never paraphrased to sound better or stronger
 #   - the reviewer's name as shown in the store, no invented surnames
-#   - "Translated from Dutch" on every card
 #   - the review is re-checked in the store admin before use
 #   - the photograph underneath is a REAL photo from content/images/reference/
+#
+# No "translated from Dutch" line on the card (Umer, 6 Sep 2026): it confuses a US
+# reader about the store and adds nothing. The Dutch original is kept in
+# engine/reviews.yaml so every card can be checked back to the customer's words.
 social_proof:
-  attribution_line: Translated from Dutch
   photo_pool:
     - content/images/reference/PRIMARY_pan_studio_2048.jpg
     - content/images/reference/ic5.jpg

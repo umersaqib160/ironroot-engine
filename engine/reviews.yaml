@@ -4,15 +4,19 @@
 # only source of social proof — no invented quotes, ever (brand.md section 5).
 #
 # All of them are Dutch; the market is the USA. Umer's decision (6 Sep 2026):
-# translate to English always. Each card carries "Translated from Dutch" so the
-# quote stays honest — a translated review presented as the customer's own English
-# is a small misrepresentation, and the label costs nothing.
+# translate to English, and DO NOT print a "translated from Dutch" note on the
+# card — it confuses a US reader about where the store is and adds nothing they
+# need. Translating real reviews accurately is ordinary practice.
 #
-# Before a review is used on a card it MUST be re-checked in the store admin, the
-# same rule the July batch followed.
+# The safeguard is not a label, it is this file: the Dutch original sits beside
+# every translation so any card can be checked back to the customer's actual
+# words. That is what stops a translation drifting into a claim.
+#
+# Two rules that do NOT relax:
+#   - the translation must carry the same meaning, never a better one
+#   - the review is re-checked in the store admin before it is used
 
 source: Judge.me widget on IronRoot Frying Pan, 27 verified reviews, all 5 star
-attribution: "Translated from Dutch"
 
 reviews:
   - id: magnus_b
