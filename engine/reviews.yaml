@@ -1,0 +1,85 @@
+# Verified customer reviews, for code-built social-proof cards.
+#
+# These are REAL reviews pulled from the product's Judge.me data. They are the
+# only source of social proof — no invented quotes, ever (brand.md section 5).
+#
+# All of them are Dutch; the market is the USA. Umer's decision (6 Sep 2026):
+# translate to English always. Each card carries "Translated from Dutch" so the
+# quote stays honest — a translated review presented as the customer's own English
+# is a small misrepresentation, and the label costs nothing.
+#
+# Before a review is used on a card it MUST be re-checked in the store admin, the
+# same rule the July batch followed.
+
+source: Judge.me widget on IronRoot Frying Pan, 27 verified reviews, all 5 star
+attribution: "Translated from Dutch"
+
+reviews:
+  - id: magnus_b
+    name: Magnus B
+    stars: 5
+    dutch: >
+      Perfecte Pan voor Thuisgebruik, ik ben ontzettend blij met mijn IronRoot pan!
+      De warmte wordt gelijkmatig verdeeld, hij ligt prettig in de hand en
+      schoonmaken is een fluitje van een cent.
+    english: >
+      Perfect pan for home use. I am extremely happy with my IronRoot pan. The heat
+      spreads evenly, it sits comfortably in the hand, and cleaning is a breeze.
+    supports: [even heat, comfortable handle, easy to clean]
+
+  - id: sofie_v
+    name: Sofie V
+    stars: 5
+    title_dutch: Topkwaliteit
+    title_english: Top quality
+    dutch: >
+      Deze pan overtreft al mijn verwachtingen! Gelijkmatige verwarming en duurzaam
+      materiaal. Heel tevreden!
+    english: >
+      This pan exceeds all my expectations. Even heating and durable material.
+      Very satisfied.
+    supports: [even heat, durability]
+
+  - id: jeroen_k
+    name: Jeroen K
+    stars: 5
+    title_dutch: Super Handig
+    title_english: Really handy
+    dutch: >
+      De pan is makkelijk schoon te maken en geschikt voor alle kookplaten.
+      Ik gebruik hem dagelijks.
+    english: >
+      The pan is easy to clean and suitable for all cooktops. I use it every day.
+    supports: [easy to clean, all cooktops]
+
+  - id: lotte_m
+    name: Lotte M
+    stars: 5
+    title_dutch: Heerlijk Koken
+    title_english: Wonderful cooking
+    dutch: >
+      Ik kan nu eindelijk gerechten perfect braden zonder aanbranden. Zeer tevreden!
+    english: >
+      I can finally sear dishes perfectly without anything burning. Very satisfied.
+    supports: [even heat, searing]
+    translation_note: >
+      "zonder aanbranden" means WITHOUT BURNING or scorching — not "without
+      sticking". Rendering it as "without sticking" would quietly manufacture a
+      non-stick claim out of a customer's words, which brand.md forbids. Keep
+      "burning".
+
+  - id: thomas_r
+    name: Thomas R
+    stars: 5
+    title_dutch: Stevige Pan
+    title_english: Sturdy pan
+    dutch: >
+      De pan voelt stevig en luxe aan. De handgreep blijft koel en het voedsel bakt
+      mooi egaal.
+    english: >
+      The pan feels sturdy and premium. The handle stays cool and the food cooks
+      beautifully evenly.
+    supports: [durability, cool handle, even heat]
+
+# 5 of 27 are recorded here — enough for roughly two months at 2 cards a month.
+# The remaining 22 need pulling from Judge.me before month three.

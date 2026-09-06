@@ -1,0 +1,62 @@
+# Code-built cards — pillar 1 (education claims) and pillar 3 (social proof).
+#
+# These are composited with PIL onto real photographs. Nothing here is generated,
+# so there is zero product-fidelity risk: the pan in a card is a photograph of the
+# pan. That is why claims and quotes live here and never in a prompt.
+#
+# Every claim card carries the source that substantiates it. If a claim has no
+# source it does not get a card.
+
+education_cards:
+  - id: ec_pfas_free
+    headline: "Your non-stick pan has PFAS. IronRoot doesn't."
+    sub: "Zero PFAS. Zero PFOA. No chemical coating of any kind."
+    source: Product description — "zero PFAS, zero PFOA, zero compromises"
+
+  - id: ec_dishwasher
+    headline: "Dishwasher safe."
+    sub: "Cook it, rinse it, load it. No hand-washing ritual, no coating to protect."
+    source: Product SEO description — "oven-safe to 500F, dishwasher safe"; bundle — "oven and dishwasher friendly"
+    note: >
+      Added at Umer's request, 6 Sep 2026. Pairs naturally with the durability
+      angle: the reason it survives a dishwasher is the same reason it survives a
+      scourer — there is no coating to destroy.
+
+  - id: ec_oven_500
+    headline: "Oven safe to 500°F."
+    sub: "Sear on the hob, finish in the oven, same pan."
+    source: Product SEO description — "oven-safe to 500F"
+
+  - id: ec_all_cooktops
+    headline: "Works on every cooktop."
+    sub: "Induction, gas, electric, coil. Tri-ply stainless throughout."
+    source: Product title tag — "PFAS-Free, Tri-Ply, All Cooktops"; review (Jeroen K)
+
+  - id: ec_no_coating_to_ruin
+    headline: "Nothing to scratch off."
+    sub: "Scrub it with steel. A non-stick pan would be finished. This one isn't."
+    source: Product description — "free of chemical coatings"; durability follows by construction
+
+  - id: ec_a_pan_for_life
+    headline: "A pan for life."
+    sub: "$79. Tri-ply stainless. 30-day guarantee."
+    source: Product description and the live price
+
+# Social proof cards are built from engine/reviews.yaml. Rules:
+#   - verbatim English translation, never paraphrased to sound better
+#   - the reviewer's name as shown in the store, no invented surnames
+#   - "Translated from Dutch" on every card
+#   - the review is re-checked in the store admin before use
+#   - the photograph underneath is a REAL photo from content/images/reference/
+social_proof:
+  attribution_line: Translated from Dutch
+  photo_pool:
+    - content/images/reference/PRIMARY_pan_studio_2048.jpg
+    - content/images/reference/ic5.jpg
+    - content/images/reference/ic7.jpg
+    - content/images/reference/H139cfe9712a64fd194516f7f9598fdb07.jpg
+
+# Monthly mix, per automation/monthly_plan.md
+monthly:
+  education_cards: 3
+  social_proof_cards: 2

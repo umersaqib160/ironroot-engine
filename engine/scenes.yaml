@@ -201,6 +201,52 @@ scenes:
       empty pan, then the fat, then the food, and eggs release cleanly with no
       coating involved.
 
+  - id: ed_oven_transfer
+    pillar: 1
+    subject: person
+    text: a chef is sliding the pan into a hot oven to finish the dish
+    claim: oven safe to 500F
+    claim_source: 'Product SEO description: "oven-safe to 500F".'
+    caption_must: >
+      Hob to oven, same pan, no swapping dishes halfway through. This is what
+      tri-ply stainless does that a coated pan cannot.
+
+  - id: ed_induction_hob
+    pillar: 1
+    subject: pan_only
+    text: the pan sits on a black induction hob with the control display lit, no people in frame
+    claim: works on every cooktop including induction
+    claim_source: >
+      Product title tag "PFAS-Free, Tri-Ply, All Cooktops"; real review
+      (Jeroen K) "suitable for all cooktops".
+    qc_watch: >
+      Induction hobs are flat black glass with cross or plus zone markings only.
+      Reject any coil graphics or glowing rings.
+
+  - id: ed_searing_crust
+    pillar: 1
+    subject: person
+    text: a chef is pressing a steak into the hot pan and it is building a deep brown crust
+    claim: tri-ply stainless holds heat and sears properly
+    claim_source: >
+      Product description "premium tri-ply stainless steel"; real reviews
+      (Sofie V, Thomas R) on even heating.
+    caption_must: >
+      Frame as what stainless is FOR — a real crust, which a coated pan at safe
+      temperature cannot give you.
+
+  - id: ed_dishwasher_load
+    pillar: 1
+    subject: person
+    text: a chef is loading the pan into an open dishwasher in a home kitchen
+    claim: dishwasher safe
+    claim_source: >
+      Product SEO description "dishwasher safe"; bundle description "oven and
+      dishwasher friendly". SUBSTANTIATED.
+    caption_must: >
+      The reason it survives the dishwasher is the reason it survives a scourer:
+      there is no coating to destroy.
+
   - id: bd_durability_scrub
     pillar: 1
     subject: person
@@ -231,6 +277,20 @@ scenes:
 # was the July direction and it has been retired — it made the pan look like it
 # lived in a cave, and it flattened the food.
 #
+# The dish. Rotated across a month and checked so no two consecutive posts show
+# the same food — Umer, 6 Sep 2026. Nothing controlled this before: the model
+# chose, and it kept choosing the same potatoes.
+#
+# This is a scene detail, appended like any other. It never describes the pan.
+dishes:
+  - salmon fillets
+  - a steak
+  - eggs
+  - mixed vegetables
+  - chicken and vegetables
+  - a whole one-pan dinner
+  - nothing, the pan is empty and clean
+
 # Props to avoid — learned from real generations, not theory.
 avoid:
   - books, magazines, packaging or signage with visible text (the model fakes
