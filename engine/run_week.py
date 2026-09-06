@@ -93,20 +93,21 @@ def issue_body(week: str, picks: list[dict], files: dict, repo: str, sha: str,
     """
     b = [f"## How to respond",
          "",
-         "**Reply to this issue with one word: `approve`**",
+         "**Happy with them? Reply `approve`.**",
          "",
-         "Two ways, both from your phone:",
+         "**Not happy? Just say what you want changed, in your own words.**",
+         "Anything that is not `approve` is treated as a change request — there is "
+         "no syntax to remember.",
          "",
-         "- **GitHub app** — open this issue, scroll to the bottom, type in the "
-         "comment box, tap send.",
-         "- **Email** — just hit reply on the GitHub notification email and send "
-         "`approve`. GitHub posts your reply as a comment.",
+         "- *use salmon instead of potatoes* — redoes all three with that change",
+         "- *image 2 is too dark* — redoes only image 2",
+         "- *redo* — re-rolls all three, same scenes, fresh attempt",
          "",
-         "To send something back instead, reply `redo 1 - too dark` (the number is "
-         "the image).",
+         "Two ways to reply, both from your phone: open this issue in the GitHub "
+         "app and use the comment box, or simply **hit reply on the notification "
+         "email** — GitHub posts that as a comment.",
          "",
-         "Nothing is published either way until publishing is connected, and "
-         "nothing is ever published without this reply.",
+         "Nothing is published either way. Nothing ever will be without a reply.",
          "",
          "---",
          "",

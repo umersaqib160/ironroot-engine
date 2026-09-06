@@ -25,7 +25,9 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--week", required=True)
     ap.add_argument("--index", type=int, required=True)
-    ap.add_argument("--note", required=True, help="what Umer asked to change")
+    ap.add_argument("--note", default="",
+                    help="what to change. Empty = re-roll the same scene, which "
+                         "is what a bare 'redo' means.")
     ap.add_argument("--size", default="2K")
     a = ap.parse_args()
 
@@ -40,9 +42,9 @@ def main() -> int:
         sys.exit(f"Week {a.week} has no image {a.index} "
                  f"(it has {len(bundle['posts'])}).")
 
-    note = a.note.strip().rstrip(".") + "."
+    note = (a.note.strip().rstrip(".") + ".") if a.note.strip() else ""
     print(f"redoing image {a.index} of week {a.week}: {post['id']}")
-    print(f"  change requested: {note}")
+    print(f"  change requested: {note or '(none — plain re-roll)'}")
 
     prompt = gen.build_prompt("Instagram", post["text"], post["mood"], extra=note)
     print(f"\nPROMPT: {prompt}\n", flush=True)
@@ -63,7 +65,8 @@ def main() -> int:
     post.setdefault("redos", []).append({"note": note, "version": version + 1})
     bundle_path.write_text(json.dumps(bundle, indent=2) + "\n", encoding="utf-8")
 
-    lines = [f"Redone image **{a.index}** — *{note}*", "",
+    lines = [f"Redone image **{a.index}**" +
+             (f" — *{note}*" if note else " — re-rolled, same scene"), "",
              f"Scene and mood unchanged: *{post['text']}* — {post['mood']}", ""]
     for name in ("4x5", "2x3", "9x16"):
         p = files.get(name)

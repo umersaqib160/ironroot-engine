@@ -33,30 +33,13 @@ jobs:
           BODY: ${{ github.event.comment.body }}
           TITLE: ${{ github.event.issue.title }}
         run: |
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import os, re
-          body = os.environ["BODY"]
-          title = os.environ["TITLE"]
-          week = (re.search(r"(\d{4}-\d{2}-\d{2})", title) or [None, ""])[1] \
-                 if re.search(r"(\d{4}-\d{2}-\d{2})", title) else ""
-          m = re.match(r"^\s*redo\s+(\d+)\s*[-\u2013\u2014:,]?\s*(.*)$",
-                       body, re.I | re.S)
-          if re.match(r"^\s*approve", body, re.I):
-              print("decision=approved")
-          elif m and m.group(2).strip():
-              note = " ".join(m.group(2).split())[:300]
-              print("decision=redo")
-              print(f"index={m.group(1)}")
-              print(f"note={note}")
-          elif m:
-              print("decision=redo_no_note")
-          else:
-              print("decision=none")
-          print(f"week={week}")
-          PY
+          python3 engine/parse_comment.py --github >> "$GITHUB_OUTPUT"
+          echo "week=$(echo "$TITLE" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)" >> "$GITHUB_OUTPUT"
+          echo "--- understood as ---"
+          python3 engine/parse_comment.py
 
       - name: Approved
-        if: steps.read.outputs.decision == 'approved'
+        if: steps.read.outputs.decision == 'approve'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -67,14 +50,14 @@ jobs:
             --repo "${{ github.repository }}" \
             --body "Approved and recorded. Publishing is not connected yet (Phase 5), so nothing has been posted."
 
-      - name: Ask which image
-        if: steps.read.outputs.decision == 'redo_no_note'
+      - name: Out of range
+        if: steps.read.outputs.decision == 'bad_index'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh issue comment "${{ github.event.issue.number }}" \
             --repo "${{ github.repository }}" \
-            --body "Which image, and what should change? Reply like \`redo 2 - use salmon instead of potatoes\`."
+            --body "There is no image ${{ steps.read.outputs.index }} this week. Reply with a number that exists, or just say what to change and I will redo them all."
 
       - uses: actions/setup-python@v6
         if: steps.read.outputs.decision == 'redo'
@@ -85,15 +68,37 @@ jobs:
         if: steps.read.outputs.decision == 'redo'
         run: pip install --quiet requests pillow pyyaml
 
-      - name: Regenerate that image
+      - name: Acknowledge before spending anything
+        if: steps.read.outputs.decision == 'redo'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "On it — redoing ${{ steps.read.outputs.index && format('image {0}', steps.read.outputs.index) || 'all images' }}. Change: *${{ steps.read.outputs.note || 'none, re-rolling the same scene' }}*. This takes a couple of minutes."
+
+      - name: Regenerate
         if: steps.read.outputs.decision == 'redo'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WEEK: ${{ steps.read.outputs.week }}
+          IDX: ${{ steps.read.outputs.index }}
+          NOTE: ${{ steps.read.outputs.note }}
         run: |
-          python engine/redo_one.py \
-            --week  "${{ steps.read.outputs.week }}" \
-            --index "${{ steps.read.outputs.index }}" \
-            --note  "${{ steps.read.outputs.note }}"
+          set -e
+          : > redo_comment_all.md
+          if [ -n "$IDX" ]; then
+            TARGETS="$IDX"
+          else
+            # No image named — apply the note to every image in the bundle.
+            TARGETS=$(python3 -c "import json,sys; print(' '.join(str(p['index']) for p in json.load(open(f'content/weekly/$WEEK/bundle.json'))['posts']))")
+          fi
+          echo "redoing image(s): $TARGETS"
+          for i in $TARGETS; do
+            python3 engine/redo_one.py --week "$WEEK" --index "$i" --note "$NOTE"
+            cat redo_comment.md >> redo_comment_all.md
+            printf '\n\n---\n\n' >> redo_comment_all.md
+          done
 
       - name: Commit and report back
         if: steps.read.outputs.decision == 'redo'
@@ -103,19 +108,19 @@ jobs:
           git config user.name  "ironroot-engine"
           git config user.email "noreply@ironrootstore.com"
           git add content/weekly
-          git commit -m "Redo image ${{ steps.read.outputs.index }}, week ${{ steps.read.outputs.week }} [skip ci]" || true
+          git commit -m "Redo week ${{ steps.read.outputs.week }} [skip ci]" || true
           git push || true
           gh label create redo --color D93F0B --force || true
           gh issue edit "${{ github.event.issue.number }}" \
             --repo "${{ github.repository }}" --add-label redo || true
           gh issue comment "${{ github.event.issue.number }}" \
-            --repo "${{ github.repository }}" --body-file redo_comment.md
+            --repo "${{ github.repository }}" --body-file redo_comment_all.md
 
-      - name: Say the redo failed
-        if: failure() && steps.read.outputs.decision == 'redo'
+      - name: Say what went wrong
+        if: failure()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh issue comment "${{ github.event.issue.number }}" \
             --repo "${{ github.repository }}" \
-            --body "The redo failed. [See the run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}). Nothing was changed."
+            --body "That did not work — [see the run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}). Nothing was changed. Try again, or say it differently."
