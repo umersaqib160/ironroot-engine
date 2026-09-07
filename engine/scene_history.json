@@ -7,6 +7,14 @@
         "p4_counter_still",
         "p2_couple_cooking"
       ]
+    },
+    {
+      "week": "2026-09-07",
+      "scene_ids": [
+        "ed_oven_transfer",
+        "p4_hanging_wall",
+        "p2_chef_stirring"
+      ]
     }
   ]
 }
