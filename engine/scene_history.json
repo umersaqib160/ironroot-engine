@@ -15,6 +15,14 @@
         "p4_hanging_wall",
         "p2_chef_stirring"
       ]
+    },
+    {
+      "week": "2026-09-14",
+      "scene_ids": [
+        "p2_breakfast_eggs",
+        "p4_window_light",
+        "ed_dishwasher_load"
+      ]
     }
   ]
 }
