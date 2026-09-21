@@ -1,0 +1,35 @@
+{
+  "week": "2026-09-21",
+  "posts": [
+    {
+      "index": 1,
+      "id": "p2_plating_up",
+      "pillar": 2,
+      "subject": "person",
+      "text": "someone is tipping the finished food from the pan onto a plate",
+      "mood": "sunlit and lively, a busy family kitchen",
+      "mood_tone": "light",
+      "master": "p2_plating_up__master.png"
+    },
+    {
+      "index": 2,
+      "id": "ed_induction_hob",
+      "pillar": 1,
+      "subject": "pan_only",
+      "text": "the pan sits on a black induction hob with the control display lit, no people in frame",
+      "mood": "dim light but cozy",
+      "mood_tone": "evening",
+      "master": "ed_induction_hob__master.png"
+    },
+    {
+      "index": 3,
+      "id": "p4_washing_up",
+      "pillar": 4,
+      "subject": "person",
+      "text": "someone is drying the pan with a cloth after washing it",
+      "mood": "sunlit and lively, a busy family kitchen",
+      "mood_tone": "light",
+      "master": "p4_washing_up__master.png"
+    }
+  ]
+}

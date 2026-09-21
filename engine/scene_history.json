@@ -23,6 +23,14 @@
         "p4_window_light",
         "ed_dishwasher_load"
       ]
+    },
+    {
+      "week": "2026-09-21",
+      "scene_ids": [
+        "p2_plating_up",
+        "ed_induction_hob",
+        "p4_washing_up"
+      ]
     }
   ]
 }
