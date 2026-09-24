@@ -35,11 +35,23 @@ RATIOS = ("4x5", "2x3", "9x16")
 
 
 def find_reusable(scene_id: str, exclude: Path) -> Path | None:
-    """The most recent master already rendered for this scene, if any."""
-    hits = sorted(ROOT.glob(f"content/weekly/*/{scene_id}__master.png"))
-    hits += sorted(ROOT.glob(f"content/monthly/*/{scene_id}__master.png"))
-    hits = [h for h in hits if exclude not in h.parents]
-    return hits[-1] if hits else None
+    """
+    An existing image for this scene, if there is one.
+
+    Masters are gitignored — deliberately, they are 2-3 MB each — so on a fresh
+    clone or a CI runner they do not exist. What IS committed is the 9:16 export,
+    and that holds the full frame: 2:3 and 4:5 are centre crops of it, so
+    reframing from the 9:16 loses no content at all.
+
+    Masters first when one happens to be on disk, then the 9:16.
+    """
+    pats = [f"content/*/*/{scene_id}__master.png",
+            f"content/*/*/{scene_id}__9x16.jpg"]
+    for pat in pats:
+        hits = [h for h in sorted(ROOT.glob(pat)) if exclude not in h.parents]
+        if hits:
+            return hits[-1]
+    return None
 
 
 def load_state(path: Path) -> dict:
@@ -61,6 +73,9 @@ def main() -> int:
     ap.add_argument("--prefer-existing", action="store_true",
                     help="bridge batches: build the calendar from scenes that "
                          "already have an image")
+    ap.add_argument("--exclude", default="",
+                    help="comma-separated scene ids never to reuse — the ones "
+                         "Umer rejected on review")
     ap.add_argument("--repo", default="")
     ap.add_argument("--sha", default="main")
     ap.add_argument("--run-url", default="")
@@ -107,9 +122,15 @@ def main() -> int:
         try:
             if post["kind"] == "generated":
                 master = outdir / f"{post['id']}__master.png"
-                src = find_reusable(post["id"], outdir) if a.reuse else None
+                rejected = {x.strip() for x in a.exclude.split(",") if x.strip()}
+                src = (find_reusable(post["id"], outdir)
+                       if a.reuse and post["id"] not in rejected else None)
                 if src and not master.exists():
-                    shutil.copy2(src, master)
+                    if src.suffix.lower() == ".png":
+                        shutil.copy2(src, master)
+                    else:
+                        from PIL import Image
+                        Image.open(src).convert("RGB").save(master, "PNG")
                     print(f"     reused {src.relative_to(ROOT)}", flush=True)
                     reused += 1
                 elif not master.exists():

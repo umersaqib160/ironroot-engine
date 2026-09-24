@@ -118,8 +118,11 @@ def build(year: int, month: int, seed: int | None = None,
     blocked = recently_used(hist, first)
 
     # Which scenes already have a rendered master somewhere in the repo.
+    # Masters are gitignored; the committed 9:16 export is what actually
+    # survives, so count either as "we already have this scene".
     have = {p.name.split("__")[0]
-            for p in (HERE.parent / "content").glob("*/*/*__master.png")}
+            for pat in ("*/*/*__master.png", "*/*/*__9x16.jpg")
+            for p in (HERE.parent / "content").glob(pat)}
 
     def freshest(pool):
         pool = list(pool)
