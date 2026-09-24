@@ -7,6 +7,30 @@
         "p4_counter_still",
         "p2_couple_cooking"
       ]
+    },
+    {
+      "week": "2026-09-07",
+      "scene_ids": [
+        "ed_oven_transfer",
+        "p4_hanging_wall",
+        "p2_chef_stirring"
+      ]
+    },
+    {
+      "week": "2026-09-14",
+      "scene_ids": [
+        "p2_breakfast_eggs",
+        "p4_window_light",
+        "ed_dishwasher_load"
+      ]
+    },
+    {
+      "week": "2026-09-21",
+      "scene_ids": [
+        "p2_plating_up",
+        "ed_induction_hob",
+        "p4_washing_up"
+      ]
     }
   ]
 }
