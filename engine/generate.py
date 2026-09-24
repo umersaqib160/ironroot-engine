@@ -47,7 +47,20 @@ TEMPLATE = ("Use the image from the frying pan and create an image for {platform
 #   "no rim lip"    -> rolled lip on the rim, confirmed at full res (3 Sep).
 #                      Was "no lip ring"; Umer reworded it — "rim lip" is the
 #                      term the model is likelier to have learned.
-CONSTRAINT = "Make sure the pan is not too deep and has no rim lip."
+#   "plain photograph" -> p4_meal_prep came back as a rendered INSTAGRAM POST:
+#                      like/comment/share icons, carousel dots, a bookmark, white
+#                      chrome top and bottom (24 Sep). The prompt says "an image
+#                      for Instagram" and the model drew the app. The platform
+#                      name stays because it is Umer's tested wording and it
+#                      shapes the composition; this sentence blocks the app.
+#   "only pan"      -> p2_couple_cooking put a BLACK NON-STICK pan on the next
+#                      burner, beside the IronRoot one (24 Sep). The same month
+#                      runs an education card saying non-stick pans carry PFAS.
+#                      A coated pan in our own photo argues against us.
+CONSTRAINT = ("Make sure the pan is not too deep and has no rim lip. "
+              "It is the only pan in the picture. "
+              "It must be a plain photograph with no app interface, no icons, "
+              "no buttons, no border and no caption bar.")
 
 
 def build_prompt(platform: str, scene: str, mood: str, palette: str = "",

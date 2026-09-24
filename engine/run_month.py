@@ -22,6 +22,7 @@ import generate as gen        # noqa: E402
 import reframe as rf          # noqa: E402
 import plan_month as pm       # noqa: E402
 import render_card as rc      # noqa: E402
+import qc_image              # noqa: E402
 import yaml                   # noqa: E402
 
 try:
@@ -114,6 +115,7 @@ def main() -> int:
     photos = [ROOT / p for p in cards["social_proof"]["photo_pool"]]
 
     made, reused, failed = 0, 0, 0
+    qc_failed: list = []
     for post in posts:
         key = f"{post['index']:02d}_{post['id']}"
         if key in state["done"]:
@@ -123,7 +125,8 @@ def main() -> int:
         try:
             if post["kind"] == "generated":
                 master = outdir / f"{post['id']}__master.png"
-                rejected = {x.strip() for x in a.exclude.split(",") if x.strip()}
+                rejected = (pm.load_rejects() |
+                            {x.strip() for x in a.exclude.split(",") if x.strip()})
                 src = (find_reusable(post["id"], outdir)
                        if a.reuse and post["id"] not in rejected else None)
                 if src and not master.exists():
@@ -142,6 +145,18 @@ def main() -> int:
                     gen.generate(prompt, master, image_size=a.size, ratio="9:16")
                     made += 1
                 files = rf.reframe(master, outdir, post["id"])
+                # Gate every photo. p4_meal_prep reached the October calendar
+                # carrying a whole rendered Instagram interface because nothing
+                # looked at it between generation and scheduling.
+                verdict = qc_image.check(files["4x5"])
+                post["qc"] = verdict
+                if not verdict["pass"]:
+                    print("     QC FAILED:", flush=True)
+                    for f_ in verdict["failures"]:
+                        print(f"       - {f_}", flush=True)
+                    qc_failed.append((post["index"], post["id"], verdict["failures"]))
+                else:
+                    print("     QC pass", flush=True)
             elif post["kind"] == "education_card":
                 photo = photos[post["index"] % len(photos)]
                 files = rc.education_card(photo, post["headline"],
@@ -165,6 +180,13 @@ def main() -> int:
 
     print(f"\n{made} generated, {reused} reused, {failed} failed, "
           f"{len(state['done'])}/{len(posts)} complete")
+    if qc_failed:
+        print(f"\n{len(qc_failed)} image(s) FAILED QC and must not be posted:")
+        for idx, sid, reasons in qc_failed:
+            print(f"  [{idx}] {sid}")
+            for x in reasons:
+                print(f"      - {x}")
+        print("Exclude them and re-run, or redo those slots.")
 
     (outdir / "bundle.json").write_text(
         json.dumps({"month": a.month, "posts": posts,

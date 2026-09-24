@@ -1,0 +1,47 @@
+# Scenes rejected at review. The planner drops these before it picks a month,
+# so a rejected scene is never scheduled and never paid for again.
+#
+# A scene is listed here when the IMAGE is wrong in a way the scene wording
+# caused or cannot avoid. If a scene is sound and only one generation went bad,
+# delete the file and let it regenerate instead of listing it here.
+#
+# Add: id, who rejected it, the date, and what was actually wrong — a reason you
+# can check later beats a reason you have to trust.
+
+rejected:
+  - id: p2_chef_stirring
+    by: Umer
+    date: 2026-09-23
+    reason: rejected at review of the September batch
+
+  - id: p2_plating_up
+    by: Umer
+    date: 2026-09-23
+    reason: rejected at review of the September batch
+
+  - id: p4_meal_prep
+    by: Umer
+    date: 2026-09-24
+    reason: >
+      came back as a rendered Instagram screenshot — status bar, wordmark,
+      username, like and comment icons, carousel dots, caption, nav bar. The
+      scene puts the pan among a wide flat-lay of props, which is exactly the
+      composition the model associates with a feed post.
+
+  - id: p2_couple_cooking
+    by: Claude
+    date: 2026-09-24
+    reason: >
+      a black non-stick pan sits on the next burner beside ours. The same month
+      runs an education card saying non-stick pans carry PFAS, so our own photo
+      argues against us. Two people cooking together invites a second burner in
+      frame; generate.py now says the pan is the only pan in the picture, and
+      this scene can come back once a clean generation proves it.
+
+  - id: p4_window_light
+    by: Claude
+    date: 2026-09-24
+    reason: >
+      rolled rim lip standing proud of the wall all the way round, and a shallow
+      bowl-shaped body. An empty pan alone on a counter gives the model nothing
+      to anchor the shape to, so it invents one.

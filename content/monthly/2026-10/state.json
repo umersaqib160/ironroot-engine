@@ -1,69 +1,69 @@
 {
   "done": {
-    "01_p4_counter_still": {
-      "9x16": "content/monthly/2026-10/p4_counter_still__9x16.jpg",
-      "2x3": "content/monthly/2026-10/p4_counter_still__2x3.jpg",
-      "4x5": "content/monthly/2026-10/p4_counter_still__4x5.jpg"
+    "01_bd_durability_scrub": {
+      "9x16": "content/monthly/2026-10/bd_durability_scrub__9x16.jpg",
+      "2x3": "content/monthly/2026-10/bd_durability_scrub__2x3.jpg",
+      "4x5": "content/monthly/2026-10/bd_durability_scrub__4x5.jpg"
     },
-    "02_p2_breakfast_eggs": {
-      "9x16": "content/monthly/2026-10/p2_breakfast_eggs__9x16.jpg",
-      "2x3": "content/monthly/2026-10/p2_breakfast_eggs__2x3.jpg",
-      "4x5": "content/monthly/2026-10/p2_breakfast_eggs__4x5.jpg"
+    "02_p2_pan_oven": {
+      "9x16": "content/monthly/2026-10/p2_pan_oven__9x16.jpg",
+      "2x3": "content/monthly/2026-10/p2_pan_oven__2x3.jpg",
+      "4x5": "content/monthly/2026-10/p2_pan_oven__4x5.jpg"
     },
-    "03_ed_induction_hob": {
-      "9x16": "content/monthly/2026-10/ed_induction_hob__9x16.jpg",
-      "2x3": "content/monthly/2026-10/ed_induction_hob__2x3.jpg",
-      "4x5": "content/monthly/2026-10/ed_induction_hob__4x5.jpg"
+    "03_ed_oven_transfer": {
+      "9x16": "content/monthly/2026-10/ed_oven_transfer__9x16.jpg",
+      "2x3": "content/monthly/2026-10/ed_oven_transfer__2x3.jpg",
+      "4x5": "content/monthly/2026-10/ed_oven_transfer__4x5.jpg"
     },
-    "04_p2_couple_cooking": {
-      "9x16": "content/monthly/2026-10/p2_couple_cooking__9x16.jpg",
-      "2x3": "content/monthly/2026-10/p2_couple_cooking__2x3.jpg",
-      "4x5": "content/monthly/2026-10/p2_couple_cooking__4x5.jpg"
+    "04_p2_pan_one_pan_dinner": {
+      "9x16": "content/monthly/2026-10/p2_pan_one_pan_dinner__9x16.jpg",
+      "2x3": "content/monthly/2026-10/p2_pan_one_pan_dinner__2x3.jpg",
+      "4x5": "content/monthly/2026-10/p2_pan_one_pan_dinner__4x5.jpg"
     },
     "05_ec_no_coating_to_ruin": {
       "4x5": "content/monthly/2026-10/ec_no_coating_to_ruin__4x5.jpg",
       "2x3": "content/monthly/2026-10/ec_no_coating_to_ruin__2x3.jpg",
       "9x16": "content/monthly/2026-10/ec_no_coating_to_ruin__9x16.jpg"
     },
-    "06_thomas_r": {
-      "4x5": "content/monthly/2026-10/thomas_r__4x5.jpg",
-      "2x3": "content/monthly/2026-10/thomas_r__2x3.jpg",
-      "9x16": "content/monthly/2026-10/thomas_r__9x16.jpg"
+    "06_jeroen_k": {
+      "4x5": "content/monthly/2026-10/jeroen_k__4x5.jpg",
+      "2x3": "content/monthly/2026-10/jeroen_k__2x3.jpg",
+      "9x16": "content/monthly/2026-10/jeroen_k__9x16.jpg"
     },
-    "07_p4_meal_prep": {
-      "9x16": "content/monthly/2026-10/p4_meal_prep__9x16.jpg",
-      "2x3": "content/monthly/2026-10/p4_meal_prep__2x3.jpg",
-      "4x5": "content/monthly/2026-10/p4_meal_prep__4x5.jpg"
+    "07_p4_drying_rack": {
+      "9x16": "content/monthly/2026-10/p4_drying_rack__9x16.jpg",
+      "2x3": "content/monthly/2026-10/p4_drying_rack__2x3.jpg",
+      "4x5": "content/monthly/2026-10/p4_drying_rack__4x5.jpg"
     },
-    "08_ec_pfas_free": {
-      "4x5": "content/monthly/2026-10/ec_pfas_free__4x5.jpg",
-      "2x3": "content/monthly/2026-10/ec_pfas_free__2x3.jpg",
-      "9x16": "content/monthly/2026-10/ec_pfas_free__9x16.jpg"
+    "08_ec_dishwasher": {
+      "4x5": "content/monthly/2026-10/ec_dishwasher__4x5.jpg",
+      "2x3": "content/monthly/2026-10/ec_dishwasher__2x3.jpg",
+      "9x16": "content/monthly/2026-10/ec_dishwasher__9x16.jpg"
     },
-    "09_p2_pan_oven": {
-      "9x16": "content/monthly/2026-10/p2_pan_oven__9x16.jpg",
-      "2x3": "content/monthly/2026-10/p2_pan_oven__2x3.jpg",
-      "4x5": "content/monthly/2026-10/p2_pan_oven__4x5.jpg"
+    "09_p2_breakfast_eggs": {
+      "9x16": "content/monthly/2026-10/p2_breakfast_eggs__9x16.jpg",
+      "2x3": "content/monthly/2026-10/p2_breakfast_eggs__2x3.jpg",
+      "4x5": "content/monthly/2026-10/p2_breakfast_eggs__4x5.jpg"
     },
-    "10_ed_oven_transfer": {
-      "9x16": "content/monthly/2026-10/ed_oven_transfer__9x16.jpg",
-      "2x3": "content/monthly/2026-10/ed_oven_transfer__2x3.jpg",
-      "4x5": "content/monthly/2026-10/ed_oven_transfer__4x5.jpg"
+    "10_p4_counter_still": {
+      "9x16": "content/monthly/2026-10/p4_counter_still__9x16.jpg",
+      "2x3": "content/monthly/2026-10/p4_counter_still__2x3.jpg",
+      "4x5": "content/monthly/2026-10/p4_counter_still__4x5.jpg"
     },
-    "11_lotte_m": {
-      "4x5": "content/monthly/2026-10/lotte_m__4x5.jpg",
-      "2x3": "content/monthly/2026-10/lotte_m__2x3.jpg",
-      "9x16": "content/monthly/2026-10/lotte_m__9x16.jpg"
-    },
-    "12_p2_mother_dinner": {
+    "11_p2_mother_dinner": {
       "9x16": "content/monthly/2026-10/p2_mother_dinner__9x16.jpg",
       "2x3": "content/monthly/2026-10/p2_mother_dinner__2x3.jpg",
       "4x5": "content/monthly/2026-10/p2_mother_dinner__4x5.jpg"
     },
-    "13_ec_a_pan_for_life": {
-      "4x5": "content/monthly/2026-10/ec_a_pan_for_life__4x5.jpg",
-      "2x3": "content/monthly/2026-10/ec_a_pan_for_life__2x3.jpg",
-      "9x16": "content/monthly/2026-10/ec_a_pan_for_life__9x16.jpg"
+    "12_ec_all_cooktops": {
+      "4x5": "content/monthly/2026-10/ec_all_cooktops__4x5.jpg",
+      "2x3": "content/monthly/2026-10/ec_all_cooktops__2x3.jpg",
+      "9x16": "content/monthly/2026-10/ec_all_cooktops__9x16.jpg"
+    },
+    "13_lotte_m": {
+      "4x5": "content/monthly/2026-10/lotte_m__4x5.jpg",
+      "2x3": "content/monthly/2026-10/lotte_m__2x3.jpg",
+      "9x16": "content/monthly/2026-10/lotte_m__9x16.jpg"
     }
   }
 }

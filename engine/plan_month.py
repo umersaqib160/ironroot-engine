@@ -103,6 +103,15 @@ def order_pillars(counts: dict[str, int], rng: random.Random) -> list[str]:
     return seq
 
 
+def load_rejects() -> set[str]:
+    """Scene ids on the standing reject list. Missing file means none."""
+    f = HERE / "rejects.yaml"
+    if not f.exists():
+        return set()
+    d = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
+    return {r["id"] for r in (d.get("rejected") or [])}
+
+
 def build(year: int, month: int, seed: int | None = None,
           prefer_existing: bool = False,
           exclude: set[str] | None = None) -> list[dict]:
@@ -138,10 +147,12 @@ def build(year: int, month: int, seed: int | None = None,
             pool.sort(key=lambda x: x["id"] in blocked)   # not-recently-used first
         return pool
 
-    # Scenes Umer rejected at review are dropped before selection, not merely
-    # barred from reuse — otherwise the calendar picks one and pays to
-    # regenerate the thing he just turned down.
-    dropped = exclude or set()
+    # Scenes rejected at review are dropped before selection, not merely barred
+    # from reuse — otherwise the calendar picks one and pays to regenerate the
+    # thing that was just turned down. rejects.yaml is the standing list, so a
+    # rejection survives the run it was made in; --exclude adds to it for a
+    # one-off.
+    dropped = set(load_rejects()) | (exclude or set())
     scenes = {k: freshest(s for s in lib["scenes"]
                           if s["pillar"] == PILLAR_OF[k] and s["id"] not in dropped)
               for k in ("education", "product", "lifestyle")}
