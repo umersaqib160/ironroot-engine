@@ -33,12 +33,21 @@ jobs:
           BODY: ${{ github.event.comment.body }}
           TITLE: ${{ github.event.issue.title }}
         run: |
-          python3 engine/parse_comment.py --github >> "$GITHUB_OUTPUT"
-          echo "week=$(echo "$TITLE" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)" >> "$GITHUB_OUTPUT"
+          M=$(echo "$TITLE" | grep -oE '[0-9]{4}-[0-9]{2}$' | head -1)
+          W=$(echo "$TITLE" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)
+          # How many posts are actually in this batch. parse_comment defaults to
+          # 3, which was right when a batch was a week. A month has 13, so
+          # "redo 7" was being rejected as out of range on a post that exists.
+          N=3
+          [ -n "$M" ] && [ -f "content/monthly/$M/calendar.json" ] && \
+            N=$(python3 -c "import json;print(len(json.load(open('content/monthly/$M/calendar.json'))))")
+          echo "batch has $N posts"
+          N_IMAGES="$N" python3 engine/parse_comment.py --github >> "$GITHUB_OUTPUT"
+          echo "week=$W" >> "$GITHUB_OUTPUT"
           # Monthly issues are titled "Approve: 2026-10". The weekly pattern
           # above wants a full date and finds nothing in those, which is how the
           # month being approved went unrecorded.
-          echo "month=$(echo "$TITLE" | grep -oE '[0-9]{4}-[0-9]{2}$' | head -1)" >> "$GITHUB_OUTPUT"
+          echo "month=$M" >> "$GITHUB_OUTPUT"
           echo "--- understood as ---"
           python3 engine/parse_comment.py
 
@@ -91,19 +100,58 @@ jobs:
         run: |
           gh issue comment "${{ github.event.issue.number }}" \
             --repo "${{ github.repository }}" \
-            --body "There is no image ${{ steps.read.outputs.index }} this week. Reply with a number that exists, or just say what to change and I will redo them all."
+            --body "There is no post ${{ steps.read.outputs.index }} in this batch. Reply with a number that exists, or just say what to change without naming one."
+
+      # The redo path below regenerates in place and was written for a week of
+      # three images: it reads content/weekly/<date>/ and calls redo_one.py with
+      # a --week. A monthly issue has no date in its title, so it would run with
+      # an empty path and fail with a stack trace on a perfectly reasonable
+      # comment. Until the monthly equivalent is built, say what to do instead.
+      - name: Monthly change request
+        if: steps.read.outputs.decision == 'redo' && steps.read.outputs.month != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          M: ${{ steps.read.outputs.month }}
+          IDX: ${{ steps.read.outputs.index }}
+        run: |
+          ID=""
+          if [ -n "$IDX" ]; then
+            ID=$(python3 -c "
+          import json
+          posts = json.load(open('content/monthly/$M/calendar.json'))
+          print(next((p['id'] for p in posts if p['index'] == $IDX), ''))")
+          fi
+          {
+            echo "Noted, but changing a post is not wired to this comment box yet — only \`approve\` is."
+            echo
+            echo "To swap this one out: **Actions → Monthly content run → Run workflow**"
+            echo
+            echo "| field | value |"
+            echo "|---|---|"
+            echo "| month | \`$M\` |"
+            if [ -n "$ID" ]; then
+              echo "| drop | \`$ID\` |"
+            else
+              echo "| drop | the id of the post to replace |"
+            fi
+            echo "| reject | leave unticked unless the scene idea itself is wrong |"
+            echo
+            echo "It keeps the same date and replaces just that post. Nothing else in the month is touched."
+          } > /tmp/monthly_redo.md
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" --body-file /tmp/monthly_redo.md
 
       - uses: actions/setup-python@v6
-        if: steps.read.outputs.decision == 'redo'
+        if: steps.read.outputs.decision == 'redo' && steps.read.outputs.month == ''
         with:
           python-version: "3.12"
 
       - name: Install dependencies
-        if: steps.read.outputs.decision == 'redo'
+        if: steps.read.outputs.decision == 'redo' && steps.read.outputs.month == ''
         run: pip install --quiet requests pillow pyyaml
 
       - name: Acknowledge before spending anything
-        if: steps.read.outputs.decision == 'redo'
+        if: steps.read.outputs.decision == 'redo' && steps.read.outputs.month == ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -112,7 +160,7 @@ jobs:
             --body "On it — redoing ${{ steps.read.outputs.index && format('image {0}', steps.read.outputs.index) || 'all images' }}. Change: *${{ steps.read.outputs.note || 'none, re-rolling the same scene' }}*. This takes a couple of minutes."
 
       - name: Regenerate
-        if: steps.read.outputs.decision == 'redo'
+        if: steps.read.outputs.decision == 'redo' && steps.read.outputs.month == ''
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           WEEK: ${{ steps.read.outputs.week }}
@@ -135,7 +183,7 @@ jobs:
           done
 
       - name: Commit and report back
-        if: steps.read.outputs.decision == 'redo'
+        if: steps.read.outputs.decision == 'redo' && steps.read.outputs.month == ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

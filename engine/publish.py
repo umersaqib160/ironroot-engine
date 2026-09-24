@@ -101,7 +101,8 @@ def to_instagram(image_url: str, caption: str, ig_id: str, token: str) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--date", default=dt.date.today().isoformat())
+    ap.add_argument("--date", default="",
+                    help="YYYY-MM-DD. Empty means today.")
     ap.add_argument("--repo", required=True, help="owner/name, for the image URL")
     ap.add_argument("--sha", default="main",
                     help="commit to serve the image from. A sha pins the exact "
@@ -109,6 +110,19 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true",
                     help="say what would be posted, call nothing, write nothing")
     a = ap.parse_args()
+
+    # An argparse default does NOT cover this. The schedule has no date input,
+    # so the workflow passes --date "" — an empty STRING, not an absent flag.
+    # That made date[:7] an empty month, "nothing due" every single day, and an
+    # exit code of 0, so the daily post would have quietly never run and nothing
+    # would have complained. Caught in review before it shipped.
+    if not a.date.strip():
+        a.date = dt.date.today().isoformat()
+    try:
+        dt.date.fromisoformat(a.date)
+    except ValueError:
+        print(f"--date must be YYYY-MM-DD, got {a.date!r}", file=sys.stderr)
+        return 2
 
     if (ROOT / "engine" / "HALT").exists():
         print("engine/HALT present — nothing posted.")
