@@ -257,6 +257,103 @@ def build(year: int, month: int, seed: int | None = None,
     return ordered
 
 
+def add_reject(scene_id: str, by: str, reason: str) -> None:
+    """Append to the standing reject list, keeping the file readable by hand."""
+    f = HERE / "rejects.yaml"
+    d = yaml.safe_load(f.read_text(encoding="utf-8")) if f.exists() else {}
+    d = d or {}
+    entries = d.get("rejected") or []
+    if any(r["id"] == scene_id for r in entries):
+        return
+    with f.open("a", encoding="utf-8") as fh:
+        fh.write(f"\n  - id: {scene_id}\n"
+                 f"    by: {by}\n"
+                 f"    date: {dt.date.today().isoformat()}\n"
+                 f"    reason: {reason}\n")
+
+
+def swap(posts: list[dict], drop_id: str, seed: int | None = None,
+         exclude: set[str] | None = None) -> tuple[list[dict], dict]:
+    """
+    Replace ONE post in an already-built month and leave the rest untouched.
+
+    Rebuilding the month from scratch would be the easy way and the wrong one:
+    it reshuffles every date, throws away captions that were already paid for,
+    and hands back a month Umer has not reviewed instead of the one he has,
+    minus one post. So the slot keeps its date, its index and its pillar, and
+    only the scene inside it changes.
+
+    The replacement still has to respect its NEIGHBOURS — a swap that puts the
+    same subject, mood or dish next to the day before is how a month starts
+    looking repetitive one post at a time.
+
+    Returns the full post list and the new post.
+    """
+    lib, cards, revs, _ = load()
+    rng = random.Random(seed)
+    pos = next((i for i, x in enumerate(posts) if x["id"] == drop_id), None)
+    if pos is None:
+        raise SystemExit(f"{drop_id} is not in this month")
+
+    old = posts[pos]
+    before = posts[pos - 1] if pos > 0 else {}
+    after = posts[pos + 1] if pos + 1 < len(posts) else {}
+    taken = {x["id"] for x in posts} | set(load_rejects()) | (exclude or set())
+
+    def unclashed(pool, field):
+        """Prefer candidates that differ from both neighbours on `field`."""
+        near = {before.get(field), after.get(field)} - {None, "card"}
+        return [c for c in pool if c.get(field) not in near] or pool
+
+    if old["kind"] == "education_card":
+        pool = [c for c in cards["education_cards"] if c["id"] not in taken]
+        if not pool:
+            raise SystemExit("no unused education card left — add one to cards.yaml")
+        it = rng.choice(pool)
+        new = {"kind": "education_card", "id": it["id"], "headline": it["headline"],
+               "sub": it.get("sub", ""), "subject": "card", "mood_tone": "card",
+               "dish": None, "pillar": old["pillar"]}
+    elif old["kind"] == "review_card":
+        pool = [r for r in revs["reviews"] if r["id"] not in taken]
+        if not pool:
+            raise SystemExit("no unused review left — add one to reviews.yaml")
+        it = rng.choice(pool)
+        new = {"kind": "review_card", "id": it["id"], "name": it["name"],
+               "quote": it["english"].strip(), "subject": "card",
+               "mood_tone": "card", "dish": None, "pillar": old["pillar"]}
+    else:
+        pool = [x for x in lib["scenes"]
+                if x["pillar"] == PILLAR_OF[old["pillar"]] and x["id"] not in taken]
+        if not pool:
+            raise SystemExit(
+                f"every {old['pillar']} scene is already used or rejected — "
+                f"add one to scenes.yaml")
+        rng.shuffle(pool)
+        it = unclashed(pool, "subject")[0]
+        new = {"kind": "generated", "id": it["id"], "text": it["text"],
+               "subject": it["subject"], "claim": it.get("claim"),
+               "pillar": old["pillar"], "mood_tone": None, "dish": None}
+
+        near_tone = {before.get("mood_tone"), after.get("mood_tone")} - {None, "card"}
+        moods = [m for m in lib["moods"] if m["tone"] not in near_tone] \
+            or lib["moods"]
+        mood = rng.choice(moods)
+        new["mood"], new["mood_tone"] = mood["text"], mood["tone"]
+
+        if takes_dish(new["text"]):
+            near = {before.get("dish"), after.get("dish")} - {None}
+            used = {x.get("dish") for x in posts} - {None}
+            dishes = [d for d in lib["dishes"] if not d.startswith("nothing")]
+            opts = ([d for d in dishes if d not in near and d not in used]
+                    or [d for d in dishes if d not in near] or dishes)
+            new["dish"] = rng.choice(opts)
+
+    new.update({"index": old["index"], "date": old["date"]})
+    posts = list(posts)
+    posts[pos] = new
+    return posts, new
+
+
 def record(year: int, month: int, posts: list[dict]) -> None:
     _, _, _, hist = load()
     key = f"{year:04d}-{month:02d}"

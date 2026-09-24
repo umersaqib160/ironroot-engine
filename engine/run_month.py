@@ -204,6 +204,15 @@ def main() -> int:
     ap.add_argument("--prefer-existing", action="store_true",
                     help="bridge batches: build the calendar from scenes that "
                          "already have an image")
+    ap.add_argument("--drop", default="",
+                    help="comma-separated post ids to throw out of a month that "
+                         "is already built. Each one is replaced in place — same "
+                         "date, same pillar — and its image and caption are "
+                         "discarded so the slot is rebuilt from scratch.")
+    ap.add_argument("--reject", action="store_true",
+                    help="with --drop: also add the scene to rejects.yaml so it "
+                         "is never scheduled again. Without it the scene stays "
+                         "in the pool and only this generation is thrown away.")
     ap.add_argument("--exclude", default="",
                     help="comma-separated scene ids never to reuse — the ones "
                          "Umer rejected on review")
@@ -240,6 +249,45 @@ def main() -> int:
         plan_path.write_text(json.dumps(posts, indent=2) + "\n", encoding="utf-8")
         pm.record(year, month, posts)
         print(f"calendar built: {len(posts)} posts")
+
+    dropped = [x.strip() for x in a.drop.split(",") if x.strip()]
+    if dropped:
+        was = {x["id"]: x["index"] for x in posts}
+        for did in dropped:
+            posts, fresh = pm.swap(posts, did, a.seed,
+                                   {x.strip() for x in a.exclude.split(",")
+                                    if x.strip()})
+            key = f"{was[did]:02d}_{did}"
+            # Only ever delete inside THIS month's folder. state.json records
+            # repo-relative paths, and a state file copied from another month
+            # would otherwise point the unlink at that month's images — which is
+            # exactly what happened the first time this was tested.
+            for rel in (state["done"].pop(key, {}) or {}).values():
+                f = (ROOT / rel).resolve()
+                if f.is_relative_to(outdir.resolve()):
+                    f.unlink(missing_ok=True)
+                else:
+                    print(f"     refusing to delete outside {a.month}: {rel}")
+            for ratio in RATIOS:
+                (outdir / f"{did}__{ratio}.jpg").unlink(missing_ok=True)
+            (outdir / f"{did}__master.png").unlink(missing_ok=True)
+            state["captions"].pop(did, None)
+            print(f"dropped {did} -> {fresh['id']} "
+                  f"({fresh['pillar']}, {fresh['date']})")
+            if a.reject:
+                pm.add_reject(did, "Umer", f"dropped from {a.month} at review")
+                print(f"  {did} added to rejects.yaml — it will not be "
+                      f"scheduled again")
+        hard, soft = pm.validate(posts)
+        for w in soft:
+            print("  note:", w)
+        if hard:
+            for h in hard:
+                print("  FAIL:", h, file=sys.stderr)
+            return 1
+        plan_path.write_text(json.dumps(posts, indent=2) + "\n", encoding="utf-8")
+        pm.record(year, month, posts)
+        save_state(state_path, state)
 
     cards = yaml.safe_load((HERE / "cards.yaml").read_text(encoding="utf-8"))
     photos = [ROOT / p for p in cards["social_proof"]["photo_pool"]]
