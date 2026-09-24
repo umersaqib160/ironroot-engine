@@ -104,7 +104,8 @@ def order_pillars(counts: dict[str, int], rng: random.Random) -> list[str]:
 
 
 def build(year: int, month: int, seed: int | None = None,
-          prefer_existing: bool = False) -> list[dict]:
+          prefer_existing: bool = False,
+          exclude: set[str] | None = None) -> list[dict]:
     """
     Choose the 13 items FIRST, then order them, then dress them.
 
@@ -137,7 +138,12 @@ def build(year: int, month: int, seed: int | None = None,
             pool.sort(key=lambda x: x["id"] in blocked)   # not-recently-used first
         return pool
 
-    scenes = {k: freshest(s for s in lib["scenes"] if s["pillar"] == PILLAR_OF[k])
+    # Scenes Umer rejected at review are dropped before selection, not merely
+    # barred from reuse — otherwise the calendar picks one and pays to
+    # regenerate the thing he just turned down.
+    dropped = exclude or set()
+    scenes = {k: freshest(s for s in lib["scenes"]
+                          if s["pillar"] == PILLAR_OF[k] and s["id"] not in dropped)
               for k in ("education", "product", "lifestyle")}
     ed_cards = freshest(cards["education_cards"])
     reviews = freshest(revs["reviews"])
@@ -291,12 +297,14 @@ if __name__ == "__main__":
     ap.add_argument("--month", required=True, help="YYYY-MM")
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--record", action="store_true")
+    ap.add_argument("--exclude", default="")
     ap.add_argument("--prefer-existing", action="store_true",
                     help="bridge batches: favour scenes that already have an "
                          "image over the usual not-recently-used rule")
     a = ap.parse_args()
     y, m = (int(x) for x in a.month.split("-"))
-    posts = build(y, m, a.seed, a.prefer_existing)
+    posts = build(y, m, a.seed, a.prefer_existing,
+                  {x.strip() for x in a.exclude.split(",") if x.strip()})
     for p in posts:
         extra = p.get("text") or p.get("headline") or f"\"{p['quote'][:44]}...\" — {p['name']}"
         dish = f" | {p['dish']}" if p.get("dish") else ""

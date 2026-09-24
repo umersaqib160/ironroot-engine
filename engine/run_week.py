@@ -207,6 +207,12 @@ def main() -> int:
 
     Path(a.out_issue).write_text(
         issue_body(week, picks, files, a.repo, a.sha, a.run_url), encoding="utf-8")
+    # Tell the workflow which folder this run wrote, so the artifact can be
+    # scoped to it. Uploading content/weekly/ wholesale meant every week's zip
+    # contained every previous week's folder.
+    if os.environ.get("GITHUB_ENV"):
+        with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as fh:
+            fh.write(f"BUNDLE_DIR={outdir.relative_to(ROOT).as_posix()}\n")
     print(f"\nbundle ready in {outdir.relative_to(ROOT)}")
     return 0
 

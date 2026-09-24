@@ -4,10 +4,13 @@
 # the platforms themselves. What the engine actually needs for week-to-week
 # variety is the CONCEPTS, which live in captions.md — and those ARE versioned.
 content/weekly/**/*.png
+content/monthly/**/*.png
 content/weekly/**/*.jpg
 content/weekly/**/*.jpeg
 content/weekly/**/*.mp4
 content/weekly/**/*.mov
+content/monthly/**/*.jpeg
+content/monthly/**/*.mp4
 
 # Keep every captions.md and QC block
 !content/weekly/**/captions.md
@@ -19,6 +22,13 @@ content/weekly/**/*.mov
 !content/weekly/**/*__2x3.jpg
 !content/weekly/**/*__9x16.jpg
 !content/weekly/**/bundle.json
+!content/monthly/**/*__4x5.jpg
+!content/monthly/**/*__2x3.jpg
+!content/monthly/**/*__9x16.jpg
+!content/monthly/**/captions.md
+!content/monthly/**/bundle.json
+!content/monthly/**/calendar.json
+!content/monthly/**/state.json
 
 # --- Secrets: never commit. GitHub Actions secrets only. --------------------
 .env

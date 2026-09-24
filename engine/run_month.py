@@ -97,7 +97,8 @@ def main() -> int:
         posts = json.loads(plan_path.read_text(encoding="utf-8"))
         print(f"resuming — calendar already built ({len(posts)} posts)")
     else:
-        posts = pm.build(year, month, a.seed, a.prefer_existing)
+        posts = pm.build(year, month, a.seed, a.prefer_existing,
+                         {x.strip() for x in a.exclude.split(",") if x.strip()})
         hard, soft = pm.validate(posts)
         for w in soft:
             print("  note:", w)
@@ -170,6 +171,9 @@ def main() -> int:
                     "status": {k: "pending" for k in state["done"]}},
                    indent=2) + "\n", encoding="utf-8")
 
+    if os.environ.get("GITHUB_ENV"):
+        with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as fh:
+            fh.write(f"BUNDLE_DIR={outdir.relative_to(ROOT).as_posix()}\n")
     if failed:
         print("Re-run to retry only the failures — completed posts are skipped.")
     return 1 if failed and not state["done"] else 0
