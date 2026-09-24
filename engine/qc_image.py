@@ -169,6 +169,16 @@ Answer these questions about the SECOND image:
    pans carry PFAS, so one in our own photo argues against us. Pots, kettles and
    saucepans on a back burner are fine; a second FRYING PAN is not.
 
+   Be careful here, because this question has produced a false alarm before. A
+   gas hob has a round black BURNER CAP sitting on each ring, with the pan
+   supports radiating out from it. On an empty burner that cap is a dark disc
+   roughly the size of a small pan, and it was once reported as "a black
+   non-stick pan on the adjacent burner". It is part of the cooker. A pan has a
+   wall and a handle and stands above the supports; a burner cap is flat, sits
+   between the supports and has neither. Electric and induction hobs have dark
+   circles printed or etched on the glass for the same reason — also not pans.
+   Answer true only for something you can actually see is a PAN.
+
 {HANDLE}
 Also flag anything else that would embarrass the brand: mangled text on props,
 copper cookware, a visibly scratched or damaged pan.
