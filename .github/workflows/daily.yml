@@ -1,0 +1,98 @@
+# The daily post.
+#
+# Posts the one item due today to Instagram and Facebook, and does nothing at
+# all on a day with nothing scheduled — which is most days, since the calendar
+# is Mon/Wed/Fri.
+#
+# It will not post unless the month carries an APPROVED file, written by the
+# approval workflow when Umer comments `approve`. It will not post the same day
+# twice: every publish is recorded in posted.json and committed.
+#
+# Kill switch: create a file named engine/HALT and nothing posts. Delete it to
+# resume. That is the way to stop a month mid-flight.
+
+name: Daily post
+
+on:
+  schedule:
+    - cron: "0 15 * * *"      # 15:00 UTC — late morning on the US east coast
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Date to post, YYYY-MM-DD. Blank = today."
+        required: false
+        default: ""
+      dry_run:
+        description: "Say what WOULD be posted and send nothing. Safe to run any time."
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: daily-post           # never two posts racing for the same day
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --quiet requests
+
+      - name: Post what is due
+        id: post
+        env:
+          # Instagram fetches the image from the repo's own raw URL, so the
+          # token never has to handle the file itself.
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          META_PAGE_ID:      ${{ secrets.META_PAGE_ID }}
+          META_IG_USER_ID:   ${{ secrets.META_IG_USER_ID }}
+        run: |
+          python engine/publish.py \
+            --date "${{ inputs.date || '' }}" \
+            --repo "${{ github.repository }}" \
+            --sha  "${{ github.sha }}" \
+            ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      - name: Record what went out
+        if: always()
+        run: |
+          git config user.name  "ironroot-engine"
+          git config user.email "noreply@ironrootstore.com"
+          git add content/monthly/*/posted.json 2>/dev/null || true
+          git diff --cached --quiet && { echo "nothing to record"; exit 0; }
+          git commit -m "Posted $(date -u +%Y-%m-%d) [skip ci]"
+          git pull --rebase --autostash origin "${{ github.ref_name }}"
+          git push
+
+      # A silent failure here means a day quietly not posted, which nobody would
+      # notice until the gap showed up in the feed. So it raises an issue.
+      - name: Say so if it failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          cat > /tmp/body.md <<EOF
+          The daily post did not complete.
+
+          Log: $RUN_URL
+
+          Re-running this workflow is safe. Anything already posted is recorded
+          in posted.json and is skipped, so a retry sends only what is actually
+          missing.
+          EOF
+          gh issue create \
+            --title "Daily post failed: $(date -u +%Y-%m-%d)" \
+            --body-file /tmp/body.md
