@@ -42,16 +42,51 @@
     },
     {
       "kind": "generated",
-      "id": "p2_pan_one_pan_dinner",
-      "text": "a whole one-pan dinner finished in the pan on the hob, no people in frame",
+      "id": "p2_pan_on_hob",
+      "text": "the pan sits on the hob with vegetables cooking in it and no people in frame",
       "subject": "pan_only",
       "claim": null,
       "pillar": "product",
+      "on_heat": true,
       "mood_tone": "light",
       "dish": null,
-      "mood": "bright and airy, morning sun coming through the window",
+      "mood": "sunlit and lively, a busy family kitchen",
       "index": 4,
-      "date": "2026-10-09"
+      "date": "2026-10-09",
+      "qc": {
+        "file": "p2_pan_on_hob__4x5.jpg",
+        "frame_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "top_step": 0.0,
+          "bottom_step": 0.0,
+          "frame": false
+        },
+        "chrome_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "chrome": false
+        },
+        "failures": [
+          "vision: another frying pan is in the shot",
+          "concern: Black non-stick frying pan visible on adjacent burner in bottom left - directly contradicts brand messaging about avoiding coated PFAS cookware"
+        ],
+        "vision": {
+          "frame": false,
+          "rim_lip": false,
+          "one_handle": true,
+          "other_cookware": true,
+          "handle_wrong_way": false,
+          "other_concerns": [
+            "Black non-stick frying pan visible on adjacent burner in bottom left - directly contradicts brand messaging about avoiding coated PFAS cookware"
+          ],
+          "verdict": "FAIL",
+          "why": "A black non-stick frying pan is clearly visible on the adjacent burner, which undermines the brand's core anti-PFAS positioning."
+        },
+        "pass": false
+      }
     },
     {
       "kind": "education_card",
@@ -256,46 +291,6 @@
           "Captions describe a cooking workflow (sear then finish in oven) that contradicts the visible action of removing the already-cooked food from the oven",
           "The cooking process described (stovetop searing followed by oven finishing) is not shown or supported by this single moment of removing finished food"
         ]
-      }
-    },
-    "p2_pan_one_pan_dinner": {
-      "instagram": "Sunday roast in one pan.\n\nChicken thighs, potatoes, carrots, red onion, and fresh thyme \u2014 everything goes in together. The tri-ply base holds even heat across the whole pan, so the vegetables roast while the skin crisps.\n\nNo chemical coatings. Nothing to flake off into your food. Just stainless steel that goes from stovetop to oven to table, and cleans up after.\n\nThis is what cooking without PFAS looks like.",
-      "facebook": "One-pan roast chicken with root vegetables.\n\nChicken thighs, potatoes, carrots, and red onion, roasted together in our tri-ply stainless steel pan. The even heat distribution means everything cooks through at the same pace \u2014 crispy skin on top, tender vegetables underneath.\n\nNo PFAS. No chemical coatings. Oven safe to 500\u00b0F, and when you're done, it goes straight in the dishwasher or scrubs clean in seconds.\n\nThe last pan you'll need to buy.",
-      "pinterest": "One-Pan Roast Chicken with Root Vegetables\n\nEverything you need for Sunday dinner in a single PFAS-free stainless steel pan. Chicken thighs, golden potatoes, carrots, and red onion with fresh thyme.\n\nTri-ply construction means even heat from edge to center. Oven safe to 500\u00b0F. No coatings to worry about \u2014 just clean, durable stainless steel that will last a lifetime.\n\nThe pan for people who care what goes into their food.",
-      "tiktok": "Sunday dinner, one pan, zero chemicals.\n\nChicken, potatoes, carrots, onion, thyme. Tri-ply stainless heats evenly, goes in the oven at 500\u00b0F, and has no coating to scratch off.\n\nYour non-stick pan has PFAS. This one doesn't.\n\n#CleanEating #PFASFree #OnePanMeal #ChickenDinner #StainlessSteel #ToxinFreeCooking #SundayDinner #HealthyKitchen",
-      "visible_in_image": [
-        "stainless steel pan with long handle",
-        "four pieces of cooked chicken with golden brown skin",
-        "roasted potatoes",
-        "roasted carrots",
-        "red onion wedges",
-        "fresh thyme sprigs",
-        "wooden spoon in the pan",
-        "gas stovetop with black grates",
-        "white and grey marble countertop",
-        "white ceramic pot with fresh basil plant",
-        "wooden cutting board",
-        "bowl of lemons",
-        "bright natural light from window"
-      ],
-      "concerns": [],
-      "verification": {
-        "instagram": {
-          "match": true,
-          "problems": []
-        },
-        "facebook": {
-          "match": true,
-          "problems": []
-        },
-        "pinterest": {
-          "match": true,
-          "problems": []
-        },
-        "tiktok": {
-          "match": true,
-          "problems": []
-        }
       }
     },
     "ec_no_coating_to_ruin": {
@@ -507,13 +502,94 @@
           "All captions mention 'PFAS-free' and 'tri-ply construction' - these material properties cannot be visually confirmed from the image alone"
         ]
       }
+    },
+    "p2_pan_on_hob": {
+      "instagram": "The dinner that gets everyone to the table.\n\nBell peppers, cherry tomatoes, zucchini, onion \u2014 stir-fried in a pan that can take the heat and go straight to the table. No chemical coatings to worry about, no special utensils required. Just vegetables, olive oil, and a pan built to last.\n\nStainless steel. PFAS-free. The last pan you'll ever buy.",
+      "facebook": "The dinner that gets everyone to the table.\n\nBell peppers, cherry tomatoes, zucchini, onion \u2014 stir-fried in a pan that can take the heat and go straight to the table. No chemical coatings to worry about, no special utensils required. Just vegetables, olive oil, and a pan built to last.\n\nStainless steel. PFAS-free. Oven safe to 500\u00b0F. Dishwasher safe. Works on all cooktops including induction.\n\nThe last pan you'll ever buy.",
+      "pinterest": "Quick vegetable stir-fry in a PFAS-free stainless steel pan | Bell peppers, tomatoes, zucchini, onion cooked in chemical-free cookware | IronRoot tri-ply stainless frying pan | Healthy cooking without non-stick coatings | The last pan you'll ever buy",
+      "tiktok": "The vegetable stir-fry that doesn't need a coated pan.\n\nPeppers, tomatoes, zucchini, onion. High heat. No PFAS. No coating to scratch off.\n\nJust stainless steel doing what it's meant to do.\n\n#pfasfree #stainlesssteel #cleancooking #healthykitchen #ironrootpan",
+      "visible_in_image": [
+        "stainless steel frying pan on gas stovetop",
+        "stir-fried vegetables in the pan: red bell pepper, yellow bell pepper, green bell pepper, cherry tomatoes, sliced zucchini, sliced onion",
+        "wooden cutting board with cherry tomatoes on the vine, sliced zucchini, half a yellow bell pepper, knife",
+        "white plate with orange rim containing sliced vegetables",
+        "glass bottle of olive oil",
+        "white bowl with herbs or spices",
+        "mortar and pestle",
+        "wooden spoons in white ceramic holder",
+        "wooden cutting boards leaning against wall",
+        "white bowls stacked",
+        "children's drawings clipped to refrigerator",
+        "potted green plant on windowsill",
+        "checkered kitchen towel",
+        "gas stovetop with black grates"
+      ],
+      "concerns": [],
+      "verification": {
+        "instagram": {
+          "match": true,
+          "problems": []
+        },
+        "facebook": {
+          "match": true,
+          "problems": []
+        },
+        "pinterest": {
+          "match": false,
+          "problems": [
+            "Claims 'IronRoot tri-ply stainless frying pan' as the specific brand/product, but no branding is visible in the image to verify this claim"
+          ]
+        },
+        "tiktok": {
+          "match": false,
+          "problems": [
+            "Hashtag '#ironrootpan' asserts a specific brand name that is not visible or verifiable in the image"
+          ]
+        }
+      }
+    },
+    "p4_counter_still": {
+      "instagram": "Before anything else goes in the pan, this does.\n\nStainless doesn't need a coating to cook cleanly \u2014 it needs heat. Preheat the empty pan, add fat, wait ten seconds, then add the food. Eggs release, fish lifts, nothing sticks.\n\nNo PFAS. No chemical layer to scratch off. Just steel, and the minute it takes to let it come up to temperature.\n\nThe pan in the frame is the one we sell. The rest is already in your kitchen.",
+      "facebook": "The trick to cooking on stainless? Let the pan heat first.\n\nNo coating, no chemicals, no PFAS \u2014 just an empty pan on medium heat for two minutes, then oil, then food. That's the whole technique. Eggs release, protein lifts clean, and there's nothing to wear out because there was never anything applied in the first place.\n\nIronRoot is tri-ply stainless steel. It heats evenly, goes in the oven to 500\u00b0F, and cleans up in the dishwasher. The last pan you'll need to buy.\n\nShips free. 30-day guarantee. $79.",
+      "pinterest": "How to cook on stainless without sticking: preheat the empty pan, add fat, wait, then cook. No PFAS coating required \u2014 just technique and a pan that conducts heat evenly. Tri-ply stainless, oven-safe to 500\u00b0F, dishwasher safe. The last frying pan you'll buy. $79, ships free.",
+      "tiktok": "Preheat it empty. Add oil. Wait ten seconds. Then cook.\n\nThat's the whole trick with stainless. No PFAS, no coating, nothing to scratch off. Just a pan that heats evenly and lasts forever.\n\nIronRoot. Tri-ply steel. $79. Ships free.",
+      "visible_in_image": [
+        "stainless steel frying pan with metal handle on wooden cutting board",
+        "carton of brown eggs labeled farm fresh",
+        "bunch of fresh green herbs",
+        "cluster of red tomatoes",
+        "two cloves of garlic",
+        "clear bottle of yellow oil",
+        "small white bowl containing white powder or salt",
+        "white kitchen cabinets with wooden countertop",
+        "potted green plants on windowsill",
+        "large window with natural daylight"
+      ],
+      "concerns": [],
+      "verification": {
+        "instagram": {
+          "match": true,
+          "problems": []
+        },
+        "facebook": {
+          "match": true,
+          "problems": []
+        },
+        "pinterest": {
+          "match": true,
+          "problems": []
+        },
+        "tiktok": {
+          "match": true,
+          "problems": []
+        }
+      }
     }
   },
   "status": {
     "01_bd_durability_scrub": "pending",
     "02_p2_pan_oven": "pending",
     "03_ed_oven_transfer": "pending",
-    "04_p2_pan_one_pan_dinner": "pending",
     "05_ec_no_coating_to_ruin": "pending",
     "06_jeroen_k": "pending",
     "07_p4_drying_rack": "pending",
@@ -522,6 +598,7 @@
     "10_p4_counter_still": "pending",
     "11_p2_mother_dinner": "pending",
     "12_ec_all_cooktops": "pending",
-    "13_lotte_m": "pending"
+    "13_lotte_m": "pending",
+    "04_p2_pan_on_hob": "pending"
   }
 }

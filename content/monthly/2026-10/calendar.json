@@ -40,14 +40,15 @@
   },
   {
     "kind": "generated",
-    "id": "p2_pan_one_pan_dinner",
-    "text": "a whole one-pan dinner finished in the pan on the hob, no people in frame",
+    "id": "p2_pan_on_hob",
+    "text": "the pan sits on the hob with vegetables cooking in it and no people in frame",
     "subject": "pan_only",
     "claim": null,
     "pillar": "product",
+    "on_heat": true,
     "mood_tone": "light",
     "dish": null,
-    "mood": "bright and airy, morning sun coming through the window",
+    "mood": "sunlit and lively, a busy family kitchen",
     "index": 4,
     "date": "2026-10-09"
   },

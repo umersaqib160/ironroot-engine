@@ -122,49 +122,41 @@ Stovetop to oven, one pan. IronRoot goes to 500°F — sear it, then finish it. 
   - Captions describe a cooking workflow (sear then finish in oven) that contradicts the visible action of removing the already-cooked food from the oven
   - The cooking process described (stovetop searing followed by oven finishing) is not shown or supported by this single moment of removing finished food
 
-## 4. 2026-10-09 — `p2_pan_one_pan_dinner`
+## 4. 2026-10-09 — `p2_pan_on_hob`
 pillar **product** · generated
 
 
 **Instagram**
 
-Sunday roast in one pan.
+The dinner that gets everyone to the table.
 
-Chicken thighs, potatoes, carrots, red onion, and fresh thyme — everything goes in together. The tri-ply base holds even heat across the whole pan, so the vegetables roast while the skin crisps.
+Bell peppers, cherry tomatoes, zucchini, onion — stir-fried in a pan that can take the heat and go straight to the table. No chemical coatings to worry about, no special utensils required. Just vegetables, olive oil, and a pan built to last.
 
-No chemical coatings. Nothing to flake off into your food. Just stainless steel that goes from stovetop to oven to table, and cleans up after.
-
-This is what cooking without PFAS looks like.
+Stainless steel. PFAS-free. The last pan you'll ever buy.
 
 **Facebook**
 
-One-pan roast chicken with root vegetables.
+The dinner that gets everyone to the table.
 
-Chicken thighs, potatoes, carrots, and red onion, roasted together in our tri-ply stainless steel pan. The even heat distribution means everything cooks through at the same pace — crispy skin on top, tender vegetables underneath.
+Bell peppers, cherry tomatoes, zucchini, onion — stir-fried in a pan that can take the heat and go straight to the table. No chemical coatings to worry about, no special utensils required. Just vegetables, olive oil, and a pan built to last.
 
-No PFAS. No chemical coatings. Oven safe to 500°F, and when you're done, it goes straight in the dishwasher or scrubs clean in seconds.
+Stainless steel. PFAS-free. Oven safe to 500°F. Dishwasher safe. Works on all cooktops including induction.
 
-The last pan you'll need to buy.
+The last pan you'll ever buy.
 
 **Pinterest**
 
-One-Pan Roast Chicken with Root Vegetables
-
-Everything you need for Sunday dinner in a single PFAS-free stainless steel pan. Chicken thighs, golden potatoes, carrots, and red onion with fresh thyme.
-
-Tri-ply construction means even heat from edge to center. Oven safe to 500°F. No coatings to worry about — just clean, durable stainless steel that will last a lifetime.
-
-The pan for people who care what goes into their food.
+Quick vegetable stir-fry in a PFAS-free stainless steel pan | Bell peppers, tomatoes, zucchini, onion cooked in chemical-free cookware | IronRoot tri-ply stainless frying pan | Healthy cooking without non-stick coatings | The last pan you'll ever buy
 
 **Tiktok**
 
-Sunday dinner, one pan, zero chemicals.
+The vegetable stir-fry that doesn't need a coated pan.
 
-Chicken, potatoes, carrots, onion, thyme. Tri-ply stainless heats evenly, goes in the oven at 500°F, and has no coating to scratch off.
+Peppers, tomatoes, zucchini, onion. High heat. No PFAS. No coating to scratch off.
 
-Your non-stick pan has PFAS. This one doesn't.
+Just stainless steel doing what it's meant to do.
 
-#CleanEating #PFASFree #OnePanMeal #ChickenDinner #StainlessSteel #ToxinFreeCooking #SundayDinner #HealthyKitchen
+#pfasfree #stainlesssteel #cleancooking #healthykitchen #ironrootpan
 
 - caption/image check: **FAIL**
 
@@ -319,7 +311,39 @@ The last pan you'll buy. $79.
 pillar **lifestyle** · generated
 
 
-_caption not written — ANTHROPIC_API_KEY was not set._
+**Instagram**
+
+Before anything else goes in the pan, this does.
+
+Stainless doesn't need a coating to cook cleanly — it needs heat. Preheat the empty pan, add fat, wait ten seconds, then add the food. Eggs release, fish lifts, nothing sticks.
+
+No PFAS. No chemical layer to scratch off. Just steel, and the minute it takes to let it come up to temperature.
+
+The pan in the frame is the one we sell. The rest is already in your kitchen.
+
+**Facebook**
+
+The trick to cooking on stainless? Let the pan heat first.
+
+No coating, no chemicals, no PFAS — just an empty pan on medium heat for two minutes, then oil, then food. That's the whole technique. Eggs release, protein lifts clean, and there's nothing to wear out because there was never anything applied in the first place.
+
+IronRoot is tri-ply stainless steel. It heats evenly, goes in the oven to 500°F, and cleans up in the dishwasher. The last pan you'll need to buy.
+
+Ships free. 30-day guarantee. $79.
+
+**Pinterest**
+
+How to cook on stainless without sticking: preheat the empty pan, add fat, wait, then cook. No PFAS coating required — just technique and a pan that conducts heat evenly. Tri-ply stainless, oven-safe to 500°F, dishwasher safe. The last frying pan you'll buy. $79, ships free.
+
+**Tiktok**
+
+Preheat it empty. Add oil. Wait ten seconds. Then cook.
+
+That's the whole trick with stainless. No PFAS, no coating, nothing to scratch off. Just a pan that heats evenly and lasts forever.
+
+IronRoot. Tri-ply steel. $79. Ships free.
+
+- caption/image check: **FAIL**
 
 ## 11. 2026-10-26 — `p2_mother_dinner`
 pillar **product** · generated
