@@ -26,16 +26,16 @@ on:
         type: choice
         options: ["1K", "2K", "4K"]
       drop:
-        description: "Post ids to throw out of a month already built, comma-separated. Each is replaced in place, same date."
+        description: "THROW OUT A POST from a month already built. Paste its id (e.g. p2_pan_oven). A different scene takes its place on the same date. Leave blank for a normal run."
         required: false
         default: ""
       reject:
-        description: "With drop: never schedule that scene again (not just this generation)"
+        description: "BAN THE SCENE FOR EVER. Only tick if the IDEA is wrong. If the idea is fine and only the photo came out badly, LEAVE THIS UNTICKED."
         required: false
         default: false
         type: boolean
       exclude:
-        description: "Extra scene ids to skip, comma-separated (rejects.yaml is always applied)"
+        description: "Advanced, normally blank. Scene ids to keep out of THIS run only, when building a month from scratch."
         required: false
         default: ""
 
