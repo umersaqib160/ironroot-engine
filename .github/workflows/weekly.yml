@@ -8,10 +8,24 @@
 
 name: Weekly content run
 
+# SCHEDULE DISABLED 24 Sep 2026, at Umer's request.
+#
+# The weekly run worked — it fired unattended on 7, 14 and 21 September and
+# produced nine images. But the project has moved to monthly batches
+# (automation/monthly_plan.md), and leaving this armed would mean two schedules
+# generating content and two sets of approval issues competing for attention.
+#
+# Kept rather than deleted: it is still the only end-to-end path that has
+# actually run, so it stays available by hand while the monthly run is built and
+# proven. Restore the schedule by uncommenting the two lines below.
+#
+# Known bug, not worth fixing here: the weekly picker can choose the same scene
+# twice in one batch — it did on 31 August. The monthly picker cannot, because it
+# chooses the whole set up front.
+
 on:
-  schedule:
-    # 06:00 UTC Monday = 08:00 Amsterdam in summer, 07:00 in winter.
-    - cron: "0 6 * * 1"
+  # schedule:
+  #   - cron: "0 6 * * 1"     # 06:00 UTC Monday
   workflow_dispatch:
     inputs:
       count:
