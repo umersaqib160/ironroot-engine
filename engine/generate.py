@@ -16,7 +16,7 @@ Masters are generated at 9:16 because it is the tallest target — reframe.py cu
 every generation is another chance to draw the pan wrong.
 """
 from __future__ import annotations
-import base64, hashlib, json, os, sys, time
+import base64, hashlib, json, os, re, sys, time
 from pathlib import Path
 import requests
 
@@ -62,14 +62,51 @@ CONSTRAINT = ("Make sure the pan is not too deep and has no rim lip. "
               "It must be a plain photograph with no app interface, no icons, "
               "no buttons, no border and no caption bar.")
 
+# Added only when the pan is actually ON a cooktop, because it is meaningless
+# otherwise — a pan in a drying rack or a dishwasher has no "cook" to point at,
+# and a constraint that does not apply to the scene is noise the model has to
+# work around.
+#
+#   Umer, 24 Sep, on p2_pan_one_pan_dinner: "The handle of the pan is towards
+#   the window and away from the chef. That's not how you place a pan on the
+#   stove."
+#
+# He is right twice over. It is wrong professionally — the handle is turned in
+# so it is not knocked and so the cook can reach it — and it is wrong for us,
+# because our handle is a selling point and pointing it away from the viewer
+# wastes it. A chef will notice this before they notice anything else.
+HOB_RULE = ("The pan's handle points toward the person cooking, over the "
+            "counter, never out across the room and never over another burner.")
+
+# Whether the pan is on heat is a FACT ABOUT THE SCENE, so it lives in
+# scenes.yaml as `on_heat: true`, not in a regex here.
+#
+# The first version of this tried to read it out of the scene wording and got a
+# third of the library wrong in both directions: "someone is cooking eggs in the
+# pan for breakfast" never says hob and obviously is one, while "the pan rests
+# on the hob after cooking" was thrown out by the word "rests". Tuning the
+# pattern until the list looked right would have meant re-tuning it for every
+# new scene. Thirteen scenes are flagged in the yaml and the question is
+# settled.
+#
+# The pattern below is only a fallback for a scene written without the flag —
+# a free-text redo, say — where being roughly right beats saying nothing.
+_HEAT = re.compile(r"\b(hob|stove|stovetop|burner|cooktop|induction)\b", re.I)
+
+
+def on_heat(scene: str, flag: bool | None = None) -> bool:
+    return bool(_HEAT.search(scene)) if flag is None else bool(flag)
+
 
 def build_prompt(platform: str, scene: str, mood: str, palette: str = "",
-                 extra: str = "") -> str:
+                 extra: str = "", heat: bool | None = None) -> str:
     """Umer's template verbatim, plus the depth constraint. Extras are opt-in."""
     parts = [TEMPLATE.format(platform=platform, scene=scene, mood=mood)]
     if palette:
         parts.append(f"The shades are {palette}.")
     parts.append(CONSTRAINT)
+    if on_heat(scene, heat):
+        parts.append(HOB_RULE)
     if extra:
         parts.append(extra)
     return " ".join(parts)

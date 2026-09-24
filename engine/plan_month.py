@@ -183,6 +183,7 @@ def build(year: int, month: int, seed: int | None = None,
                 items.append({"kind": "generated", "id": it["id"],
                               "text": it["text"], "subject": it["subject"],
                               "claim": it.get("claim"), "pillar": pillar,
+                              "on_heat": bool(it.get("on_heat")),
                               "mood_tone": None, "dish": None})
 
     # --- order so neighbours never share a pillar ---------------------------
@@ -332,7 +333,8 @@ def swap(posts: list[dict], drop_id: str, seed: int | None = None,
         it = unclashed(pool, "subject")[0]
         new = {"kind": "generated", "id": it["id"], "text": it["text"],
                "subject": it["subject"], "claim": it.get("claim"),
-               "pillar": old["pillar"], "mood_tone": None, "dish": None}
+               "pillar": old["pillar"], "on_heat": bool(it.get("on_heat")),
+               "mood_tone": None, "dish": None}
 
         near_tone = {before.get("mood_tone"), after.get("mood_tone")} - {None, "card"}
         moods = [m for m in lib["moods"] if m["tone"] not in near_tone] \

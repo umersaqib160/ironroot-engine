@@ -144,7 +144,8 @@ def _b64(p: Path) -> dict:
             else "image/png", "data": base64.b64encode(p.read_bytes()).decode()}}
 
 
-def vision_check(path: Path, model: str | None = None) -> dict:
+def vision_check(path: Path, model: str | None = None,
+                 on_heat: bool = False) -> dict:
     """Ask a model to look, with the real pan beside it for comparison."""
     key = os.environ.get("ANTHROPIC_API_KEY")
     if not key:
@@ -153,7 +154,7 @@ def vision_check(path: Path, model: str | None = None) -> dict:
     prompt = """The FIRST image is the real IronRoot pan — the ground truth.
 The SECOND image is a generated marketing photo that must be checked against it.
 
-Answer only these four questions about the SECOND image:
+Answer these questions about the SECOND image:
 
 1. frame — is there ANY social media interface, app chrome, border, watermark,
    caption bar, like/comment/share icon, carousel dot or letterbox band? It must
@@ -168,16 +169,29 @@ Answer only these four questions about the SECOND image:
    pans carry PFAS, so one in our own photo argues against us. Pots, kettles and
    saucepans on a back burner are fine; a second FRYING PAN is not.
 
+{HANDLE}
 Also flag anything else that would embarrass the brand: mangled text on props,
 copper cookware, a visibly scratched or damaged pan.
 
 Return ONLY JSON:
 {"frame": true/false, "rim_lip": true/false, "one_handle": true/false,
- "other_cookware": true/false, "other_concerns": ["..."],
- "verdict": "PASS"/"FAIL", "why": "one sentence"}
+ "other_cookware": true/false, "handle_wrong_way": true/false,
+ "other_concerns": ["..."], "verdict": "PASS"/"FAIL", "why": "one sentence"}
 (frame true means a frame IS present, which is a failure. rim_lip true means a
 lip IS present, which is a failure. one_handle true means exactly one, which is
-correct. other_cookware true means another pan IS present, which is a failure.)"""
+correct. other_cookware true means another pan IS present, which is a failure.
+handle_wrong_way true means the handle is badly placed, which is a failure —
+answer false when the pan is not on a cooktop.)"""
+    HANDLE = """
+5. handle_wrong_way — the pan is on a cooktop in this shot. Is the handle
+   pointing AWAY from where a cook would stand — out across the room, over a
+   neighbouring burner, or off toward a window or wall? A cook turns the handle
+   in, over the counter, so it is within reach and cannot be knocked. A handle
+   pointing away is wrong twice over: any cook reading the post will see it at
+   once, and the handle is a selling point being pointed away from the viewer.
+   If the pan is NOT on a cooktop, answer false and ignore this question.
+""" if on_heat else ""
+    prompt = prompt.replace("{HANDLE}", HANDLE)
     r = requests.post("https://api.anthropic.com/v1/messages", timeout=180,
                       headers={"x-api-key": key, "anthropic-version": "2023-06-01",
                                "content-type": "application/json"},
@@ -197,7 +211,7 @@ correct. other_cookware true means another pan IS present, which is a failure.)"
         return {"error": "unparseable", "raw": txt[:300]}
 
 
-def check(path: Path) -> dict:
+def check(path: Path, on_heat: bool = False) -> dict:
     f, c = detect_frame(path), detect_chrome(path)
     out = {"file": path.name, "frame_scan": f, "chrome_scan": c, "failures": []}
     if f["frame"]:
@@ -208,7 +222,7 @@ def check(path: Path) -> dict:
         out["failures"].append(
             f"app interface: {c['top_rows']}px top, {c['bottom_rows']}px "
             f"bottom ({c['percent']}% of the image)")
-    v = vision_check(path)
+    v = vision_check(path, on_heat=on_heat)
     out["vision"] = v
     if "error" not in v and "skipped" not in v:
         if v.get("frame"):
@@ -219,6 +233,10 @@ def check(path: Path) -> dict:
             out["failures"].append("vision: pan does not have exactly one handle")
         if v.get("other_cookware"):
             out["failures"].append("vision: another frying pan is in the shot")
+        if v.get("handle_wrong_way"):
+            out["failures"].append(
+                "vision: the handle points away from the cook — on a hob it "
+                "turns in, over the counter")
         for c in v.get("other_concerns") or []:
             out["failures"].append(f"concern: {c}")
     out["pass"] = not out["failures"]

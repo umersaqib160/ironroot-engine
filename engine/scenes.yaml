@@ -56,22 +56,27 @@ moods:
 scenes:
   # ---------------- Pillar 2 — product in action, with a person -------------
   - id: p2_chef_stirring
+    on_heat: true
     pillar: 2
     subject: person
     text: a chef is using the pan at home
   - id: p2_mother_dinner
+    on_heat: true
     pillar: 2
     subject: person
     text: a young mother is using the pan at home
   - id: p2_couple_cooking
+    on_heat: true
     pillar: 2
     subject: person
     text: two people are cooking dinner together and one is holding the pan
   - id: p2_searing_steak
+    on_heat: true
     pillar: 2
     subject: person
     text: someone is searing a steak in the pan and steam is rising
   - id: p2_breakfast_eggs
+    on_heat: true
     pillar: 2
     subject: person
     text: someone is cooking eggs in the pan for breakfast
@@ -82,10 +87,12 @@ scenes:
 
   # ---------------- Pillar 2 — product in action, pan only ------------------
   - id: p2_pan_on_hob
+    on_heat: true
     pillar: 2
     subject: pan_only
     text: the pan sits on the hob with vegetables cooking in it and no people in frame
   - id: p2_pan_steam
+    on_heat: true
     pillar: 2
     subject: pan_only
     text: the pan is on the hob with steam rising from the food and no people in frame
@@ -94,14 +101,17 @@ scenes:
     subject: pan_only
     text: the pan is going into the oven with food in it and no people in frame
   - id: p2_pan_close
+    on_heat: true
     pillar: 2
     subject: pan_only
     text: a close view of food cooking in the pan on the hob, no people in frame
   - id: p2_pan_one_pan_dinner
+    on_heat: true
     pillar: 2
     subject: pan_only
     text: a whole one-pan dinner finished in the pan on the hob, no people in frame
   - id: p2_pan_resting
+    on_heat: true
     pillar: 2
     subject: pan_only
     text: the pan rests on the hob after cooking with the food still in it, no people in frame
@@ -181,6 +191,7 @@ scenes:
       pillar-1 education post, not a lifestyle still.
 
   - id: bd_eggs_release
+    on_heat: true
     pillar: 2
     subject: person
     text: a chef is frying eggs in the pan
@@ -212,6 +223,7 @@ scenes:
       tri-ply stainless does that a coated pan cannot.
 
   - id: ed_induction_hob
+    on_heat: true
     pillar: 1
     subject: pan_only
     text: the pan sits on a black induction hob with the control display lit, no people in frame
@@ -224,6 +236,7 @@ scenes:
       Reject any coil graphics or glowing rings.
 
   - id: ed_searing_crust
+    on_heat: true
     pillar: 1
     subject: person
     text: a chef is pressing a steak into the hot pan and it is building a deep brown crust

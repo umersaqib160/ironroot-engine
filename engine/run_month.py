@@ -318,7 +318,8 @@ def main() -> int:
                 elif not master.exists():
                     extra = f"There is {post['dish']} in the pan." if post.get("dish") else ""
                     prompt = gen.build_prompt("Instagram", post["text"],
-                                              post["mood"], extra=extra)
+                                              post["mood"], extra=extra,
+                                              heat=post.get("on_heat"))
                     print(f"     {prompt}", flush=True)
                     gen.generate(prompt, master, image_size=a.size, ratio="9:16")
                     made += 1
@@ -326,7 +327,8 @@ def main() -> int:
                 # Gate every photo. p4_meal_prep reached the October calendar
                 # carrying a whole rendered Instagram interface because nothing
                 # looked at it between generation and scheduling.
-                verdict = qc_image.check(files["4x5"])
+                verdict = qc_image.check(files["4x5"],
+                                         on_heat=bool(post.get("on_heat")))
                 post["qc"] = verdict
                 if not verdict["pass"]:
                     print("     QC FAILED:", flush=True)
