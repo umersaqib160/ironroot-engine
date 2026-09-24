@@ -1,0 +1,155 @@
+# The monthly run.
+#
+# Builds a whole month of posts on the 1st of the PRIOR month — 1 October builds
+# November — so there is a clear month to review, amend and schedule before any
+# of it is due. PUBLISHES NOTHING. It generates, gates, captions, commits and
+# opens an approval issue. If Umer never comments, nothing happens.
+#
+# Kill switch: create a file named engine/HALT (any contents) and the run stops
+# before spending anything. Delete it to resume.
+
+name: Monthly content run
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"       # 06:00 UTC on the 1st
+  workflow_dispatch:
+    inputs:
+      month:
+        description: "Month to build, YYYY-MM. Blank = next month."
+        required: false
+        default: ""
+      size:
+        description: "Master resolution"
+        required: true
+        default: "2K"
+        type: choice
+        options: ["1K", "2K", "4K"]
+      exclude:
+        description: "Extra scene ids to skip, comma-separated (rejects.yaml is always applied)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: monthly-run
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90        # 13 posts, and image generation is not fast
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Kill switch
+        run: |
+          if [ -f engine/HALT ]; then
+            echo "::warning::engine/HALT present — the engine is stopped."
+            echo "HALTED=1" >> "$GITHUB_ENV"
+          fi
+
+      - uses: actions/setup-python@v6
+        if: env.HALTED != '1'
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        if: env.HALTED != '1'
+        run: pip install --quiet requests pillow pyyaml numpy
+
+      # Which month. On the schedule this is always next month; by hand it is
+      # whatever was typed. Done in the shell so the answer is in the log before
+      # anything is spent.
+      - name: Choose the month
+        if: env.HALTED != '1'
+        run: |
+          M="${{ inputs.month }}"
+          if [ -z "$M" ]; then M=$(date -u -d "$(date -u +%Y-%m-01) +1 month" +%Y-%m); fi
+          echo "Building $M"
+          echo "MONTH=$M" >> "$GITHUB_ENV"
+
+      # Every argument checked before a single paid call. A rename broke a run
+      # once because the workflow was still passing the old flag.
+      - name: Validate arguments (no API call)
+        if: env.HALTED != '1'
+        run: python engine/generate.py --scene "smoke test" --out /dev/null --dry-run
+
+      - name: Build the month
+        if: env.HALTED != '1'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Captions are written from the image, and the QA gate's rim-lip,
+          # handle and second-pan checks need eyes. Without this key the run
+          # still produces images and the issue; the deterministic frame check
+          # still runs, and the captions are left unwritten rather than guessed.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python engine/run_month.py \
+            --month   "$MONTH" \
+            --size    "${{ inputs.size || '2K' }}" \
+            --reuse \
+            --exclude "${{ inputs.exclude }}" \
+            --repo    "${{ github.repository }}" \
+            --sha     "${{ github.sha }}" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --out-issue issue_body.md
+
+      - name: Commit the bundle
+        if: env.HALTED != '1'
+        run: |
+          git config user.name  "ironroot-engine"
+          git config user.email "noreply@ironrootstore.com"
+          # NOT -f. .gitignore whitelists the small platform exports, captions.md
+          # and the json; -f would override it and drag in the multi-MB masters.
+          git add content/monthly engine/scene_history.json
+          git commit -m "Monthly bundle $MONTH [skip ci]" || {
+            echo "nothing to commit"; exit 0; }
+          # The build may have taken an hour. Rebase rather than fail on a push
+          # that landed meanwhile.
+          git pull --rebase --autostash origin "${{ github.ref_name }}"
+          git push
+
+      # The issue links images at the sha that was checked out, which is now one
+      # commit behind the one that actually holds them. Repoint it at the commit
+      # just pushed so the links resolve.
+      - name: Point the issue at the committed images
+        if: env.HALTED != '1'
+        run: |
+          SHA=$(git rev-parse HEAD)
+          sed -i "s|/${{ github.sha }}/|/$SHA/|g" issue_body.md
+
+      - name: Ensure labels exist
+        if: env.HALTED != '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create approval --color FBCA04 \
+            --description "Awaiting Umer's decision" --force
+          gh label create approved --color 0E8A16 \
+            --description "Approved by Umer" --force
+          gh label create redo      --color D93F0B \
+            --description "Rework requested" --force
+
+      - name: Open the approval issue
+        if: env.HALTED != '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "Approve: $MONTH" \
+            --body-file issue_body.md \
+            --label approval
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          # Scoped to THIS month's folder. content/monthly/ would upload every
+          # month ever built, which is what made the weekly downloads confusing.
+          name: monthly-${{ env.BUNDLE_DIR && 'bundle' || 'partial' }}
+          path: ${{ env.BUNDLE_DIR || 'content/monthly' }}
+          retention-days: 30
+          if-no-files-found: ignore

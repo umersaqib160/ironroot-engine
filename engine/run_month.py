@@ -56,12 +56,142 @@ def find_reusable(scene_id: str, exclude: Path) -> Path | None:
 
 
 def load_state(path: Path) -> dict:
-    return json.loads(path.read_text(encoding="utf-8")) if path.exists() \
+    st = json.loads(path.read_text(encoding="utf-8")) if path.exists() \
         else {"done": {}}
+    st.setdefault("captions", {})
+    return st
+
+
+def recent_captions(month: str, n: int = 1) -> str:
+    """Last month's captions, so the writer does not repeat its own hooks."""
+    months = sorted(q for q in (ROOT / "content" / "monthly").glob("*/captions.md")
+                    if q.parent.name < month)
+    return "\n\n".join(q.read_text(encoding="utf-8")[:6000] for q in months[-n:])
+
+
+def caption_brief(post: dict) -> dict:
+    """
+    What the caption writer is allowed to lean on, per post kind.
+
+    A photo carries the scene's own guards. A card carries its printed line,
+    because the card IS the claim — and the writer still reads it off the image,
+    so a card whose text rendered wrong cannot be captioned as if it were right.
+    """
+    if post["kind"] == "education_card":
+        return {"id": post["id"], "claim": post["headline"],
+                "caption_must": "expand on the line printed on the card, in the "
+                                "brand voice, without repeating it word for word",
+                "caption_never": "claim or imply the pan is non-stick"}
+    if post["kind"] == "review_card":
+        return {"id": post["id"],
+                "claim": f"a verified customer review from {post['name']}",
+                "caption_must": "stay with what this customer actually said",
+                "caption_never": "invent any detail of the customer, their order "
+                                 "or their kitchen, or add a second quote"}
+    return post
+
+
+def captions_doc(month: str, posts: list[dict], written: dict) -> str:
+    """
+    The month's captions with each post's guards written in beside them.
+
+    The guards stay even when a caption was generated, so Umer reviews what the
+    caption was allowed to say next to what it said.
+    """
+    out = [f"# IronRoot — {month}", ""]
+    for post in posts:
+        g = caption_brief(post)
+        out += [f"## {post['index']}. {post['date']} — `{post['id']}`",
+                f"pillar **{post['pillar']}** · {post['kind'].replace('_', ' ')}", ""]
+        if g.get("claim"):
+            out += [f"- claim: {g['claim']}"]
+        if g.get("caption_must"):
+            out += [f"- must: {g['caption_must']}"]
+        if g.get("caption_never"):
+            out += [f"- never: {g['caption_never']}"]
+        c = written.get(post["id"])
+        if not c:
+            out += ["", "_caption not written — ANTHROPIC_API_KEY was not set._", ""]
+            continue
+        out += [""]
+        for net in ("instagram", "facebook", "pinterest", "tiktok"):
+            out += [f"**{net.title()}**", "", c.get(net, "_missing_"), ""]
+        v = c.get("verification") or {}
+        mark = "PASS" if v.get("match") else "FAIL"
+        out += [f"- caption/image check: **{mark}**"]
+        for prob in v.get("problems") or []:
+            out += [f"  - {prob}"]
+        for con in c.get("concerns") or []:
+            out += [f"  - concern in the image: {con}"]
+        out += [""]
+    return "\n".join(out) + "\n"
 
 
 def save_state(path: Path, state: dict) -> None:
     path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+
+
+def issue_body(month: str, posts: list[dict], state: dict, written: dict,
+               qc_failed: list, repo: str, sha: str, run_url: str) -> str:
+    """
+    The approval issue: the whole month on one page, with every warning on it.
+
+    A batch of thirteen is too much to check by clicking through a zip, so the
+    images are linked inline at the pushed sha and anything the run is unsure
+    about is stated next to the post it belongs to, not buried in a log.
+    """
+    raw = f"https://raw.githubusercontent.com/{repo}/{sha}"
+    out = [f"# IronRoot — {month}", "",
+           f"{len(posts)} posts. **Nothing is published by this run.**", ""]
+    if qc_failed:
+        out += [f"## {len(qc_failed)} image(s) failed the QA gate — do not post",
+                ""]
+        for idx, sid, reasons in qc_failed:
+            out += [f"- **{idx}. `{sid}`** — " + "; ".join(reasons)]
+        out += [""]
+    else:
+        out += ["The QA gate passed on every image: no app interface, no "
+                "letterbox band. Rim lip, handle count and second-pan checks "
+                "ran against the reference photograph.", ""]
+
+    out += ["| # | Date | Pillar | Post | Image | Caption check |",
+            "|---|------|--------|------|-------|---------------|"]
+    for post in posts:
+        shot = state["done"].get(f"{post['index']:02d}_{post['id']}", {}).get("4x5")
+        link = f"[view]({raw}/{shot})" if shot else "—"
+        c = written.get(post["id"]) or {}
+        v = c.get("verification") or {}
+        if not c:
+            chk = "not written"
+        elif v.get("match"):
+            chk = "pass"
+        else:
+            chk = "**FAIL** — " + "; ".join(v.get("problems") or ["see captions.md"])
+        out += [f"| {post['index']} | {post['date']} | {post['pillar']} | "
+                f"`{post['id']}` | {link} | {chk} |"]
+
+    concerns = [(post["index"], post["id"], x)
+                for post in posts
+                for x in ((written.get(post["id"]) or {}).get("concerns") or [])]
+    if concerns:
+        out += ["", "## Flagged while writing the captions", ""]
+        out += [f"- **{i}. `{sid}`** — {x}" for i, sid, x in concerns]
+
+    out += ["", "Captions for all four platforms, with the guards each one was "
+            f"held to: [`content/monthly/{month}/captions.md`]"
+            f"(https://github.com/{repo}/blob/{sha}/content/monthly/{month}/captions.md)",
+            ""]
+    if run_url:
+        out += [f"Full-resolution masters are in the [run artifact]({run_url}) "
+                "for 30 days.", ""]
+    out += ["---", "",
+            "**To approve the month**, comment `approve`.",
+            "",
+            "**To change something**, comment in plain English — say which post "
+            "and what to change (`redo 4 with salmon instead of potatoes`). "
+            "Anything that is not `approve` is read as a change request, and the "
+            "whole comment is passed through as the instruction.", ""]
+    return "\n".join(out)
 
 
 def main() -> int:
@@ -188,10 +318,46 @@ def main() -> int:
                 print(f"      - {x}")
         print("Exclude them and re-run, or redo those slots.")
 
+    # Captions, from the image and never from the prompt — see captions.py.
+    # Resumable like everything else: a caption already written is not paid for
+    # twice on a re-run.
+    written = dict(state["captions"])
+    if cap and os.environ.get("ANTHROPIC_API_KEY"):
+        brand = (HERE / "brand.md").read_text(encoding="utf-8")
+        recent = recent_captions(a.month)
+        for post in posts:
+            if post["id"] in written:
+                continue
+            shot = state["done"].get(f"{post['index']:02d}_{post['id']}", {}).get("4x5")
+            if not shot:
+                continue
+            try:
+                print(f"\n--- captions for {post['id']} (from the image)", flush=True)
+                written[post["id"]] = cap.for_scene(ROOT / shot, caption_brief(post),
+                                                    brand, recent)
+                v = written[post["id"]].get("verification", {})
+                print("    caption/image check: " +
+                      ("PASS" if v.get("match")
+                       else "FAIL " + str(v.get("problems"))), flush=True)
+                state["captions"] = written
+                save_state(state_path, state)
+            except Exception as e:
+                print(f"    caption step failed: {e}", file=sys.stderr, flush=True)
+    else:
+        print("\nANTHROPIC_API_KEY not set — captions left unwritten.", flush=True)
+
+    (outdir / "captions.md").write_text(captions_doc(a.month, posts, written),
+                                        encoding="utf-8")
+
     (outdir / "bundle.json").write_text(
-        json.dumps({"month": a.month, "posts": posts,
+        json.dumps({"month": a.month, "posts": posts, "captions": written,
                     "status": {k: "pending" for k in state["done"]}},
                    indent=2) + "\n", encoding="utf-8")
+
+    if a.repo:
+        Path(a.out_issue).write_text(
+            issue_body(a.month, posts, state, written, qc_failed,
+                       a.repo, a.sha, a.run_url), encoding="utf-8")
 
     if os.environ.get("GITHUB_ENV"):
         with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as fh:
