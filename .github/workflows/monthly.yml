@@ -153,10 +153,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh issue create \
+          # A re-run for the same month (a drop, a filled-in caption) used to
+          # open a second "Approve: <month>" issue beside the first. Approval is
+          # per MONTH, not per issue — so approving the OLD one would approve
+          # whatever is in the folder now, including posts that issue never
+          # showed. Close the stale ones; approval.yml ignores closed issues.
+          OLD=$(gh issue list --state open --search "\"Approve: $MONTH\" in:title" \
+                  --json number,title --jq ".[] | select(.title == \"Approve: $MONTH\") | .number")
+          NEW=$(gh issue create \
             --title "Approve: $MONTH" \
             --body-file issue_body.md \
-            --label approval
+            --label approval)
+          echo "opened $NEW"
+          for n in $OLD; do
+            gh issue close "$n" --comment "Superseded by $NEW — the month was rebuilt. Review and approve there; this one no longer matches what is in the repo."
+          done
 
       - uses: actions/upload-artifact@v4
         if: always()
