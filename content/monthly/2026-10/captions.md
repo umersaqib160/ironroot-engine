@@ -198,7 +198,33 @@ pillar **proof** · review card
 - must: stay with what this customer actually said
 - never: invent any detail of the customer, their order or their kitchen, or add a second quote
 
-_caption not written — ANTHROPIC_API_KEY was not set._
+**Instagram**
+
+"The pan is easy to clean and suitable for all cooktops. I use it every day."
+
+— Jeroen K, verified customer
+
+Tri-ply stainless, dishwasher safe, works on gas, electric and induction. PFAS-free. $79 with a 30-day guarantee.
+
+**Facebook**
+
+"The pan is easy to clean and suitable for all cooktops. I use it every day." — Jeroen K
+
+Real review, real pan. Tri-ply stainless steel with no PFAS, no coatings to fail. Works on every cooktop including induction. Dishwasher safe. $79.
+
+**Pinterest**
+
+Verified customer review: "The pan is easy to clean and suitable for all cooktops. I use it every day." — Jeroen K
+
+IronRoot tri-ply stainless steel frying pan. PFAS-free, dishwasher safe, works on all cooktops. $79 with 30-day guarantee.
+
+**Tiktok**
+
+"Easy to clean and suitable for all cooktops. I use it every day." — Jeroen K, verified customer
+
+Tri-ply stainless. No PFAS. Works on everything. $79. #cleanfood #pfasfree #stainlesssteel
+
+- caption/image check: **PASS**
 
 ## 7. 2026-10-16 — `p4_drying_rack`
 pillar **lifestyle** · generated

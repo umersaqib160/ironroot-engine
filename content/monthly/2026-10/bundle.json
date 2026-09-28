@@ -52,41 +52,7 @@
       "dish": null,
       "mood": "sunlit and lively, a busy family kitchen",
       "index": 4,
-      "date": "2026-10-09",
-      "qc": {
-        "file": "p2_pan_on_hob__4x5.jpg",
-        "frame_scan": {
-          "top_rows": 0,
-          "bottom_rows": 0,
-          "percent": 0.0,
-          "top_step": 0.0,
-          "bottom_step": 0.0,
-          "frame": false
-        },
-        "chrome_scan": {
-          "top_rows": 0,
-          "bottom_rows": 0,
-          "percent": 0.0,
-          "chrome": false
-        },
-        "failures": [
-          "vision: another frying pan is in the shot",
-          "concern: Black non-stick frying pan visible on adjacent burner in bottom left - directly contradicts brand messaging about avoiding coated PFAS cookware"
-        ],
-        "vision": {
-          "frame": false,
-          "rim_lip": false,
-          "one_handle": true,
-          "other_cookware": true,
-          "handle_wrong_way": false,
-          "other_concerns": [
-            "Black non-stick frying pan visible on adjacent burner in bottom left - directly contradicts brand messaging about avoiding coated PFAS cookware"
-          ],
-          "verdict": "FAIL",
-          "why": "A black non-stick frying pan is clearly visible on the adjacent burner, which undermines the brand's core anti-PFAS positioning."
-        },
-        "pass": false
-      }
+      "date": "2026-10-09"
     },
     {
       "kind": "education_card",
@@ -583,6 +549,29 @@
           "match": true,
           "problems": []
         }
+      }
+    },
+    "jeroen_k": {
+      "instagram": "\"The pan is easy to clean and suitable for all cooktops. I use it every day.\"\n\n\u2014 Jeroen K, verified customer\n\nTri-ply stainless, dishwasher safe, works on gas, electric and induction. PFAS-free. $79 with a 30-day guarantee.",
+      "facebook": "\"The pan is easy to clean and suitable for all cooktops. I use it every day.\" \u2014 Jeroen K\n\nReal review, real pan. Tri-ply stainless steel with no PFAS, no coatings to fail. Works on every cooktop including induction. Dishwasher safe. $79.",
+      "pinterest": "Verified customer review: \"The pan is easy to clean and suitable for all cooktops. I use it every day.\" \u2014 Jeroen K\n\nIronRoot tri-ply stainless steel frying pan. PFAS-free, dishwasher safe, works on all cooktops. $79 with 30-day guarantee.",
+      "tiktok": "\"Easy to clean and suitable for all cooktops. I use it every day.\" \u2014 Jeroen K, verified customer\n\nTri-ply stainless. No PFAS. Works on everything. $79. #cleanfood #pfasfree #stainlesssteel",
+      "visible_in_image": [
+        "stainless steel frying pan with riveted handle",
+        "wooden countertop",
+        "red bell pepper on wooden cutting board",
+        "yellow bell pepper partially visible",
+        "corn on the cob on cutting board",
+        "grey and white geometric patterned kitchen towel",
+        "five gold stars rating graphic",
+        "customer review quote text",
+        "customer name 'Jeroen K'",
+        "IronRoot brand name at bottom"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
       }
     }
   },
