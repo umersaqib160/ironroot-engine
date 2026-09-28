@@ -16,7 +16,11 @@ account** (Business or Creator) linked to it. Instagram will not let anything
 publish through the API from a personal account, and it requires the Page even
 if you never post to Facebook.
 
-If you already have both and they are linked, skip to Step 3.
+**You probably have this already.** In July the IronRoot Page and the
+`ironrootstore` Instagram account were both verified inside the
+**"Shopify: ironrootnl"** business portfolio. Check it rather than redo it:
+business.facebook.com → Settings → Accounts → Pages / Instagram accounts. If both
+are there, skip straight to Step 3.
 
 ---
 

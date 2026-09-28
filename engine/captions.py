@@ -32,7 +32,7 @@ concrete visual detail it mentions actually appear? That is cheap and catches th
 mismatch that matters.
 """
 from __future__ import annotations
-import base64, json, os, sys
+import base64, json, os, sys, time
 from pathlib import Path
 import requests
 
@@ -56,6 +56,22 @@ def _call(blocks: list[dict], max_tokens: int = 1500) -> str:
     body = r.json()
     print(f"    caption model: {body.get('model', '?')}", flush=True)
     return "".join(b.get("text", "") for b in body.get("content", []))
+
+
+def _json(raw: str) -> dict:
+    """
+    Pull the JSON object out of a reply, whatever surrounds it.
+
+    Stripping a ```json fence was the only tolerance before, so a reply that
+    opened with a sentence ("Here are the captions:") or closed with one failed
+    to parse and the post was left with no caption at all. That is what happened
+    to jeroen_k in October — one post out of thirteen, silently captionless.
+    """
+    raw = raw.strip()
+    a, b = raw.find("{"), raw.rfind("}")
+    if a == -1 or b <= a:
+        raise ValueError(f"no JSON object in reply: {raw[:200]!r}")
+    return json.loads(raw[a:b + 1])
 
 
 def _image_block(path: Path) -> dict:
@@ -95,8 +111,11 @@ Return ONLY valid JSON, no markdown fence, with exactly these keys:
                finish — empty list if none"]}}"""
 
     raw = _call([_image_block(image), {"type": "text", "text": instruction}])
-    raw = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-    return json.loads(raw)
+    out = _json(raw)
+    missing = [k for k in ("instagram", "facebook") if not (out.get(k) or "").strip()]
+    if missing:
+        raise ValueError(f"reply had no {', '.join(missing)} caption")
+    return out
 
 
 def verify(image: Path, captions: dict) -> dict:
@@ -113,13 +132,34 @@ one implying a claim the image cannot support.
 Return ONLY valid JSON:
 {{"match": true/false, "problems": ["..."]}}"""
     raw = _call([_image_block(image), {"type": "text", "text": check}], 800)
-    raw = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-    return json.loads(raw)
+    return _json(raw)
 
 
-def for_scene(image: Path, scene: dict, brand: str, recent: str) -> dict:
-    caps = write_captions(image, scene, brand, recent)
-    caps["verification"] = verify(image, caps)
+def for_scene(image: Path, scene: dict, brand: str, recent: str,
+              attempts: int = 3) -> dict:
+    """
+    Write, then check. Retried, because one failed call should not leave a post
+    with no caption — the poster refuses to publish a bare image, so a single
+    transient error here becomes a missed day two weeks later.
+    """
+    last = None
+    for n in range(1, attempts + 1):
+        try:
+            caps = write_captions(image, scene, brand, recent)
+            break
+        except Exception as e:                      # noqa: BLE001
+            last = e
+            print(f"    caption attempt {n}/{attempts} failed: {e}", flush=True)
+            time.sleep(3 * n)
+    else:
+        raise RuntimeError(f"no caption after {attempts} attempts: {last}")
+
+    # The check is advisory; a failed check must not throw away a good caption.
+    try:
+        caps["verification"] = verify(image, caps)
+    except Exception as e:                          # noqa: BLE001
+        caps["verification"] = {"match": False,
+                                "problems": [f"check could not run: {e}"]}
     return caps
 
 
