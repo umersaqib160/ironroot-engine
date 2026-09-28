@@ -28,6 +28,9 @@ from pathlib import Path
 import requests
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "engine"))
+import approval            # noqa: E402
+import caption_lint        # noqa: E402
 GRAPH = os.environ.get("META_GRAPH_VERSION", "v26.0")
 API = f"https://graph.facebook.com/{GRAPH}"
 
@@ -140,6 +143,19 @@ def main() -> int:
         print(f"Approve it by commenting `approve` on the issue for {folder.name}.")
         return 0 if a.dry_run else 1
 
+    # Approval covers specific words and pictures, not a folder name. If the
+    # month has changed since — a dropped post, a rewritten caption — the
+    # approval was given to something else and does not count.
+    want, have = approval.approved_digest(folder), approval.digest(folder)
+    if want != have:
+        why = ("was approved before approvals recorded what they covered"
+               if want is None else "has changed since it was approved")
+        print(f"{folder.name} {why} — nothing posted.", file=sys.stderr)
+        print(f"  approved: {want or '(not recorded)'}   now: {have}", file=sys.stderr)
+        print(f"Review it and comment `approve` again on the issue for {folder.name}.",
+              file=sys.stderr)
+        return 0 if a.dry_run else 1
+
     book = ledger(folder)
     already = book.get(a.date, {})
     if already.get("instagram") and already.get("facebook"):
@@ -157,6 +173,16 @@ def main() -> int:
     if not ig_caption and not fb_caption:
         print(f"{post['id']} has no caption — refusing to post a bare image.",
               file=sys.stderr)
+        return 1
+
+    # Last gate before the public. The caption step runs the same rules, but a
+    # caption can be edited by hand after that, and this is the one place every
+    # caption has to pass through.
+    bad = caption_lint.check_all({"instagram": ig_caption, "facebook": fb_caption})
+    if bad:
+        for net, probs in bad.items():
+            for x in probs:
+                print(f"  REFUSED {net}: {x}", file=sys.stderr)
         return 1
 
     print(f"{a.date}  {post['id']}  ({post['pillar']})")

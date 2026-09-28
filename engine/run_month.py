@@ -143,19 +143,42 @@ def issue_body(month: str, posts: list[dict], state: dict, written: dict,
     raw = f"https://raw.githubusercontent.com/{repo}/{sha}"
     out = [f"# IronRoot — {month}", "",
            f"{len(posts)} posts. **Nothing is published by this run.**", ""]
-    if qc_failed:
-        out += [f"## {len(qc_failed)} image(s) failed the QA gate — do not post",
+    # Say only what actually happened. This used to announce that every check
+    # had passed whenever nothing had FAILED — including runs that resumed and
+    # checked nothing at all.
+    qc = state.get("qc", {})
+    photos = [p for p in posts if p["kind"] == "generated"]
+    full = [p for p in photos if qc.get(p["id"], {}).get("vision")]
+    partial = [p for p in photos if p["id"] in qc and not qc[p["id"]].get("vision")]
+    none = [p for p in photos if p["id"] not in qc]
+    failed = [p for p in photos if p["id"] in qc and not qc[p["id"]]["pass"]]
+    if failed:
+        out += [f"## {len(failed)} photo(s) failed the image check — look before approving",
                 ""]
-        for idx, sid, reasons in qc_failed:
-            out += [f"- **{idx}. `{sid}`** — " + "; ".join(reasons)]
-        out += [""]
-    else:
-        out += ["The QA gate passed on every image: no app interface, no "
-                "letterbox band. Rim lip, handle count and second-pan checks "
-                "ran against the reference photograph.", ""]
+        for p in failed:
+            out += [f"- **{p['index']}. `{p['id']}`** — " +
+                    "; ".join(qc[p["id"]]["failures"])]
+        out += ["", "_The check can be wrong — it once called a gas burner cap a "
+                "second pan. Look at the photo; you decide._", ""]
+    out += [f"**Image check:** {len(photos)} photos. "
+            f"{len(full)} had the full check (frame, rim lip, one handle, second "
+            f"pan, handle direction). "
+            + (f"{len(partial)} had the frame check only. " if partial else "")
+            + (f"{len(none)} were not checked by this pipeline — look at those "
+               f"yourself. " if none else ""), ""]
 
-    out += ["| # | Date | Pillar | Post | Image | Caption check |",
-            "|---|------|--------|------|-------|---------------|"]
+    def qc_cell(p):
+        if p["kind"] != "generated":
+            return "card"
+        v = qc.get(p["id"])
+        if not v:
+            return "not checked"
+        if not v["pass"]:
+            return "**FAIL**"
+        return "pass" if v.get("vision") else "frame only"
+
+    out += ["| # | Date | Pillar | Post | Image | Image check | Caption check |",
+            "|---|------|--------|------|-------|-------------|---------------|"]
     for post in posts:
         shot = state["done"].get(f"{post['index']:02d}_{post['id']}", {}).get("4x5")
         link = f"[view]({raw}/{shot})" if shot else "—"
@@ -168,7 +191,7 @@ def issue_body(month: str, posts: list[dict], state: dict, written: dict,
         else:
             chk = "**FAIL** — " + "; ".join(v.get("problems") or ["see captions.md"])
         out += [f"| {post['index']} | {post['date']} | {post['pillar']} | "
-                f"`{post['id']}` | {link} | {chk} |"]
+                f"`{post['id']}` | {link} | {qc_cell(post)} | {chk} |"]
 
     concerns = [(post["index"], post["id"], x)
                 for post in posts
@@ -330,6 +353,14 @@ def main() -> int:
                 verdict = qc_image.check(files["4x5"],
                                          on_heat=bool(post.get("on_heat")))
                 post["qc"] = verdict
+                # Kept in state so a resumed run still knows what was checked.
+                # The calendar is reloaded from disk on resume and carries no
+                # verdicts, which is how the issue came to claim checks that
+                # had not run.
+                state.setdefault("qc", {})[post["id"]] = {
+                    "pass": verdict["pass"], "failures": verdict["failures"],
+                    "vision": "skipped" not in (verdict.get("vision") or {"skipped": 1})
+                              and "error" not in (verdict.get("vision") or {})}
                 if not verdict["pass"]:
                     print("     QC FAILED:", flush=True)
                     for f_ in verdict["failures"]:
@@ -393,8 +424,9 @@ def main() -> int:
                 save_state(state_path, state)
             except Exception as e:
                 print(f"    caption step failed: {e}", file=sys.stderr, flush=True)
-    else:
-        print("\nANTHROPIC_API_KEY not set — captions left unwritten.", flush=True)
+    elif any(p["id"] not in written for p in posts):
+        print("\nANTHROPIC_API_KEY not set — missing captions left unwritten.",
+              flush=True)
 
     (outdir / "captions.md").write_text(captions_doc(a.month, posts, written),
                                         encoding="utf-8")

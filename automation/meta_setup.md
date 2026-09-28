@@ -64,40 +64,54 @@ Open the **Graph API Explorer**: developers.facebook.com/tools/explorer
    - `pages_manage_posts`
    - `instagram_basic`
    - `instagram_content_publish`
-4. **Generate Access Token** and accept the prompts. Choose the IronRoot Page
-   when it asks which Pages to allow.
+   - `business_management` — **needed because your Page belongs to the
+     "Shopify: ironrootnl" business portfolio.** Without it, Meta hides
+     portfolio-owned Pages from the lookup in 4b and it comes back empty.
+4. **Generate Access Token** and accept the prompts. When it asks which Pages
+   and Instagram accounts to allow, choose IronRoot and ironrootstore.
 
-Now run three queries in the Explorer — type the path into the bar and press
-Submit.
+You now have a **user** token that dies in about an hour. The order below
+matters — the Page token you want must be fetched *with a long-lived user
+token*, or it expires too.
 
-**a) Your Page ID and its token**
-
-    me/accounts
-
-Find IronRoot in the result. Copy its `id` — that is **META_PAGE_ID**. Copy its
-`access_token` too; the next step needs it.
-
-**b) The Instagram account ID**
-
-Paste the Page's `access_token` into the token box first, then run:
-
-    <META_PAGE_ID>?fields=instagram_business_account
-
-The `id` inside `instagram_business_account` is **META_IG_USER_ID**.
-
-**c) A token that does not expire in an hour**
-
-The token you have lasts about an hour. Swap it for a long-lived one:
-
-    oauth/access_token?grant_type=fb_exchange_token&client_id=<APP_ID>&client_secret=<APP_SECRET>&fb_exchange_token=<THE_PAGE_TOKEN>
+**a) Make the user token long-lived**
 
 App ID and App Secret are on the app dashboard under **App settings → Basic**.
+Put this in the Explorer bar (it is a GET) and Submit:
 
-Take the `access_token` from the result — that is **META_ACCESS_TOKEN**.
+    oauth/access_token?grant_type=fb_exchange_token&client_id=<APP_ID>&client_secret=<APP_SECRET>&fb_exchange_token=<THE_USER_TOKEN_FROM_STEP_3>
 
-A long-lived *Page* token obtained this way does not expire on a timer, but it
-does die if you change your Facebook password, remove the app, or Meta forces a
-re-auth. If posting suddenly starts failing with an auth error, redo this step.
+Copy the `access_token` from the result, paste it into the Explorer's token box
+at the top, replacing the old one.
+
+**b) The Page ID and the Page token**
+
+    me/accounts?fields=id,name,access_token,instagram_business_account
+
+Find IronRoot. From that entry:
+
+- `id` → **META_PAGE_ID**
+- `access_token` → **META_ACCESS_TOKEN** — because it was fetched with a
+  long-lived user token, this Page token **does not expire**
+- `instagram_business_account.id` → **META_IG_USER_ID**
+
+**If IronRoot is not in the list** (the result is empty or it is missing), it is
+the portfolio issue. Use this instead — same three fields, found through the
+business:
+
+    me/businesses?fields=name,owned_pages{id,name,access_token,instagram_business_account}
+
+**If `instagram_business_account` is missing** from the IronRoot entry, the
+Instagram account is not linked to the Page as a professional account — go back
+to Step 2.
+
+An earlier version of this guide said to run the exchange in (a) on the *Page*
+token. That does not work — Meta only exchanges user tokens — and would have
+left you with a token that died within the hour.
+
+The Page token lasts until you change your Facebook password, remove the app, or
+Meta forces you to log in again. If posting suddenly starts failing with an
+authentication error, redo this step.
 
 ## Step 5 — Put them in GitHub
 

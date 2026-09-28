@@ -25,6 +25,51 @@ TARGETS = {
 }
 
 JPEG_QUALITY = 88
+
+# The industry-standard marker that says "made by an AI model". Meta reads it
+# (with C2PA) to put the "AI info" label on a post.
+#
+# brand.md requires every AI asset to carry the platform's AI label. Posting by
+# hand, that was a toggle in the app. Posting through the API there is no
+# toggle — the only way to disclose is to carry the marker in the file itself.
+# And this module was removing it: every photo is re-encoded here, and a
+# re-encode drops whatever metadata the generator attached. So the pipeline was
+# quietly breaking a disclosure rule Umer set in July.
+#
+# It is written into the JPEG as a metadata block without re-encoding the
+# pixels. Cards are NOT tagged: they are built on real product photography, and
+# labelling them AI would be its own false statement.
+AI_XMP = (b'<?xpacket begin="\xef\xbb\xbf" id="W5M0MpCehiHzreSzNTczkc9d"?>'
+          b'<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF '
+          b'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">'
+          b'<rdf:Description rdf:about="" '
+          b'xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/" '
+          b'Iptc4xmpExt:DigitalSourceType='
+          b'"http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia"/>'
+          b'</rdf:RDF></x:xmpmeta>'
+          b'<?xpacket end="w"?>')
+_XMP_NS = b"http://ns.adobe.com/xap/1.0/\x00"
+
+
+def tag_ai(path: str | Path) -> bool:
+    """
+    Insert the AI marker into an existing JPEG, losslessly. Idempotent.
+    Returns True if the file was changed.
+    """
+    path = Path(path)
+    data = path.read_bytes()
+    if b"trainedAlgorithmicMedia" in data:
+        return False
+    if data[:2] != b"\xff\xd8":
+        raise ValueError(f"{path} is not a JPEG")
+    payload = _XMP_NS + AI_XMP
+    seg = b"\xff\xe1" + (len(payload) + 2).to_bytes(2, "big") + payload
+    # After SOI, and after a JFIF APP0 if there is one, which must come first.
+    at = 2
+    if data[2:4] == b"\xff\xe0":
+        at = 4 + int.from_bytes(data[4:6], "big")
+    path.write_bytes(data[:at] + seg + data[at:])
+    return True
 # Crops are taken from the vertical centre of the master. The scene prompt asks
 # for the pan in the central band precisely so this never clips it.
 CROP_ANCHOR = 0.5
@@ -55,6 +100,7 @@ def reframe(master_path: str | Path, out_dir: str | Path, stem: str) -> dict[str
         path = out_dir / f"{stem}__{name}.jpg"
         img.save(path, "JPEG", quality=JPEG_QUALITY, optimize=True,
                  progressive=True, subsampling=0)
+        tag_ai(path)
         written[name] = path
     return written
 

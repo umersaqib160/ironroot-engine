@@ -63,8 +63,13 @@ jobs:
           if [ ! -d "$D" ]; then
             echo "::error::$D does not exist — nothing to approve."; exit 1
           fi
+          # The fingerprint of exactly what was on show when "approve" was
+          # typed. publish.py recomputes it every morning and refuses to post if
+          # the month has changed since.
+          FP=$(python3 engine/approval.py "$D")
           {
             echo "month: $M"
+            echo "content: $FP"
             echo "approved_by: ${{ github.event.comment.user.login }}"
             echo "approved_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             echo "issue: ${{ github.event.issue.html_url }}"

@@ -26,6 +26,30 @@ Direct, plain, confident. No hype, no exclamation marks, no invented urgency.
 
 ---
 
+## 1b. The store — the only facts a caption may state about buying
+
+Checked against the live product page, 28 Sep 2026. **Nothing outside this list.**
+
+| Fact | Exactly |
+|---|---|
+| Website | **ironrootstore.com** — the ONLY web address. Never invent, shorten or vary it. |
+| Price | **from $79** (9.5"). 10" is $85, 11" is $89. Never "$79" alone as if it were the only price. |
+| Shipping | free shipping |
+| Guarantee | 30-day satisfaction guarantee (not a warranty, not "lifetime") |
+| Oven | oven and grill safe to 500°F |
+| Cleaning | dishwasher safe |
+| Cooktops | all cooktops — gas, electric, ceramic, induction |
+| Construction | tri-ply **base** (stainless–aluminium–stainless). The sides are not clad, so never say the aluminium spreads heat "up the sides" or "everywhere". |
+
+Captions on Instagram cannot carry a clickable link — use "link in bio". Facebook
+may carry the address in full.
+
+A caption written on 24 Sep sent people to **ironrootpans.com**, which is not
+this store. The address was nowhere in this brief, so the model made one up. It
+is here now, and the caption step rejects any other address.
+
+---
+
 ## 2. The four pillars
 
 | Pillar | Share | Goal | Examples |
@@ -115,10 +139,20 @@ a refund.
 
 The honest version is stronger: **technique.** Preheat the empty pan, then the
 fat, then the food, and eggs release cleanly with no coating involved. That is
-already how the July education post framed it, and a real review supports the
-outcome — Lotte M: *"finally fry perfectly without sticking."*
+already how the July education post framed it.
 
-Show eggs releasing. Never call the pan non-stick. The image does the work — a
+**Lotte M's review does not say "sticking".** An earlier version of this brief
+quoted her as *"finally fry perfectly without sticking"*. Her words are *"zonder
+aanbranden"* — **without burning** (see `reviews.yaml`). Quoting a customer as
+saying the pan does not stick would be both an invented quote and a non-stick
+claim. Use her review for even heat and searing, never for release.
+
+Show eggs releasing. Never call the pan non-stick — **and never say it in other
+words.** These are the same claim and are rejected by the caption step:
+*nothing sticks · won't stick · doesn't stick · never sticks · stick-free ·
+sticking is a thing of the past · food slides right off.* A caption on 24 Sep
+said "Eggs release, fish lifts, nothing sticks." The first two are technique;
+the third is the claim. The image does the work — a
 chef frying eggs in bare steel signals it to anyone who knows how, and the people
 who know are the ones worth convincing.
 

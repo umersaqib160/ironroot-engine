@@ -36,6 +36,8 @@ import base64, json, os, sys, time
 from pathlib import Path
 import requests
 
+import caption_lint
+
 API = "https://api.anthropic.com/v1/messages"
 MODEL = os.environ.get("IRONROOT_CAPTION_MODEL", "claude-sonnet-4-5")
 ROOT = Path(__file__).resolve().parent.parent
@@ -115,6 +117,13 @@ Return ONLY valid JSON, no markdown fence, with exactly these keys:
     missing = [k for k in ("instagram", "facebook") if not (out.get(k) or "").strip()]
     if missing:
         raise ValueError(f"reply had no {', '.join(missing)} caption")
+    # Rules that need no judgement: a wrong web address, a non-stick claim.
+    # Raising sends it round the retry loop; three strikes and the post has no
+    # caption, which the poster refuses — a gap, never a wrong post.
+    bad = caption_lint.check_all(out)
+    if bad:
+        raise ValueError("caption broke a rule: " +
+                         "; ".join(f"{k}: {x}" for k, v in bad.items() for x in v))
     return out
 
 
@@ -124,10 +133,19 @@ def verify(image: Path, captions: dict) -> dict:
 
 {json.dumps({k: captions[k] for k in ("instagram","facebook","pinterest","tiktok")}, indent=2)}
 
-For each caption, check every concrete visual or factual detail against the image.
-Flag anything asserted that is not visible or is contradicted. Be strict: a
-caption that says "eggs" when the pan holds vegetables is a failure, and so is
-one implying a claim the image cannot support.
+Check only what the captions say ABOUT THIS PICTURE — the scene, the food, the
+people, what is happening, where the pan is. Flag anything that contradicts the
+image or describes something that is not in it. Be strict: a caption that says
+"eggs" when the pan holds vegetables fails, and so does one that puts the pan on
+a stovetop when it is going into an oven.
+
+Do NOT flag product facts. These are verified against the store and are allowed
+in every caption even though a photo cannot show them: the brand name IronRoot,
+the price, PFAS-free, tri-ply, oven safe to 500F, dishwasher safe, works on all
+cooktops including induction, free shipping, the 30-day guarantee, and
+durability or "pan for life" language. An earlier version of this check failed
+ten of thirteen captions for stating exactly these, which made its verdict
+worthless.
 
 Return ONLY valid JSON:
 {{"match": true/false, "problems": ["..."]}}"""

@@ -7,11 +7,11 @@ pillar **education** · generated
 
 **Instagram**
 
-No coating means nothing to ruin. Burnt-on mess? Scrub it with steel wool. Scratch it as hard as you like. Tomorrow it cooks exactly the same.
+No coating means nothing to ruin. Burnt-on mess? Scrub it with steel wool. Go as hard as you like. Tomorrow it cooks exactly the same.
 
-This is what stainless steel does that non-stick can't — wear isn't failure, it's just Wednesday. The pan you're scrubbing tonight is the same pan in ten years.
+This is what stainless steel does that non-stick can't — wear isn't failure, it's just Friday night. The pan you're scrubbing tonight is the same pan in ten years.
 
-PFAS-free. Oven-safe to 500°F. $79.
+PFAS-free. Oven-safe to 500°F. From $79.
 
 **Facebook**
 
@@ -21,9 +21,9 @@ Burnt something? Scrub it with a steel pad. Stainless doesn't care. It won't fla
 
 This is the practical side of PFAS-free — no chemicals means no surface to ruin. The pan that survives a decade of scrubbing is the last pan you buy.
 
-Tri-ply stainless steel. Dishwasher safe. Oven safe to 500°F. 30-day guarantee. $79.
+Tri-ply stainless steel. Dishwasher safe. Oven safe to 500°F. 30-day guarantee. From $79.
 
-Shop: ironrootpans.com
+Shop: ironrootstore.com
 
 **Pinterest**
 
@@ -47,7 +47,7 @@ pillar **product** · generated
 
 **Instagram**
 
-A stovetop you want to cook on. A pan that belongs there.
+Straight into the oven. A pan that belongs there.
 
 Stainless steel, no PFAS, no coatings to worry about. Root vegetables going golden in warm afternoon light — the kind of cooking that doesn't need a filter.
 
@@ -55,13 +55,13 @@ Built to last. Built to use every day.
 
 **Facebook**
 
-A stovetop you want to cook on. A pan that belongs there.
+Straight into the oven. A pan that belongs there.
 
 Stainless steel, no PFAS, no coatings to worry about. Root vegetables going golden in warm afternoon light — the kind of cooking that doesn't need a filter.
 
 Built to last. Built to use every day.
 
-IronRoot stainless frying pan — PFAS-free, oven safe to 500°F, dishwasher safe. $79 with a 30-day guarantee.
+IronRoot stainless frying pan — PFAS-free, oven safe to 500°F, dishwasher safe. From $79 with a 30-day guarantee.
 
 **Pinterest**
 
@@ -179,7 +179,7 @@ There's no coating to wreck, no surface to baby. That mess rinses off, or it scr
 
 A non-coated surface means you can cook like you mean it, clean like you need to, and use the same piece of steel for twenty years.
 
-IronRoot. PFAS-free stainless. $79.
+IronRoot. PFAS-free stainless. From $79.
 
 **Pinterest**
 
@@ -204,13 +204,13 @@ pillar **proof** · review card
 
 — Jeroen K, verified customer
 
-Tri-ply stainless, dishwasher safe, works on gas, electric and induction. PFAS-free. $79 with a 30-day guarantee.
+Tri-ply stainless, dishwasher safe, works on gas, electric and induction. PFAS-free. From $79 with a 30-day guarantee.
 
 **Facebook**
 
 "The pan is easy to clean and suitable for all cooktops. I use it every day." — Jeroen K
 
-Real review, real pan. Tri-ply stainless steel with no PFAS, no coatings to fail. Works on every cooktop including induction. Dishwasher safe. $79.
+Real review, real pan. Tri-ply stainless steel with no PFAS, no coatings to fail. Works on every cooktop including induction. Dishwasher safe. From $79.
 
 **Pinterest**
 
@@ -307,7 +307,7 @@ Two eggs. One pan. No coating to worry about.
 
 Preheat the steel, add a little fat, and they release clean — no PFAS, no scratched Teflon, just technique and a surface that won't quit on you.
 
-The last frying pan you'll ever buy. $79, ships free.
+The last frying pan you'll ever buy. From $79, ships free.
 
 **Facebook**
 
@@ -317,7 +317,7 @@ Preheat the steel, add a little fat, and they release clean — no PFAS, no scra
 
 Bare stainless means there's nothing to flake off into your breakfast. And because there's no coating to ruin, you can scrub it as hard as you need to and it'll still be here in ten years.
 
-The last frying pan you'll ever buy. $79, ships free, 30-day guarantee.
+The last frying pan you'll ever buy. From $79, ships free, 30-day guarantee.
 
 **Pinterest**
 
@@ -341,7 +341,7 @@ pillar **lifestyle** · generated
 
 Before anything else goes in the pan, this does.
 
-Stainless doesn't need a coating to cook cleanly — it needs heat. Preheat the empty pan, add fat, wait ten seconds, then add the food. Eggs release, fish lifts, nothing sticks.
+Stainless doesn't need a coating to cook cleanly — it needs heat. Preheat the empty pan, add fat, wait ten seconds, then add the food. Eggs release, fish lifts.
 
 No PFAS. No chemical layer to scratch off. Just steel, and the minute it takes to let it come up to temperature.
 
@@ -355,7 +355,7 @@ No coating, no chemicals, no PFAS — just an empty pan on medium heat for two m
 
 IronRoot is tri-ply stainless steel. It heats evenly, goes in the oven to 500°F, and cleans up in the dishwasher. The last pan you'll need to buy.
 
-Ships free. 30-day guarantee. $79.
+Ships free. 30-day guarantee. From $79.
 
 **Pinterest**
 
@@ -379,7 +379,7 @@ pillar **product** · generated
 
 The kitchen doesn't stop when the baby wakes up.
 
-One pan. Real food. No coatings to worry about when you're cooking with one hand and soothing with the other.
+One pan. Real food. No coatings to worry about when you're cooking with one eye on the little one.
 
 PFAS-free stainless that cleans fast and goes straight in the dishwasher—because you've got better things to do than scrub.
 
@@ -387,11 +387,11 @@ PFAS-free stainless that cleans fast and goes straight in the dishwasher—becau
 
 The kitchen doesn't stop when the baby wakes up.
 
-One pan. Real food. No coatings to worry about when you're cooking with one hand and soothing with the other.
+One pan. Real food. No coatings to worry about when you're cooking with one eye on the little one.
 
 IronRoot is PFAS-free stainless steel that heats evenly, cleans fast, and goes straight in the dishwasher. The last pan you'll buy, built for the life you're actually living.
 
-Shop now—$79 with a 30-day guarantee.
+Shop now—from $79 with a 30-day guarantee.
 
 **Pinterest**
 
@@ -477,9 +477,9 @@ PFAS-free · tri-ply · oven to 500°F · the last pan you'll buy.
 
 "I can finally sear dishes perfectly without anything burning. Very satisfied." – Lotte M
 
-This is what happens when you cook with bare stainless steel that heats evenly, every time. No hot spots. No chemical coatings to ruin. Just consistent heat and food that comes out right.
+This is what happens when you cook with bare stainless steel that heats evenly, every time. No chemical coatings to ruin. Just consistent heat and food that comes out right.
 
-PFAS-free tri-ply stainless. Built to last a lifetime. $79 with a 30-day guarantee.
+PFAS-free tri-ply stainless. Built to last a lifetime. From $79 with a 30-day guarantee.
 
 **Pinterest**
 
