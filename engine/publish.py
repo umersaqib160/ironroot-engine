@@ -65,6 +65,73 @@ def _post(url: str, payload: dict) -> dict:
     return r.json()
 
 
+def preflight(image_url: str, page_id: str, ig_id: str, token: str) -> list[str]:
+    """
+    Everything a real post depends on, checked with read-only calls.
+
+    A dry run used to stop before touching Meta, so it proved the captions and
+    the approval but said nothing about the three secrets. A mistyped ID, or the
+    one-hour token pasted instead of the permanent Page token, would only have
+    surfaced at 15:00 on the first real posting day. Nothing here can post: every
+    call is a GET.
+
+    Never prints the token.
+    """
+    problems = []
+
+    def get(path, **params):
+        r = requests.get(f"{API}/{path}", params={**params, "access_token": token},
+                         timeout=60)
+        body = r.json() if r.headers.get("content-type", "").startswith(
+            ("application/json", "text/javascript")) else {}
+        return r.status_code, body
+
+    # 1. The image, fetched the way Instagram will fetch it.
+    r = requests.get(image_url, timeout=60)
+    ctype = r.headers.get("content-type", "")
+    if r.status_code != 200 or not ctype.startswith("image/jpeg"):
+        problems.append(f"image not reachable as a JPEG: HTTP {r.status_code} {ctype}")
+    else:
+        print(f"  ok  image reachable ({len(r.content) // 1024} KB, {ctype})")
+
+    # 2. The token is a PAGE token for THIS page. /me on a Page token answers
+    #    with the Page; on a user token it answers with a person, which would
+    #    post nothing and expire.
+    code, me = get("me", fields="id,name")
+    if code != 200:
+        problems.append(f"token rejected by Meta: {me.get('error', {}).get('message', code)}")
+        return problems
+    if me.get("id") != page_id:
+        problems.append(f"token belongs to {me.get('name')!r} ({me.get('id')}), not the "
+                        f"Page in META_PAGE_ID ({page_id}) — likely the user token was "
+                        f"pasted instead of the Page token")
+    else:
+        print(f"  ok  token is the Page token for {me.get('name')!r}")
+
+    # 3. The Instagram account is the one linked to this Page.
+    code, pg = get(page_id, fields="instagram_business_account{id,username}")
+    linked = (pg.get("instagram_business_account") or {})
+    if code != 200 or linked.get("id") != ig_id:
+        problems.append(f"META_IG_USER_ID {ig_id} is not the Instagram account linked "
+                        f"to the Page (linked: {linked.get('id')} {linked.get('username')})")
+    else:
+        print(f"  ok  Instagram @{linked.get('username')} is linked to the Page")
+
+    # 4. Publishing rights on Instagram, and today's remaining allowance. This
+    #    endpoint only answers for a token that may publish.
+    code, lim = get(f"{ig_id}/content_publishing_limit", fields="config,quota_usage")
+    if code != 200:
+        problems.append("no permission to publish to Instagram: "
+                        f"{lim.get('error', {}).get('message', code)}")
+    else:
+        d = (lim.get("data") or [{}])[0]
+        total = (d.get("config") or {}).get("quota_total", "?")
+        print(f"  ok  allowed to publish to Instagram "
+              f"({d.get('quota_usage', 0)} of {total} used in the last 24h)")
+
+    return problems
+
+
 def to_facebook(image_url: str, caption: str, page_id: str, token: str) -> str:
     """A Page photo post. One call."""
     out = _post(f"{API}/{page_id}/photos",
@@ -190,7 +257,18 @@ def main() -> int:
     print(f"  instagram: {ig_caption[:120]}")
     print(f"  facebook : {fb_caption[:120]}")
     if a.dry_run:
-        print("\ndry run — nothing was sent.")
+        token = os.environ.get("META_ACCESS_TOKEN")
+        page_id = os.environ.get("META_PAGE_ID")
+        ig_id = os.environ.get("META_IG_USER_ID")
+        if token and page_id and ig_id:
+            print("\nchecking the Meta connection (read-only, nothing is posted):")
+            bad = preflight(image_url, page_id, ig_id, token)
+            for b in bad:
+                print(f"  FAIL {b}", file=sys.stderr)
+            print("\ndry run — nothing was sent.")
+            return 1 if bad else 0
+        print("\ndry run — nothing was sent. (Meta secrets not set, so the "
+              "connection was not checked.)")
         return 0
 
     token = os.environ.get("META_ACCESS_TOKEN")
