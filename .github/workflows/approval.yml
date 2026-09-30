@@ -23,7 +23,7 @@ jobs:
       github.event.issue.state == 'open' &&
       startsWith(github.event.issue.title, 'Approve:') &&
       github.event.comment.user.login == github.event.repository.owner.login
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # pinned: ubuntu-latest moves to 26 on 19 Oct 2026
     steps:
       - uses: actions/checkout@v5
 
