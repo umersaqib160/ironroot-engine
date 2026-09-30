@@ -59,11 +59,27 @@ jobs:
           META_PAGE_ID:      ${{ secrets.META_PAGE_ID }}
           META_IG_USER_ID:   ${{ secrets.META_IG_USER_ID }}
         run: |
+          # Everything publish.py says also goes onto the run's Summary page,
+          # so what happened — posted, checked, refused, or nothing due — can be
+          # read from a phone without opening the log. A green tick on its own
+          # has said "fine" before when nothing had happened at all.
+          # publish.py never prints the token.
+          set -o pipefail
           python engine/publish.py \
             --date "${{ inputs.date || '' }}" \
             --repo "${{ github.repository }}" \
             --sha  "${{ github.sha }}" \
-            ${{ inputs.dry_run && '--dry-run' || '' }}
+            ${{ inputs.dry_run && '--dry-run' || '' }} 2>&1 | tee publish.log
+          RC=${PIPESTATUS[0]}
+          {
+            echo "## Daily post — $(date -u +%Y-%m-%d)"
+            [ "${{ inputs.dry_run }}" = "true" ] && echo "**Dry run** — nothing was sent."
+            echo
+            echo '```'
+            cat publish.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $RC
 
       - name: Record what went out
         if: always()
