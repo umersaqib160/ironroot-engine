@@ -17,6 +17,24 @@
         "ec_all_cooktops",
         "lotte_m"
       ]
+    },
+    {
+      "month": "2026-11",
+      "ids": [
+        "ec_a_pan_for_life",
+        "p4_open_shelf",
+        "ed_dishwasher_load",
+        "p2_pan_one_pan_dinner",
+        "ed_searing_crust",
+        "p2_pan_steam",
+        "sofie_v",
+        "bd_easy_clean",
+        "ec_oven_500",
+        "p2_pan_resting",
+        "thomas_r",
+        "p4_flat_lay",
+        "ec_pfas_free"
+      ]
     }
   ]
 }

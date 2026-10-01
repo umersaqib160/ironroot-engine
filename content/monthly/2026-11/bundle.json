@@ -1,0 +1,722 @@
+{
+  "month": "2026-11",
+  "posts": [
+    {
+      "kind": "education_card",
+      "id": "ec_a_pan_for_life",
+      "headline": "A pan for life.",
+      "sub": "$79. Tri-ply stainless. 30-day guarantee.",
+      "subject": "card",
+      "mood_tone": "card",
+      "dish": null,
+      "pillar": "education",
+      "index": 1,
+      "date": "2026-11-02"
+    },
+    {
+      "kind": "generated",
+      "id": "p4_open_shelf",
+      "text": "the pan sits on an open kitchen shelf among plain crockery",
+      "subject": "pan_only",
+      "claim": null,
+      "pillar": "lifestyle",
+      "on_heat": false,
+      "mood_tone": "light",
+      "dish": null,
+      "mood": "sunlit and lively, a busy family kitchen",
+      "index": 2,
+      "date": "2026-11-04",
+      "qc": {
+        "file": "p4_open_shelf__4x5.jpg",
+        "frame_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "top_step": 0.0,
+          "bottom_step": 0.0,
+          "frame": false
+        },
+        "chrome_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "chrome": false
+        },
+        "failures": [],
+        "vision": {
+          "frame": false,
+          "rim_lip": false,
+          "one_handle": true,
+          "other_cookware": false,
+          "handle_wrong_way": false,
+          "other_concerns": [],
+          "verdict": "PASS",
+          "why": "The image shows the IronRoot pan correctly with clean edges, no rim lip, exactly one handle, and no other frying pans visible in the scene."
+        },
+        "pass": true
+      }
+    },
+    {
+      "kind": "generated",
+      "id": "ed_dishwasher_load",
+      "text": "a chef is loading the pan into an open dishwasher in a home kitchen",
+      "subject": "person",
+      "claim": "dishwasher safe",
+      "pillar": "education",
+      "on_heat": false,
+      "mood_tone": "warm",
+      "dish": null,
+      "mood": "warm and lived-in, golden light across the counter",
+      "index": 3,
+      "date": "2026-11-06",
+      "qc": {
+        "file": "ed_dishwasher_load__4x5.jpg",
+        "frame_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "top_step": 0.0,
+          "bottom_step": 0.0,
+          "frame": false
+        },
+        "chrome_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "chrome": false
+        },
+        "failures": [],
+        "vision": {
+          "frame": false,
+          "rim_lip": false,
+          "one_handle": true,
+          "other_cookware": false,
+          "handle_wrong_way": false,
+          "other_concerns": [],
+          "verdict": "PASS",
+          "why": "The image shows the IronRoot pan with correct features - no frame, no rolled rim lip, exactly one handle, and no other frying pans visible in the dishwasher scene."
+        },
+        "pass": true
+      }
+    },
+    {
+      "kind": "generated",
+      "id": "p2_pan_one_pan_dinner",
+      "text": "a whole one-pan dinner finished in the pan on the hob, no people in frame",
+      "subject": "pan_only",
+      "claim": null,
+      "pillar": "product",
+      "on_heat": true,
+      "mood_tone": "evening",
+      "dish": null,
+      "mood": "cozy evening with warm lamplight",
+      "index": 4,
+      "date": "2026-11-09",
+      "qc": {
+        "file": "p2_pan_one_pan_dinner__4x5.jpg",
+        "frame_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "top_step": 0.0,
+          "bottom_step": 0.0,
+          "frame": false
+        },
+        "chrome_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "chrome": false
+        },
+        "failures": [],
+        "vision": {
+          "frame": false,
+          "rim_lip": false,
+          "one_handle": true,
+          "other_cookware": false,
+          "handle_wrong_way": false,
+          "other_concerns": [],
+          "verdict": "PASS",
+          "why": "The image shows the IronRoot pan correctly with no frame, proper rim design, single handle positioned appropriately toward the cook, and no competing cookware visible."
+        },
+        "pass": true
+      }
+    },
+    {
+      "kind": "generated",
+      "id": "ed_searing_crust",
+      "text": "a chef is pressing a steak into the hot pan and it is building a deep brown crust",
+      "subject": "person",
+      "claim": "tri-ply stainless holds heat and sears properly",
+      "pillar": "education",
+      "on_heat": true,
+      "mood_tone": "light",
+      "dish": null,
+      "mood": "bright and airy, morning sun coming through the window",
+      "index": 5,
+      "date": "2026-11-11",
+      "qc": {
+        "file": "ed_searing_crust__4x5.jpg",
+        "frame_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "top_step": 0.0,
+          "bottom_step": 0.0,
+          "frame": false
+        },
+        "chrome_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "chrome": false
+        },
+        "failures": [],
+        "vision": {
+          "frame": false,
+          "rim_lip": false,
+          "one_handle": true,
+          "other_cookware": false,
+          "handle_wrong_way": false,
+          "other_concerns": [],
+          "verdict": "PASS",
+          "why": "The image shows the IronRoot pan correctly with one handle positioned properly over the counter, no frame elements, straight rim edge, and no competing cookware visible."
+        },
+        "pass": true
+      }
+    },
+    {
+      "kind": "generated",
+      "id": "p2_pan_steam",
+      "text": "the pan is on the hob with steam rising from the food and no people in frame",
+      "subject": "pan_only",
+      "claim": null,
+      "pillar": "product",
+      "on_heat": true,
+      "mood_tone": "evening",
+      "dish": "a steak",
+      "mood": "cozy evening with warm lamplight",
+      "index": 6,
+      "date": "2026-11-13",
+      "qc": {
+        "file": "p2_pan_steam__4x5.jpg",
+        "frame_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "top_step": 0.0,
+          "bottom_step": 0.0,
+          "frame": false
+        },
+        "chrome_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "chrome": false
+        },
+        "failures": [],
+        "vision": {
+          "frame": false,
+          "rim_lip": false,
+          "one_handle": true,
+          "other_cookware": false,
+          "handle_wrong_way": false,
+          "other_concerns": [],
+          "verdict": "PASS",
+          "why": "The image shows the IronRoot pan correctly with one handle positioned properly toward the viewer, no frame elements, clean rim design, and no competing cookware visible."
+        },
+        "pass": true
+      }
+    },
+    {
+      "kind": "review_card",
+      "id": "sofie_v",
+      "name": "Sofie V",
+      "quote": "This pan exceeds all my expectations. Even heating and durable material. Very satisfied.",
+      "subject": "card",
+      "mood_tone": "card",
+      "dish": null,
+      "pillar": "proof",
+      "index": 7,
+      "date": "2026-11-16"
+    },
+    {
+      "kind": "generated",
+      "id": "bd_easy_clean",
+      "text": "a chef is rinsing the pan clean under the tap after cooking",
+      "subject": "person",
+      "claim": "easy to clean",
+      "pillar": "product",
+      "on_heat": false,
+      "mood_tone": "light",
+      "dish": null,
+      "mood": "full of daylight, fresh and clean",
+      "index": 8,
+      "date": "2026-11-18",
+      "qc": {
+        "file": "bd_easy_clean__4x5.jpg",
+        "frame_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "top_step": 0.0,
+          "bottom_step": 0.0,
+          "frame": false
+        },
+        "chrome_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "chrome": false
+        },
+        "failures": [],
+        "vision": {
+          "frame": false,
+          "rim_lip": false,
+          "one_handle": true,
+          "other_cookware": false,
+          "handle_wrong_way": false,
+          "other_concerns": [],
+          "verdict": "PASS",
+          "why": "The image shows the IronRoot pan being cleaned in a sink with correct specifications: no frame, no rolled rim lip, exactly one handle, and no other cookware visible."
+        },
+        "pass": true
+      }
+    },
+    {
+      "kind": "education_card",
+      "id": "ec_oven_500",
+      "headline": "Oven safe to 500\u00b0F.",
+      "sub": "Sear on the hob, finish in the oven, same pan.",
+      "subject": "card",
+      "mood_tone": "card",
+      "dish": null,
+      "pillar": "education",
+      "index": 9,
+      "date": "2026-11-20"
+    },
+    {
+      "kind": "generated",
+      "id": "p2_pan_resting",
+      "text": "the pan rests on the hob after cooking with the food still in it, no people in frame",
+      "subject": "pan_only",
+      "claim": null,
+      "pillar": "product",
+      "on_heat": true,
+      "mood_tone": "evening",
+      "dish": "mixed vegetables",
+      "mood": "cozy evening with warm lamplight",
+      "index": 10,
+      "date": "2026-11-23",
+      "qc": {
+        "file": "p2_pan_resting__4x5.jpg",
+        "frame_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "top_step": 0.0,
+          "bottom_step": 0.0,
+          "frame": false
+        },
+        "chrome_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "chrome": false
+        },
+        "failures": [],
+        "vision": {
+          "frame": false,
+          "rim_lip": false,
+          "one_handle": true,
+          "other_cookware": false,
+          "handle_wrong_way": false,
+          "other_concerns": [],
+          "verdict": "PASS",
+          "why": "The image shows the IronRoot pan correctly with no interface elements, proper rim design, single handle positioned safely toward the counter, and no competing cookware visible."
+        },
+        "pass": true
+      }
+    },
+    {
+      "kind": "review_card",
+      "id": "thomas_r",
+      "name": "Thomas R",
+      "quote": "The pan feels sturdy and premium. The handle stays cool and the food cooks beautifully evenly.",
+      "subject": "card",
+      "mood_tone": "card",
+      "dish": null,
+      "pillar": "proof",
+      "index": 11,
+      "date": "2026-11-25"
+    },
+    {
+      "kind": "generated",
+      "id": "p4_flat_lay",
+      "text": "the pan lies on a dark kitchen surface as the hero of a simple flat lay",
+      "subject": "pan_only",
+      "claim": null,
+      "pillar": "lifestyle",
+      "on_heat": false,
+      "mood_tone": "light",
+      "dish": null,
+      "mood": "full of daylight, fresh and clean",
+      "index": 12,
+      "date": "2026-11-27",
+      "qc": {
+        "file": "p4_flat_lay__4x5.jpg",
+        "frame_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "top_step": 0.0,
+          "bottom_step": 0.0,
+          "frame": false
+        },
+        "chrome_scan": {
+          "top_rows": 0,
+          "bottom_rows": 0,
+          "percent": 0.0,
+          "chrome": false
+        },
+        "failures": [],
+        "vision": {
+          "frame": false,
+          "rim_lip": false,
+          "one_handle": true,
+          "other_cookware": false,
+          "handle_wrong_way": false,
+          "other_concerns": [],
+          "verdict": "PASS",
+          "why": "Clean overhead shot of the correct IronRoot pan with no defects, appropriate styling elements (rosemary, salt), and no problematic elements present."
+        },
+        "pass": true
+      }
+    },
+    {
+      "kind": "education_card",
+      "id": "ec_pfas_free",
+      "headline": "Your non-stick pan has PFAS. IronRoot doesn't.",
+      "sub": "Zero PFAS. Zero PFOA. No chemical coating of any kind.",
+      "subject": "card",
+      "mood_tone": "card",
+      "dish": null,
+      "pillar": "education",
+      "index": 13,
+      "date": "2026-11-30"
+    }
+  ],
+  "captions": {
+    "ec_a_pan_for_life": {
+      "instagram": "Two pans. Two sizes. One promise.\n\nTri-ply stainless steel with no PFAS, no chemical coatings, nothing to wear through. The pan you reach for every night is the same pan in a decade.\n\nOven safe to 500\u00b0F. Dishwasher safe. From $79 with a 30-day guarantee.\n\nLink in bio.",
+      "facebook": "Two pans. Two sizes. One promise.\n\nTri-ply stainless steel with no PFAS, no chemical coatings, nothing to wear through. The pan you reach for every night is the same pan in a decade.\n\nOven safe to 500\u00b0F. Dishwasher safe. Works on all cooktops including induction. From $79 with a 30-day guarantee.\n\nShop: ironrootstore.com",
+      "pinterest": "Two stainless steel frying pans on wood table | PFAS-free tri-ply cookware with no chemical coatings | Oven safe to 500\u00b0F, dishwasher safe, built to last | From $79 with 30-day guarantee | IronRoot",
+      "tiktok": "two pans. two sizes. one promise.\n\ntri-ply stainless, no PFAS, no coatings to wear through. the pan you use tonight is the same pan in ten years.\n\noven safe to 500\u00b0F. from $79. link in bio.",
+      "visible_in_image": [
+        "Two stainless steel frying pans with long handles",
+        "Dark wood table surface with visible grain and joints",
+        "Reflective metallic finish on both pans",
+        "Curved sides on both pans",
+        "Riveted handles on both pans",
+        "Different sizes - one slightly larger than the other",
+        "Natural daylight creating reflections on the metal"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "p4_open_shelf": {
+      "instagram": "The pan stays, the rest stacks away.\n\nBreakfast is done. The pan sits on the counter while the dishes go up. Stainless steel that earns its spot on the worktop \u2014 no coating to baby, no special care, just rinse and rest.\n\nPFAS-free. Built to last. From $79.\n\nLink in bio.",
+      "facebook": "The pan stays, the rest stacks away.\n\nBreakfast is done. The pan sits on the counter while the dishes go up. Stainless steel that earns its spot on the worktop \u2014 no coating to baby, no special care, just rinse and rest.\n\nTri-ply stainless steel. PFAS-free. Dishwasher safe. Oven safe to 500\u00b0F. 30-day satisfaction guarantee. From $79.\n\nShop: ironrootstore.com",
+      "pinterest": "Stainless steel frying pan on kitchen counter | PFAS-free cookware built to last | No chemical coatings, dishwasher safe, oven safe to 500\u00b0F | The pan that earns its place | From $79 | IronRoot",
+      "tiktok": "breakfast done. pan stays out. the rest stacks away.\n\nno coating to worry about. just stainless steel doing its job.\n\nPFAS-free, from $79. link in bio.",
+      "visible_in_image": [
+        "stainless steel frying pan with riveted handle on wooden counter",
+        "stacked white ceramic bowls",
+        "stacked white plates",
+        "white ceramic mug",
+        "large windows with white frames showing daylight and greenery outside",
+        "kitchen island with wooden top and grey base cabinets",
+        "wooden stool",
+        "breakfast table in background with food and orange juice",
+        "stainless steel refrigerator with children's drawings",
+        "light wooden door frame",
+        "warm natural daylight",
+        "lived-in family kitchen"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "ed_dishwasher_load": {
+      "instagram": "Metal spatula. Stainless steel. That's the point.\n\nNo coating means you don't need to tiptoe around the surface. Use the tools you already own. Scrape the fond. Flip hard. The pan doesn't care.\n\nPFAS-free stainless steel. Dishwasher safe. Built to last.\n\nLink in bio.",
+      "facebook": "Metal spatula. Stainless steel. That's the point.\n\nNo coating means you don't need to tiptoe around the surface. Use the tools you already own. Scrape the fond. Flip hard. The pan doesn't care.\n\nThis is what dishwasher safe really means \u2014 no special treatment, no babying, no surface to protect. The pan that survives everyday use is the last pan you buy.\n\nTri-ply stainless steel. PFAS-free. Oven safe to 500\u00b0F. 30-day guarantee. From $79.\n\nShop: ironrootstore.com",
+      "pinterest": "Dishwasher safe stainless steel frying pan | Use metal utensils, no coating to scratch | PFAS-free cookware built to last | Oven-safe to 500\u00b0F | $79 | IronRoot",
+      "tiktok": "metal spatula on bare stainless. no coating = no rules. scrape it, flip it, toss it in the dishwasher.\n\nPFAS-free. $79. link in bio.",
+      "visible_in_image": [
+        "Man in white shirt and blue apron placing metal frying pan into open dishwasher",
+        "Stainless steel frying pan with handle",
+        "Open dishwasher with upper and lower racks",
+        "White plates in lower dishwasher rack",
+        "Wire basket racks in dishwasher",
+        "White kitchen cabinets",
+        "Marble or light stone countertop",
+        "Wooden cutting boards standing against backsplash",
+        "Potted herbs in container on counter",
+        "Natural daylight from window",
+        "Blue and white striped kitchen towel on apron"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": false,
+        "problems": [
+          "All captions describe a metal spatula being used on a stainless steel frying pan, but the image shows a man placing a stainless steel frying pan into a dishwasher - no cooking, no spatula, no stovetop use is depicted"
+        ]
+      }
+    },
+    "p2_pan_one_pan_dinner": {
+      "instagram": "The pan you reach for when it matters.\n\nGolden chicken thighs, roasted carrots and potatoes, red onion, fresh thyme \u2014 one pan, real heat, nothing between the food and the steel. This is what stainless does: sear, roast, serve.\n\nNo PFAS. No coatings. Built to last.\n\nLink in bio.",
+      "facebook": "The pan you reach for when it matters.\n\nGolden chicken thighs, roasted carrots and potatoes, red onion, fresh thyme \u2014 one pan, real heat, nothing between the food and the steel. This is what stainless does: sear, roast, serve.\n\nNo PFAS. No chemical coatings to break down or flake. Tri-ply stainless steel that works on all cooktops, goes in the oven to 500\u00b0F, and cleans in the dishwasher. The last frying pan you'll ever buy.\n\nFrom $79. 30-day satisfaction guarantee. Free shipping.\n\nShop: ironrootstore.com",
+      "pinterest": "One-pan chicken and vegetables | PFAS-free stainless steel frying pan | Golden roasted chicken thighs with carrots, potatoes, red onion, and fresh herbs | No chemical coatings, oven-safe to 500\u00b0F | IronRoot | From $79",
+      "tiktok": "the pan you reach for when it matters. golden chicken, roasted veg, fresh thyme \u2014 one pan, real heat, no coatings.\n\nPFAS-free stainless. oven-safe to 500\u00b0F. from $79. link in bio.",
+      "visible_in_image": [
+        "stainless steel frying pan with metal handle on gas stovetop",
+        "four pieces of golden-brown chicken (appear to be thighs)",
+        "roasted carrots (orange)",
+        "roasted yellow potatoes",
+        "roasted red onion wedges",
+        "fresh green herbs (appear to be thyme and rosemary)",
+        "wooden spoon in the pan",
+        "white and gray marble countertop",
+        "gas burner grates (black)",
+        "potted basil plant in white/beige ceramic pot on counter",
+        "wooden cutting board standing upright in background",
+        "bowl of yellow lemons in background",
+        "bright natural daylight from window"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "ed_searing_crust": {
+      "instagram": "Pressing meat in the pan is how you get a proper sear.\n\nTri-ply stainless holds heat and transfers it fast \u2014 that brown crust forms in seconds, not minutes. No PFAS coating in the way. Just steel, heat, and the Maillard reaction doing what it does.\n\nBuilt to last. Built to cook with.\n\nLink in bio.",
+      "facebook": "Pressing meat in the pan is how you get a proper sear.\n\nTri-ply stainless steel holds heat and transfers it evenly across the base \u2014 the crust forms fast, the steam escapes, and you get colour without sticking. No PFAS coating slowing things down. Just metal doing what metal does best.\n\nIronRoot stainless frying pan \u2014 PFAS-free, oven safe to 500\u00b0F, dishwasher safe. From $79 with a 30-day guarantee.\n\nShop: ironrootstore.com",
+      "pinterest": "How to sear steak properly in stainless steel | Tri-ply pan holds heat for perfect crust | PFAS-free frying pan, oven-safe to 500\u00b0F | No chemical coatings, built to last | $79 | IronRoot",
+      "tiktok": "press it down. tri-ply stainless holds the heat, crust forms fast. no coating in the way.\n\nPFAS-free, oven-safe to 500\u00b0F, $79. link in bio.",
+      "visible_in_image": [
+        "A person wearing a white chef's jacket and white disposable gloves",
+        "A hand pressing down on a large piece of seared meat with a black cast iron grill press",
+        "A stainless steel frying pan on a gas stovetop",
+        "Steam rising from the pan",
+        "Sliced garlic cloves in butter or oil in the pan",
+        "Browned, caramelized surface on the meat",
+        "Wooden cutting board leaning against white subway tile backsplash",
+        "Potted herbs on the windowsill",
+        "Wooden countertop",
+        "Pepper mill on the left side",
+        "Small white dishes with herbs and seasonings",
+        "Natural daylight coming through window"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "p2_pan_steam": {
+      "instagram": "One pan. One flame. One meal worth making.\n\nSteak seared in stainless steel \u2014 the kind of dinner that doesn't need a caption. PFAS-free, no chemical coatings, just tri-ply steel doing what it does.\n\nThe last pan you'll ever buy. From $79.",
+      "facebook": "One pan. One flame. One meal worth making.\n\nSteak seared in stainless steel \u2014 the kind of dinner that doesn't need a caption. PFAS-free, no chemical coatings, just tri-ply steel doing what it does.\n\nTri-ply stainless construction. Oven safe to 500\u00b0F. Dishwasher safe. Works on all cooktops. 30-day satisfaction guarantee.\n\nThe last pan you'll ever buy. From $79.\n\nShop: ironrootstore.com",
+      "pinterest": "Steak in stainless steel frying pan | PFAS-free cookware, no chemical coatings | Tri-ply construction, oven safe to 500\u00b0F | Gas cooktop to table | Built to last | From $79 | IronRoot",
+      "tiktok": "one pan. one flame. steak in bare steel.\n\nno PFAS, no coatings. just tri-ply stainless doing what it does. the last pan you'll buy.\n\nfrom $79. link in bio.",
+      "visible_in_image": [
+        "stainless steel frying pan on gas burner with blue flame visible",
+        "large steak or beef cut in the pan with visible sear marks and browning",
+        "steam rising from the cooking meat",
+        "gas cooktop with black grates",
+        "wooden cutting boards standing upright in background",
+        "white bowls on wooden counter surface",
+        "table lamp with white shade illuminated in background",
+        "warm evening kitchen lighting",
+        "window visible in background"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "sofie_v": {
+      "instagram": "This pan exceeds all my expectations. Even heating and durable material. Very satisfied.\n\n\u2014 Sofie V, verified customer\n\nTri-ply stainless steel, PFAS-free, built to last. From $79 with a 30-day guarantee.\n\nLink in bio.",
+      "facebook": "This pan exceeds all my expectations. Even heating and durable material. Very satisfied.\n\n\u2014 Sofie V, verified customer\n\nTri-ply stainless steel. PFAS-free. The last frying pan you'll ever buy.\n\nFrom $79 with free shipping and a 30-day satisfaction guarantee.\n\nShop: ironrootstore.com",
+      "pinterest": "Customer review: This pan exceeds all my expectations | Sofie V on her IronRoot stainless steel frying pan | Even heating, durable material, PFAS-free | Tri-ply construction | From $79 | ironrootstore.com",
+      "tiktok": "\"This pan exceeds all my expectations. Even heating and durable material. Very satisfied.\" \u2014 Sofie V\n\nTri-ply stainless. PFAS-free. Built to last. $79. Link in bio.",
+      "visible_in_image": [
+        "Stainless steel frying pan with brushed finish",
+        "Long stainless steel handle with rivets",
+        "Five gold/orange star rating icons",
+        "Text quote overlay in white serif font",
+        "Attribution text reading '\u2014 Sofie V'",
+        "Brand name 'IRONROOT' at bottom",
+        "Clean neutral background"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "bd_easy_clean": {
+      "instagram": "Warm water, a quick rinse. That's it.\n\nStainless steel doesn't hold onto yesterday's dinner. No coating to baby, no special scrubber required \u2014 just water and a wipe. The kind of easy that makes you actually want to cook.\n\nPFAS-free. Dishwasher safe. From $79.",
+      "facebook": "Warm water, a quick rinse. That's it.\n\nStainless steel doesn't hold onto yesterday's dinner. No coating to baby, no special scrubber required \u2014 just water running clean. The kind of easy that makes you actually want to cook tomorrow.\n\nIronRoot stainless frying pan \u2014 PFAS-free, dishwasher safe, oven safe to 500\u00b0F. From $79 with free shipping and a 30-day guarantee.\n\nShop: ironrootstore.com",
+      "pinterest": "Easy to clean stainless steel frying pan | No coating to scrub around, just rinse and done | PFAS-free cookware that doesn't hold onto mess | Dishwasher safe, built to last | From $79 | IronRoot",
+      "tiktok": "warm water. quick rinse. done.\n\nno coating to baby, nothing stuck on. stainless cleans like this every time.\n\nPFAS-free, dishwasher safe, $79. link in bio.",
+      "visible_in_image": [
+        "Stainless steel colander or strainer being held under running tap water",
+        "Chrome kitchen faucet with water flowing",
+        "Hand holding the colander handle",
+        "Water droplets and spray visible inside the colander",
+        "Small food debris particles (orange and green colored) visible in the water and colander",
+        "White countertop or sink surface",
+        "Checkered shirt sleeve visible on the person's arm",
+        "Green leafy plants in soft focus in the background",
+        "Bright natural daylight from window"
+      ],
+      "concerns": [
+        "The item being cleaned is a colander/strainer, not a frying pan \u2014 this completely contradicts the product claim and cannot support any caption about cleaning the IronRoot pan",
+        "The colander has perforated holes throughout, which is a defining feature that makes it obviously not a frying pan",
+        "This image cannot be used for any pan-related caption as it shows the wrong product entirely"
+      ],
+      "verification": {
+        "match": false,
+        "problems": [
+          "All captions describe a frying pan, but the image shows a colander/strainer being rinsed under the faucet",
+          "Captions mention 'yesterday's dinner' and cooking context, but the image shows rinsing/washing a strainer with small food particles, not cleaning a pan after cooking"
+        ]
+      }
+    },
+    "ec_oven_500": {
+      "instagram": "Start on the stove. Finish in the oven. Same pan.\n\nStainless steel handles the heat \u2014 sear on the burner, then straight into a 500\u00b0F oven. No coating to worry about. No transfer step. No PFAS.\n\nTri-ply stainless. Built to last. From $79.\n\nLink in bio.",
+      "facebook": "Start on the stove. Finish in the oven. Same pan.\n\nIronRoot is oven safe to 500\u00b0F \u2014 sear your steak on the burner, slide the whole pan in to finish. No coating to blister. No second dish. No PFAS.\n\nTri-ply stainless steel. Dishwasher safe. 30-day guarantee. From $79.\n\nShop: ironrootstore.com",
+      "pinterest": "Stainless steel frying pan oven safe to 500\u00b0F | Stovetop to oven, no transfer needed | PFAS-free cookware built to last | Tri-ply stainless, dishwasher safe | From $79 | IronRoot",
+      "tiktok": "stovetop to oven, same pan. oven safe to 500\u00b0F \u2014 sear it, then finish it. no coating to worry about. no PFAS.\n\ntri-ply stainless. $79. link in bio.",
+      "visible_in_image": [
+        "Two stainless steel frying pans with long handles resting on a dark wooden table",
+        "Both pans are empty and clean",
+        "Pans have a brushed stainless steel interior finish with visible swirl marks",
+        "Riveted handles with holes at the end",
+        "Text overlay reading 'Oven safe to 500\u00b0F' and 'Sear on the hob, finish in the oven, same pan' and 'IRONROOT' brand name"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "p2_pan_resting": {
+      "instagram": "The kind of dinner that fills the kitchen with color.\n\nBell peppers, zucchini, mushrooms, onions \u2014 a simple stir-fry in stainless steel that goes anywhere heat does. No chemical coatings, no special care, just vegetables and a pan that lasts.\n\nPFAS-free. Oven safe to 500\u00b0F. Built for every night of the week.\n\nLink in bio.",
+      "facebook": "The kind of dinner that fills the kitchen with color.\n\nBell peppers, zucchini, mushrooms, onions \u2014 a simple stir-fry in stainless steel that goes anywhere heat does. No chemical coatings to worry about, no special utensils required. Just fresh vegetables and a pan built to last.\n\nTri-ply stainless steel. PFAS-free. Oven safe to 500\u00b0F. Dishwasher safe. From $79 with free shipping and a 30-day satisfaction guarantee.\n\nShop: ironrootstore.com",
+      "pinterest": "Colorful vegetable stir-fry in stainless steel pan | PFAS-free cookware for healthy home cooking | Bell peppers, zucchini, mushrooms saut\u00e9ed in chemical-free pan | Tri-ply stainless, oven safe to 500\u00b0F | From $79 | IronRoot",
+      "tiktok": "bell peppers. zucchini. mushrooms. the kind of stir-fry that looks as good as it tastes.\n\nstainless steel, no coatings, no pfas. just vegetables and a pan that can take the heat.\n\nfrom $79. link in bio.",
+      "visible_in_image": [
+        "Stainless steel frying pan with silver/metallic finish and metal handle",
+        "Sliced bell peppers in red, yellow, and green",
+        "Sliced zucchini rounds",
+        "Sliced mushrooms",
+        "Sliced onions",
+        "Fresh herbs (appears to be parsley or similar leafy herbs)",
+        "Pan sitting on gas stovetop with black grates",
+        "Wooden butcher block countertop",
+        "White/cream ceramic storage jars with lids in background",
+        "Gray ceramic pot or container in background",
+        "Small bowl with what appears to be a spoon in upper right",
+        "Warm kitchen lighting"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "thomas_r": {
+      "instagram": "\"The pan feels sturdy and premium. The handle stays cool and the food cooks beautifully evenly.\"\n\n\u2014 Thomas R, verified customer\n\nTri-ply stainless steel. PFAS-free. From $79 with free shipping and a 30-day guarantee.\n\nLink in bio.",
+      "facebook": "\"The pan feels sturdy and premium. The handle stays cool and the food cooks beautifully evenly.\"\n\n\u2014 Thomas R, verified customer\n\nTri-ply stainless steel construction. No PFAS, no chemical coatings. Oven safe to 500\u00b0F, dishwasher safe, works on all cooktops including induction.\n\nFrom $79 with free shipping and a 30-day satisfaction guarantee.\n\nShop: ironrootstore.com",
+      "pinterest": "\"The pan feels sturdy and premium. The handle stays cool and the food cooks beautifully evenly.\" \u2014 Thomas R, verified customer | IronRoot stainless steel frying pan | PFAS-free, tri-ply construction | From $79 | ironrootstore.com",
+      "tiktok": "\"the pan feels sturdy and premium. the handle stays cool and the food cooks beautifully evenly.\"\n\n\u2014 thomas r, verified customer\n\ntri-ply stainless. PFAS-free. $79. link in bio.",
+      "visible_in_image": [
+        "Stainless steel frying pan with brushed finish",
+        "Long stainless steel handle attached with two rivets",
+        "Five orange/gold stars displayed on the side of the pan",
+        "Customer review quote overlaid in white serif text",
+        "Attribution line reading '\u2014 Thomas R'",
+        "IronRoot brand name at bottom of image",
+        "Gradient background from white to dark gray",
+        "Pan photographed at an angle showing interior and handle extending to upper left"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "p4_flat_lay": {
+      "instagram": "Everything in reach. Rosemary, salt, the pan \u2014 a kitchen counter set up for dinner.\n\nStainless steel that works on every cooktop, oven-safe to 500\u00b0F, dishwasher safe when you're done. No PFAS, no chemical coatings. Just a tool that does the work and gets out of the way.\n\nTri-ply stainless. Built to last. From $79.\n\nLink in bio.",
+      "facebook": "Everything in reach. Rosemary, salt, the pan \u2014 a kitchen counter set up for dinner.\n\nStainless steel that works on every cooktop, oven-safe to 500\u00b0F, dishwasher safe when you're done. No PFAS, no chemical coatings. Just a tool that does the work and gets out of the way.\n\nTri-ply stainless steel. PFAS-free. The last frying pan you'll ever buy. From $79 with free shipping and a 30-day satisfaction guarantee.\n\nShop: ironrootstore.com",
+      "pinterest": "Stainless steel frying pan ready for dinner | PFAS-free cookware with rosemary and sea salt | Works on all cooktops, oven-safe to 500\u00b0F, dishwasher safe | No chemical coatings, built to last | From $79 | IronRoot",
+      "tiktok": "everything you need, right where you need it. rosemary, salt, the pan.\n\nstainless steel. no PFAS. works on every cooktop, oven-safe to 500\u00b0F. from $79.\n\nlink in bio.",
+      "visible_in_image": [
+        "stainless steel frying pan with long handle",
+        "dark grey or black stone countertop",
+        "wooden bowl containing white coarse salt",
+        "fresh rosemary sprigs with green needles",
+        "beige or natural linen cloth in bottom right",
+        "empty clean pan interior with circular brushed steel finish",
+        "two small rivet details visible on pan handle"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "ec_pfas_free": {
+      "instagram": "Two stainless steel frying pans on a wooden table. No chemical coating of any kind.\n\nThis is what PFAS-free looks like \u2014 bare steel that heats evenly, cleans easily, and never wears through. Not because of a layer on top, but because there isn't one.\n\nTri-ply stainless. Built to last. From $79.\n\nLink in bio.",
+      "facebook": "Two stainless steel frying pans on a wooden table. No chemical coating of any kind.\n\nThis is what PFAS-free looks like \u2014 bare steel that heats evenly, cleans easily, and never wears through. Not because of a layer on top, but because there isn't one.\n\nTri-ply stainless steel. Oven safe to 500\u00b0F. Dishwasher safe. Works on all cooktops including induction. 30-day satisfaction guarantee.\n\nFrom $79 with free shipping.\n\nShop: ironrootstore.com",
+      "pinterest": "PFAS-free stainless steel frying pans | No chemical coating | Zero PFAS, zero PFOA | Tri-ply construction, oven safe to 500\u00b0F | Dishwasher safe, built to last | From $79 | IronRoot",
+      "tiktok": "no coating. no PFAS. no PFOA. just stainless steel.\n\nthe pan that doesn't wear out because there's nothing to wear through. tri-ply base, oven safe to 500\u00b0F, $79.\n\nlink in bio.",
+      "visible_in_image": [
+        "Two stainless steel frying pans with long handles",
+        "Pans resting on dark wooden table surface",
+        "Reflective interior surfaces showing ridged/swirled pattern",
+        "Brushed or polished stainless steel finish",
+        "Shadow cast by one pan on table",
+        "Natural daylight lighting from above"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    }
+  },
+  "status": {
+    "01_ec_a_pan_for_life": "pending",
+    "02_p4_open_shelf": "pending",
+    "03_ed_dishwasher_load": "pending",
+    "04_p2_pan_one_pan_dinner": "pending",
+    "05_ed_searing_crust": "pending",
+    "06_p2_pan_steam": "pending",
+    "07_sofie_v": "pending",
+    "08_bd_easy_clean": "pending",
+    "09_ec_oven_500": "pending",
+    "10_p2_pan_resting": "pending",
+    "11_thomas_r": "pending",
+    "12_p4_flat_lay": "pending",
+    "13_ec_pfas_free": "pending"
+  }
+}
