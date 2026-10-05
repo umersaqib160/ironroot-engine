@@ -58,10 +58,48 @@ def save_ledger(folder: Path, data: dict) -> None:
                                         encoding="utf-8")
 
 
+TOKEN_DEAD = ("Facebook no longer accepts the access token — it was cancelled by a "
+              "password change or a Facebook security reset. Nothing can post until "
+              "META_ACCESS_TOKEN is replaced (automation/meta_setup.md).")
+
+
+def plain(err: str) -> str:
+    """Put the one Meta error that needs a person into words a person can act on."""
+    if '"code":190' in err.replace(" ", ""):
+        return TOKEN_DEAD + "  [Meta: " + err[:160] + "]"
+    return err
+
+
+def page_token(token: str, page_id: str) -> str:
+    """
+    The Page token to post with, whatever kind of token the secret holds.
+
+    Two kinds of token can sit in META_ACCESS_TOKEN:
+      - a Page token, made in the Graph API Explorer (what we started with)
+      - a system-user token from Business Settings, which is not tied to
+        anyone's Facebook login
+
+    The first died on 2 Oct 2026, three days after it was made: "the session has
+    been invalidated because the user changed their password or Facebook has
+    changed the session for security reasons." It hangs off Umer's personal
+    login, so anything that resets that login kills the posting. A system-user
+    token does not, which is why we are moving to it.
+
+    Asking the Page for its own access_token works with either kind and returns
+    a Page token, so the rest of this file never needs to know which it was
+    given.
+    """
+    r = requests.get(f"{API}/{page_id}", timeout=60,
+                     params={"fields": "access_token", "access_token": token})
+    if r.status_code != 200:
+        raise RuntimeError(plain(f"{r.status_code} {r.text[:400]}"))
+    return r.json().get("access_token") or token
+
+
 def _post(url: str, payload: dict) -> dict:
     r = requests.post(url, data=payload, timeout=120)
     if r.status_code != 200:
-        raise RuntimeError(f"{r.status_code} {r.text[:400]}")
+        raise RuntimeError(plain(f"{r.status_code} {r.text[:400]}"))
     return r.json()
 
 
@@ -94,7 +132,20 @@ def preflight(image_url: str, page_id: str, ig_id: str, token: str) -> list[str]
     else:
         print(f"  ok  image reachable ({len(r.content) // 1024} KB, {ctype})")
 
-    # 2. The token is a PAGE token for THIS page. /me on a Page token answers
+    # 2. Turn whatever token we were given into this Page's token. A dead token
+    #    stops here, in plain words, instead of as three separate failures.
+    try:
+        given = token
+        token = page_token(token, page_id)
+        print("  ok  token accepted, Page token obtained" +
+              ("" if token == given else
+               " (the secret holds a user or system-user token; the Page token "
+               "was derived from it)"))
+    except Exception as e:
+        problems.append(str(e))
+        return problems
+
+    # 3. The token is a PAGE token for THIS page. /me on a Page token answers
     #    with the Page; on a user token it answers with a person, which would
     #    post nothing and expire.
     code, me = get("me", fields="id,name")
@@ -108,7 +159,7 @@ def preflight(image_url: str, page_id: str, ig_id: str, token: str) -> list[str]
     else:
         print(f"  ok  token is the Page token for {me.get('name')!r}")
 
-    # 3. The Instagram account is the one linked to this Page.
+    # 4. The Instagram account is the one linked to this Page.
     code, pg = get(page_id, fields="instagram_business_account{id,username}")
     linked = (pg.get("instagram_business_account") or {})
     if code != 200 or linked.get("id") != ig_id:
@@ -117,7 +168,7 @@ def preflight(image_url: str, page_id: str, ig_id: str, token: str) -> list[str]
     else:
         print(f"  ok  Instagram @{linked.get('username')} is linked to the Page")
 
-    # 4. Publishing rights on Instagram, and today's remaining allowance. This
+    # 5. Publishing rights on Instagram, and today's remaining allowance. This
     #    endpoint only answers for a token that may publish.
     code, lim = get(f"{ig_id}/content_publishing_limit", fields="config,quota_usage")
     if code != 200:
@@ -278,6 +329,14 @@ def main() -> int:
                               ("META_IG_USER_ID", ig_id)) if not v]
     if missing:
         print("not set: " + ", ".join(missing), file=sys.stderr)
+        return 1
+
+    try:
+        token = page_token(token, page_id)
+    except Exception as e:
+        print(f"  NOTHING POSTED: {e}", file=sys.stderr)
+        print("\nRe-running after the token is replaced will post this day's item.",
+              file=sys.stderr)
         return 1
 
     failures = []

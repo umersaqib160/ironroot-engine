@@ -58,12 +58,23 @@ jobs:
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           META_PAGE_ID:      ${{ secrets.META_PAGE_ID }}
           META_IG_USER_ID:   ${{ secrets.META_IG_USER_ID }}
+          # Keep normal and error output in the order they happened, so the
+          # summary reads top to bottom.
+          PYTHONUNBUFFERED: "1"
         run: |
           # Everything publish.py says also goes onto the run's Summary page,
           # so what happened — posted, checked, refused, or nothing due — can be
           # read from a phone without opening the log. A green tick on its own
           # has said "fine" before when nothing had happened at all.
           # publish.py never prints the token.
+          #
+          # GitHub runs this step with "bash -e", which quits at the first
+          # failing command. With pipefail on, a failed post made the pipe fail
+          # and bash quit right there — before the summary was written. So on
+          # 2 Oct, the one day the summary mattered, the page was empty. +e
+          # lets the step carry on, write the summary, and then exit with
+          # publish.py's own code.
+          set +e
           set -o pipefail
           python engine/publish.py \
             --date "${{ inputs.date || '' }}" \
