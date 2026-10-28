@@ -119,41 +119,37 @@ PFAS-free. $79. link in bio.
 - caption/image check: **FAIL**
   - All captions describe a metal spatula being used on a stainless steel frying pan, but the image shows a man placing a stainless steel frying pan into a dishwasher - no cooking, no spatula, no stovetop use is depicted
 
-## 4. 2026-11-09 — `p2_pan_one_pan_dinner`
+## 4. 2026-11-09 — `p2_pan_close`
 pillar **product** · generated
 
 
 **Instagram**
 
-The pan you reach for when it matters.
+Two pieces of salmon, lemon, and dill in a stainless steel pan on the stove. Morning light coming through the window. The kind of breakfast that starts the day right.
 
-Golden chicken thighs, roasted carrots and potatoes, red onion, fresh thyme — one pan, real heat, nothing between the food and the steel. This is what stainless does: sear, roast, serve.
+No PFAS. No coatings. Just stainless steel and fresh food.
 
-No PFAS. No coatings. Built to last.
-
-Link in bio.
+Built to last. Link in bio.
 
 **Facebook**
 
-The pan you reach for when it matters.
+Two pieces of salmon, lemon, and dill in a stainless steel pan on the stove. Morning light coming through the window. The kind of breakfast that starts the day right.
 
-Golden chicken thighs, roasted carrots and potatoes, red onion, fresh thyme — one pan, real heat, nothing between the food and the steel. This is what stainless does: sear, roast, serve.
+No PFAS. No coatings. Just stainless steel and fresh food.
 
-No PFAS. No chemical coatings to break down or flake. Tri-ply stainless steel that works on all cooktops, goes in the oven to 500°F, and cleans in the dishwasher. The last frying pan you'll ever buy.
-
-From $79. 30-day satisfaction guarantee. Free shipping.
+Tri-ply stainless steel. PFAS-free. Oven safe to 500°F. Dishwasher safe. From $79 with free shipping and a 30-day guarantee.
 
 Shop: ironrootstore.com
 
 **Pinterest**
 
-One-pan chicken and vegetables | PFAS-free stainless steel frying pan | Golden roasted chicken thighs with carrots, potatoes, red onion, and fresh herbs | No chemical coatings, oven-safe to 500°F | IronRoot | From $79
+Pan-seared salmon with lemon and dill | PFAS-free stainless steel frying pan | Morning light, fresh ingredients, no chemical coatings | Oven safe to 500°F, dishwasher safe | From $79 | IronRoot
 
 **Tiktok**
 
-the pan you reach for when it matters. golden chicken, roasted veg, fresh thyme — one pan, real heat, no coatings.
+two salmon fillets, lemon, dill. morning light through the window. no PFAS, no coatings, just stainless steel.
 
-PFAS-free stainless. oven-safe to 500°F. from $79. link in bio.
+built to last. from $79. link in bio.
 
 - caption/image check: **PASS**
 
@@ -273,47 +269,43 @@ Tri-ply stainless. PFAS-free. Built to last. $79. Link in bio.
 
 - caption/image check: **PASS**
 
-## 8. 2026-11-18 — `bd_easy_clean`
+## 8. 2026-11-18 — `p2_pan_oven`
 pillar **product** · generated
 
-- claim: easy to clean
 
 **Instagram**
 
-Warm water, a quick rinse. That's it.
+Root vegetables meeting heat. Afternoon sun across the counter.
 
-Stainless steel doesn't hold onto yesterday's dinner. No coating to baby, no special scrubber required — just water and a wipe. The kind of easy that makes you actually want to cook.
+Carrots, potatoes, parsnips, rosemary — the kind of cooking that fills the kitchen. Stainless steel. No PFAS. No coatings to worry about when the oven door opens.
 
-PFAS-free. Dishwasher safe. From $79.
+Built to last. Built to use every day.
 
 **Facebook**
 
-Warm water, a quick rinse. That's it.
+Root vegetables meeting heat. Afternoon sun across the counter.
 
-Stainless steel doesn't hold onto yesterday's dinner. No coating to baby, no special scrubber required — just water running clean. The kind of easy that makes you actually want to cook tomorrow.
+Carrots, potatoes, parsnips, rosemary — the kind of cooking that fills the kitchen. Stainless steel. No PFAS. No coatings to worry about when the oven door opens.
 
-IronRoot stainless frying pan — PFAS-free, dishwasher safe, oven safe to 500°F. From $79 with free shipping and a 30-day guarantee.
+Built to last. Built to use every day.
+
+IronRoot stainless frying pan — PFAS-free, oven safe to 500°F, dishwasher safe. From $79 with a 30-day guarantee.
 
 Shop: ironrootstore.com
 
 **Pinterest**
 
-Easy to clean stainless steel frying pan | No coating to scrub around, just rinse and done | PFAS-free cookware that doesn't hold onto mess | Dishwasher safe, built to last | From $79 | IronRoot
+Stainless steel frying pan with roasted root vegetables | PFAS-free cookware for healthy home cooking | No chemical coatings, oven safe to 500°F, built to last | IronRoot
 
 **Tiktok**
 
-warm water. quick rinse. done.
+root veg in afternoon light. no pfas, no coatings, just stainless steel doing what it does.
 
-no coating to baby, nothing stuck on. stainless cleans like this every time.
-
-PFAS-free, dishwasher safe, $79. link in bio.
+oven safe to 500°F. built to last. $79. link in bio.
 
 - caption/image check: **FAIL**
-  - All captions describe a frying pan, but the image shows a colander/strainer being rinsed under the faucet
-  - Captions mention 'yesterday's dinner' and cooking context, but the image shows rinsing/washing a strainer with small food particles, not cleaning a pan after cooking
-  - concern in the image: The item being cleaned is a colander/strainer, not a frying pan — this completely contradicts the product claim and cannot support any caption about cleaning the IronRoot pan
-  - concern in the image: The colander has perforated holes throughout, which is a defining feature that makes it obviously not a frying pan
-  - concern in the image: This image cannot be used for any pan-related caption as it shows the wrong product entirely
+  - All captions describe 'roasted' or 'roasting' root vegetables, but the pan is sitting on an open oven door rack, not inside the oven or on a stovetop where roasting would occur
+  - The vegetables appear raw/uncooked in the pan, not roasted as described
 
 ## 9. 2026-11-20 — `ec_oven_500`
 pillar **education** · education card

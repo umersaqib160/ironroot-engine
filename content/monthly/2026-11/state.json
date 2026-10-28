@@ -15,11 +15,6 @@
       "2x3": "content/monthly/2026-11/ed_dishwasher_load__2x3.jpg",
       "4x5": "content/monthly/2026-11/ed_dishwasher_load__4x5.jpg"
     },
-    "04_p2_pan_one_pan_dinner": {
-      "9x16": "content/monthly/2026-11/p2_pan_one_pan_dinner__9x16.jpg",
-      "2x3": "content/monthly/2026-11/p2_pan_one_pan_dinner__2x3.jpg",
-      "4x5": "content/monthly/2026-11/p2_pan_one_pan_dinner__4x5.jpg"
-    },
     "05_ed_searing_crust": {
       "9x16": "content/monthly/2026-11/ed_searing_crust__9x16.jpg",
       "2x3": "content/monthly/2026-11/ed_searing_crust__2x3.jpg",
@@ -34,11 +29,6 @@
       "4x5": "content/monthly/2026-11/sofie_v__4x5.jpg",
       "2x3": "content/monthly/2026-11/sofie_v__2x3.jpg",
       "9x16": "content/monthly/2026-11/sofie_v__9x16.jpg"
-    },
-    "08_bd_easy_clean": {
-      "9x16": "content/monthly/2026-11/bd_easy_clean__9x16.jpg",
-      "2x3": "content/monthly/2026-11/bd_easy_clean__2x3.jpg",
-      "4x5": "content/monthly/2026-11/bd_easy_clean__4x5.jpg"
     },
     "09_ec_oven_500": {
       "4x5": "content/monthly/2026-11/ec_oven_500__4x5.jpg",
@@ -64,6 +54,16 @@
       "4x5": "content/monthly/2026-11/ec_pfas_free__4x5.jpg",
       "2x3": "content/monthly/2026-11/ec_pfas_free__2x3.jpg",
       "9x16": "content/monthly/2026-11/ec_pfas_free__9x16.jpg"
+    },
+    "04_p2_pan_close": {
+      "9x16": "content/monthly/2026-11/p2_pan_close__9x16.jpg",
+      "2x3": "content/monthly/2026-11/p2_pan_close__2x3.jpg",
+      "4x5": "content/monthly/2026-11/p2_pan_close__4x5.jpg"
+    },
+    "08_p2_pan_oven": {
+      "9x16": "content/monthly/2026-11/p2_pan_oven__9x16.jpg",
+      "2x3": "content/monthly/2026-11/p2_pan_oven__2x3.jpg",
+      "4x5": "content/monthly/2026-11/p2_pan_oven__4x5.jpg"
     }
   },
   "captions": {
@@ -138,32 +138,6 @@
         ]
       }
     },
-    "p2_pan_one_pan_dinner": {
-      "instagram": "The pan you reach for when it matters.\n\nGolden chicken thighs, roasted carrots and potatoes, red onion, fresh thyme \u2014 one pan, real heat, nothing between the food and the steel. This is what stainless does: sear, roast, serve.\n\nNo PFAS. No coatings. Built to last.\n\nLink in bio.",
-      "facebook": "The pan you reach for when it matters.\n\nGolden chicken thighs, roasted carrots and potatoes, red onion, fresh thyme \u2014 one pan, real heat, nothing between the food and the steel. This is what stainless does: sear, roast, serve.\n\nNo PFAS. No chemical coatings to break down or flake. Tri-ply stainless steel that works on all cooktops, goes in the oven to 500\u00b0F, and cleans in the dishwasher. The last frying pan you'll ever buy.\n\nFrom $79. 30-day satisfaction guarantee. Free shipping.\n\nShop: ironrootstore.com",
-      "pinterest": "One-pan chicken and vegetables | PFAS-free stainless steel frying pan | Golden roasted chicken thighs with carrots, potatoes, red onion, and fresh herbs | No chemical coatings, oven-safe to 500\u00b0F | IronRoot | From $79",
-      "tiktok": "the pan you reach for when it matters. golden chicken, roasted veg, fresh thyme \u2014 one pan, real heat, no coatings.\n\nPFAS-free stainless. oven-safe to 500\u00b0F. from $79. link in bio.",
-      "visible_in_image": [
-        "stainless steel frying pan with metal handle on gas stovetop",
-        "four pieces of golden-brown chicken (appear to be thighs)",
-        "roasted carrots (orange)",
-        "roasted yellow potatoes",
-        "roasted red onion wedges",
-        "fresh green herbs (appear to be thyme and rosemary)",
-        "wooden spoon in the pan",
-        "white and gray marble countertop",
-        "gas burner grates (black)",
-        "potted basil plant in white/beige ceramic pot on counter",
-        "wooden cutting board standing upright in background",
-        "bowl of yellow lemons in background",
-        "bright natural daylight from window"
-      ],
-      "concerns": [],
-      "verification": {
-        "match": true,
-        "problems": []
-      }
-    },
     "ed_searing_crust": {
       "instagram": "Pressing meat in the pan is how you get a proper sear.\n\nTri-ply stainless holds heat and transfers it fast \u2014 that brown crust forms in seconds, not minutes. No PFAS coating in the way. Just steel, heat, and the Maillard reaction doing what it does.\n\nBuilt to last. Built to cook with.\n\nLink in bio.",
       "facebook": "Pressing meat in the pan is how you get a proper sear.\n\nTri-ply stainless steel holds heat and transfers it evenly across the base \u2014 the crust forms fast, the steam escapes, and you get colour without sticking. No PFAS coating slowing things down. Just metal doing what metal does best.\n\nIronRoot stainless frying pan \u2014 PFAS-free, oven safe to 500\u00b0F, dishwasher safe. From $79 with a 30-day guarantee.\n\nShop: ironrootstore.com",
@@ -229,35 +203,6 @@
       "verification": {
         "match": true,
         "problems": []
-      }
-    },
-    "bd_easy_clean": {
-      "instagram": "Warm water, a quick rinse. That's it.\n\nStainless steel doesn't hold onto yesterday's dinner. No coating to baby, no special scrubber required \u2014 just water and a wipe. The kind of easy that makes you actually want to cook.\n\nPFAS-free. Dishwasher safe. From $79.",
-      "facebook": "Warm water, a quick rinse. That's it.\n\nStainless steel doesn't hold onto yesterday's dinner. No coating to baby, no special scrubber required \u2014 just water running clean. The kind of easy that makes you actually want to cook tomorrow.\n\nIronRoot stainless frying pan \u2014 PFAS-free, dishwasher safe, oven safe to 500\u00b0F. From $79 with free shipping and a 30-day guarantee.\n\nShop: ironrootstore.com",
-      "pinterest": "Easy to clean stainless steel frying pan | No coating to scrub around, just rinse and done | PFAS-free cookware that doesn't hold onto mess | Dishwasher safe, built to last | From $79 | IronRoot",
-      "tiktok": "warm water. quick rinse. done.\n\nno coating to baby, nothing stuck on. stainless cleans like this every time.\n\nPFAS-free, dishwasher safe, $79. link in bio.",
-      "visible_in_image": [
-        "Stainless steel colander or strainer being held under running tap water",
-        "Chrome kitchen faucet with water flowing",
-        "Hand holding the colander handle",
-        "Water droplets and spray visible inside the colander",
-        "Small food debris particles (orange and green colored) visible in the water and colander",
-        "White countertop or sink surface",
-        "Checkered shirt sleeve visible on the person's arm",
-        "Green leafy plants in soft focus in the background",
-        "Bright natural daylight from window"
-      ],
-      "concerns": [
-        "The item being cleaned is a colander/strainer, not a frying pan \u2014 this completely contradicts the product claim and cannot support any caption about cleaning the IronRoot pan",
-        "The colander has perforated holes throughout, which is a defining feature that makes it obviously not a frying pan",
-        "This image cannot be used for any pan-related caption as it shows the wrong product entirely"
-      ],
-      "verification": {
-        "match": false,
-        "problems": [
-          "All captions describe a frying pan, but the image shows a colander/strainer being rinsed under the faucet",
-          "Captions mention 'yesterday's dinner' and cooking context, but the image shows rinsing/washing a strainer with small food particles, not cleaning a pan after cooking"
-        ]
       }
     },
     "ec_oven_500": {
@@ -362,6 +307,56 @@
         "match": true,
         "problems": []
       }
+    },
+    "p2_pan_close": {
+      "instagram": "Two pieces of salmon, lemon, and dill in a stainless steel pan on the stove. Morning light coming through the window. The kind of breakfast that starts the day right.\n\nNo PFAS. No coatings. Just stainless steel and fresh food.\n\nBuilt to last. Link in bio.",
+      "facebook": "Two pieces of salmon, lemon, and dill in a stainless steel pan on the stove. Morning light coming through the window. The kind of breakfast that starts the day right.\n\nNo PFAS. No coatings. Just stainless steel and fresh food.\n\nTri-ply stainless steel. PFAS-free. Oven safe to 500\u00b0F. Dishwasher safe. From $79 with free shipping and a 30-day guarantee.\n\nShop: ironrootstore.com",
+      "pinterest": "Pan-seared salmon with lemon and dill | PFAS-free stainless steel frying pan | Morning light, fresh ingredients, no chemical coatings | Oven safe to 500\u00b0F, dishwasher safe | From $79 | IronRoot",
+      "tiktok": "two salmon fillets, lemon, dill. morning light through the window. no PFAS, no coatings, just stainless steel.\n\nbuilt to last. from $79. link in bio.",
+      "visible_in_image": [
+        "Two salmon fillets in a stainless steel pan",
+        "Sliced lemon rounds under and beside the salmon",
+        "Fresh dill garnish on top of the salmon",
+        "Liquid (likely oil or butter) in the pan",
+        "Gas stovetop with black grates",
+        "Pan sitting on one of the burners",
+        "Wooden countertop or cutting board surface",
+        "Kitchen background with warm lighting",
+        "Window light visible in the background",
+        "Kitchen utensils in a container in the background",
+        "Wooden cutting boards on the wall",
+        "Plant visible in the background"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": true,
+        "problems": []
+      }
+    },
+    "p2_pan_oven": {
+      "instagram": "Root vegetables meeting heat. Afternoon sun across the counter.\n\nCarrots, potatoes, parsnips, rosemary \u2014 the kind of cooking that fills the kitchen. Stainless steel. No PFAS. No coatings to worry about when the oven door opens.\n\nBuilt to last. Built to use every day.",
+      "facebook": "Root vegetables meeting heat. Afternoon sun across the counter.\n\nCarrots, potatoes, parsnips, rosemary \u2014 the kind of cooking that fills the kitchen. Stainless steel. No PFAS. No coatings to worry about when the oven door opens.\n\nBuilt to last. Built to use every day.\n\nIronRoot stainless frying pan \u2014 PFAS-free, oven safe to 500\u00b0F, dishwasher safe. From $79 with a 30-day guarantee.\n\nShop: ironrootstore.com",
+      "pinterest": "Stainless steel frying pan with roasted root vegetables | PFAS-free cookware for healthy home cooking | No chemical coatings, oven safe to 500\u00b0F, built to last | IronRoot",
+      "tiktok": "root veg in afternoon light. no pfas, no coatings, just stainless steel doing what it does.\n\noven safe to 500\u00b0F. built to last. $79. link in bio.",
+      "visible_in_image": [
+        "Stainless steel frying pan with handle resting on open oven door",
+        "Roasted root vegetables in the pan - chunks of carrots, potatoes, parsnips in orange and yellow tones",
+        "Fresh rosemary sprig on top of the vegetables",
+        "Gas stove with black burner grates visible",
+        "Wooden countertop or butcher block surface",
+        "Light wooden kitchen cabinets with drawer pulls",
+        "Window with natural daylight in background",
+        "Ceramic crock or utensil holder on counter",
+        "Warm afternoon sunlight across the scene"
+      ],
+      "concerns": [],
+      "verification": {
+        "match": false,
+        "problems": [
+          "All captions describe 'roasted' or 'roasting' root vegetables, but the pan is sitting on an open oven door rack, not inside the oven or on a stovetop where roasting would occur",
+          "The vegetables appear raw/uncooked in the pan, not roasted as described"
+        ]
+      }
     }
   },
   "qc": {
@@ -401,6 +396,16 @@
       "vision": true
     },
     "p4_flat_lay": {
+      "pass": true,
+      "failures": [],
+      "vision": true
+    },
+    "p2_pan_close": {
+      "pass": true,
+      "failures": [],
+      "vision": true
+    },
+    "p2_pan_oven": {
       "pass": true,
       "failures": [],
       "vision": true
