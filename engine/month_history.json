@@ -35,6 +35,24 @@
         "p4_flat_lay",
         "ec_pfas_free"
       ]
+    },
+    {
+      "month": "2026-12",
+      "ids": [
+        "bd_durability_scrub",
+        "magnus_b",
+        "ed_induction_hob",
+        "p2_searing_steak",
+        "ec_all_cooktops",
+        "p4_hanging_wall",
+        "bd_dishwasher",
+        "ec_no_coating_to_ruin",
+        "jeroen_k",
+        "p2_pan_on_hob",
+        "p4_washing_up",
+        "ec_dishwasher",
+        "bd_easy_clean"
+      ]
     }
   ]
 }
